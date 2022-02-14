@@ -1,4 +1,4 @@
-export default interface PositionType {
+export default interface Vector3Type {
     x: number;
     y: number;
     z: number;
