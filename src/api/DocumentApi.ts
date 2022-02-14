@@ -12,7 +12,7 @@ export async function getDocuments() {
 */
 
 const api = axios.create({
-    baseURL: "https://including-thomas-review-cooked.trycloudflare.com"
+    baseURL: "https://lexica-api.verhelst.dev"
 })
 
 export async function getDocuments() {

@@ -1,21 +1,23 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Euler, InstancedMesh, Matrix4, Quaternion, Vector3 } from "three";
 import BasicDocumentType from "../../../types/BasicDocumentType";
+import { Text } from "@react-three/drei";
 
 interface InstancedDocumentMeshProps {
     documents : BasicDocumentType[];
+    setHoveredDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
 const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
+    const [hovered, setHovered] = useState<number | undefined>(undefined);
+
     const meshRef = useRef<InstancedMesh>();
     const rotation = new Euler();
     const quaternion = new Quaternion();
     const scale = new Vector3();
 
     rotation.x = rotation.y = rotation.z = 0;
-
     quaternion.setFromEuler(rotation);
-
     scale.x = scale.y = scale.z = 1;
 
     useLayoutEffect(() => {      
@@ -32,13 +34,26 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
           meshRef.current!.setMatrixAt(index, matrix);
         }
         meshRef.current!.instanceMatrix.needsUpdate = true;
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(hovered !== undefined) {
+            props.setHoveredDocument(props.documents[hovered]);
+        } else {
+            props.setHoveredDocument(null);
+        }
+    }, [hovered]);
 
     return (
-      <instancedMesh ref={meshRef} args={[undefined, undefined, props.documents.length]}>
-          <sphereBufferGeometry attach="geometry" args={[0.2, 16, 16]}/>
-          <meshToonMaterial attach="material" color={"blue"} opacity={0.5} transparent/>
-      </instancedMesh>
+        <>
+            <instancedMesh ref={meshRef} args={[undefined, undefined, props.documents.length]} 
+                onPointerMove={(e) => {setHovered(e.instanceId)}}
+                onPointerOut={() => {setHovered(undefined)}}
+            >
+                <sphereBufferGeometry attach="geometry" args={[0.2, 16, 16]}/>
+                <meshToonMaterial attach="material" color={"blue"} opacity={0.5} transparent/>
+            </instancedMesh>
+        </> 
     );
 }
 
