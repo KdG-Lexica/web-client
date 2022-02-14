@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Login from "./login/Login"
-import Viewer from "./viewer/Viewer"
+import Login from "./components/login/Login"
+import Viewer from "./components/viewer/Viewer"
 
 function App() {
   return (
