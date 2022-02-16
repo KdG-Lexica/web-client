@@ -16,7 +16,7 @@ const ViewerCanvas = (props : ViewerCanvasProps) => {
         <>
             <Canvas style={{height: "100%", width: "100%"}}>
               <ambientLight intensity={0.5} />
-              <OrbitControls enablePan={false}/>
+              <OrbitControls enablePan={true}/>
 
               <AxisMesh showScale={true} scale={30}/>
               <InstancedDocumentMesh documents={props.documents} setHoveredDocument={setHoveredDocument}/>
