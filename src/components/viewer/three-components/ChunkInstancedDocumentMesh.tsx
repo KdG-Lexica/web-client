@@ -20,20 +20,32 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
     quaternion.setFromEuler(rotation);
     scale.x = scale.y = scale.z = 1;
 
-    useLayoutEffect(() => {      
-        for (let index = 0; index < props.documents.length; index++) {
-          const position = new Vector3();
-          const matrix = new Matrix4();
+    useLayoutEffect(() => {   
+        let chunk = 1;
+        console.log("Loading");
 
-          position.x = props.documents[index].vector3.x;
-          position.y = props.documents[index].vector3.y;
-          position.z = props.documents[index].vector3.z;
+        setInterval(() => {
+            if(chunk < 10) {
+                console.log("Loading chunk: " + chunk);
+                for (let index = 100 * chunk; index < (props.documents.length / 10) + 100 * chunk; index++) {
+                    const position = new Vector3();
+                    const matrix = new Matrix4();
+          
+                    position.x = props.documents[index].vector3.x;
+                    position.y = props.documents[index].vector3.y;
+                    position.z = props.documents[index].vector3.z;
+          
+                    matrix.compose(position, quaternion, scale);
+          
+                    meshRef.current!.setMatrixAt(index, matrix);
+                  }
+    
+                  meshRef.current!.instanceMatrix.needsUpdate = true;
+                  chunk +=1
+            }
 
-          matrix.compose(position, quaternion, scale);
+        }, 1000);
 
-          meshRef.current!.setMatrixAt(index, matrix);
-        }
-        meshRef.current!.instanceMatrix.needsUpdate = true;
     }, []);
 
     useEffect(() => {
