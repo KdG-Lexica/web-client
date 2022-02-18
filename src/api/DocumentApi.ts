@@ -12,10 +12,10 @@ export async function getDocuments() {
 */
 
 const api = axios.create({
-    baseURL: "https://including-thomas-review-cooked.trycloudflare.com"
+    baseURL: "https://lexica-api.verhelst.dev"
 })
 
 export async function getDocuments() {
-	const response = await api.get("/articles?limit=1000");
+	const response = await api.get("/articles?limit=10000");
 	return response.data;
 }
