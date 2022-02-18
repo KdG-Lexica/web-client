@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login/>}/>
-          <Route path="/viewer" element={<Viewer/>}/>
+          <Route path="/viewer/:view" element={<Viewer/>}/>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

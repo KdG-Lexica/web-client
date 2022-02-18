@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Euler, InstancedMesh, Matrix4, Quaternion, Vector3 } from "three";
-import BasicDocumentType from "../../../types/BasicDocumentType";
+import BasicDocumentType from "../../../../types/BasicDocumentType";
 import { Text } from "@react-three/drei";
 
 interface InstancedDocumentMeshProps {

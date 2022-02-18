@@ -1,15 +1,15 @@
 import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Camera, Canvas } from "@react-three/fiber";
 import React, { useState } from "react";
-import BasicDocumentType from "../../../types/BasicDocumentType";
+import BasicDocumentType from "../../../../types/BasicDocumentType";
 import AxisMesh from "./AxisMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
 
-interface ViewerCanvasProps {
+interface DefaultViewerCanvasProps {
     documents : BasicDocumentType[];
 }
 
-const ViewerCanvas = (props : ViewerCanvasProps) => {
+const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
 
     return (
@@ -33,4 +33,4 @@ const ViewerCanvas = (props : ViewerCanvasProps) => {
     );
 }
 
-export default ViewerCanvas;
+export default DefaultViewerCanvas;

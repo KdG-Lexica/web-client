@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
-import ViewerCanvas from "./three-components/ViewerCanvas";
+import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
+import TimeViewerCanvas from "./three-components/time-viewer/TimeViewerCanvas";
 
 const Viewer = () => {
-  const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
+  const { view } = useParams();
+  const [documents, setDocuments] = useState<BasicDocumentType[]>([]);  
 
   const {isLoading} = useQuery(
     "getDocuments",
@@ -29,7 +32,12 @@ const Viewer = () => {
 
   return (
     <div style={{height: "100vh", width: "100vw"}}>
-      <ViewerCanvas documents={documents}/>
+      {view === "default" &&
+        <DefaultViewerCanvas documents={documents}/>
+      }
+      {view === "time" &&
+        <TimeViewerCanvas documents={documents}/>
+      }
     </div>
   );
 }

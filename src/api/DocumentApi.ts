@@ -16,6 +16,6 @@ const api = axios.create({
 })
 
 export async function getDocuments() {
-	const response = await api.get("/articles?limit=1000");
+	const response = await api.get("/articles?limit=10000");
 	return response.data;
 }
