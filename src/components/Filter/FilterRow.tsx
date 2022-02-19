@@ -23,6 +23,11 @@ export const FilterRow = (props: FilterRowProps) => {
         props.updateFilters({ clause: clause, field: field, id: props.id, operator: operator, search: search } as FilterItemType)
     }, [search, clause, field, operator])
 
+    const updateOperator = (e: any) => {
+        console.log(e.target.value)
+        const operator = props.operators.find((o) => o.name === e.target.value);
+        setOperator(operator!!)
+    }
 
     return (
         <div className="flex flex-row items-center">
@@ -45,12 +50,12 @@ export const FilterRow = (props: FilterRowProps) => {
                     return <option className="bg-slate-900 text-white" value={k} key={k}>{k}</option>
                 })}
             </select>
-            <select onChange={(e) => setOperator({ name: e.target.value, input: true })} className="m-1 rounded h-8 bg-transparent text-white" name="operators" id="operators">
+            <select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent text-white" name="operators" id="operators">
                 {props.operators.map((o) => {
                     return <option className="bg-slate-900 text-white" value={o.name} key={o.name}>{o.name}</option>
                 })}
             </select>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 bg-slate-700 text-slate-300" id="filter" type="text" placeholder="" />
+            {operator.input && <input value={search} onChange={(e) => setSearch(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 bg-slate-700 text-slate-300" id="filter" type="text" placeholder="" />}
         </div>
     )
 }

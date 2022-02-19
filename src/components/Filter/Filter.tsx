@@ -64,7 +64,7 @@ export const Filter = (props: FilterProps) => {
                         </button> : ""}
                     </div >
                 </div>
-                <pre className="m-4 bg-slate-400 text-white">
+                <pre className="m-4 bg-slate-800 text-slate-200 rounded">
                     {JSON.stringify(filters, null, 4)}
                 </pre>
             </div>
