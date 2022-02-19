@@ -18,6 +18,34 @@ const queryGeneralClient = new QueryClient({
 });
 
 function App() {
+  const operators = [
+    {
+      name: "contains",
+      input: true
+    },
+    {
+      name: "does not contain",
+      input: true
+    },
+    {
+      name: "is",
+      input: true
+    },
+    {
+      name: "is not",
+      input: true
+    },
+    {
+      name: "is empty",
+      input: false
+    },
+    {
+      name: "is not empty",
+      input: false
+    }
+  ];
+
+
   return (
     <QueryClientProvider client={queryGeneralClient} contextSharing={true}>
       <BrowserRouter>
@@ -25,7 +53,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/viewer" element={<Viewer />} />
           <Route path="/home" element={<Viewer />} />
-          <Route path="/filter" element={<Filter />} />
+          <Route path="/filter" element={<Filter
+            fields={["Title", "Author", "Source"]}
+            operators={operators}
+          />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
