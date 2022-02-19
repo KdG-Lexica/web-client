@@ -49,22 +49,22 @@ export const Filter = (props: FilterProps) => {
                     <div className="flex flex-col">
                         <p className="font-sans text-slate-400 font-medium text-lg p-2">In this view, show records</p>
                         <div>{filters.length > 0 ? drawConditions() : ""}</div>
-                        <div className="flex flex-row items-center">
-                            {filters.length < 6 ?
+                        <div className="flex flex-row">
+                            {filters.length < 6 &&
                                 <button className="flex flex-row items-center" onClick={() => addCondition()}><svg style={{ height: 30, width: 30 }}
                                     xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                 </svg>
-                                    <p className="font-sans text-slate-400 font-medium text-md p-2">Add condition</p></button>
-                                : ""}
+                                    <p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add condition</p></button>
+                            }
 
                         </div>
-                        {filters.length > 0 ? <button onClick={() => console.log(filters)} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        {filters.length > 0 && <button onClick={() => console.log(filters)} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
                             Execute Query
-                        </button> : ""}
+                        </button>}
                     </div >
                 </div>
-                <pre className="m-4 bg-slate-800 text-slate-200 rounded">
+                <pre className="m-4 bg-slate-800 text-slate-200 rounded overflow-y-scroll h-96 w-80">
                     {JSON.stringify(filters, null, 4)}
                 </pre>
             </div>

@@ -37,10 +37,10 @@ export const FilterRow = (props: FilterRowProps) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            {props.clauses.length == 1 ? <p className="font-sans text-slate-400 font-medium text-md p-2 w-1/5">{props.clauses[0]}</p> :
-                <select name="clause" onChange={(e) => setClause(e.target.value)} className="m-1 rounded h-8 bg-transparent text-slate-400 font-medium text-md w-1/5" id="clause">
+            {props.clauses.length == 1 ? <p className="text-slate-400 font-medium text-md m-1 pl-0.5 w-16">{props.clauses[0]}</p> :
+                <select name="clause" onChange={(e) => setClause(e.target.value)} className="m-1 rounded bg-transparent text-slate-400 font-medium text-md w-16" id="clause">
                     {props.clauses.map((c) => {
-                        return <option className="bg-slate-900 text-slate-400" value={c} key={c}>{c}</option>
+                        return <option className="bg-slate-900 text-slate-400 w-16" value={c} key={c}>{c}</option>
                     })}
                 </select>
             }
