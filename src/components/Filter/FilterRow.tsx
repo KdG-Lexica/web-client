@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react"
 import FilterItemType from "../../types/FilterItemType"
 import OperatorType from "../../types/OperatorType";
@@ -45,17 +46,17 @@ export const FilterRow = (props: FilterRowProps) => {
                 </select>
             }
 
-            <select name="field" onChange={(e) => setField(e.target.value)} className="m-1 rounded h-8 bg-transparent text-white" id="field">
+            <select name="field" onChange={(e) => setField(e.target.value)} className="m-1 rounded h-8 bg-transparent dark:text-white" id="field">
                 {props.fields.map((k) => {
-                    return <option className="bg-slate-900 text-white" value={k} key={k}>{k}</option>
+                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={k} key={k}>{k}</option>
                 })}
             </select>
-            <select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent text-white" name="operators" id="operators">
+            <select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent dark:text-white" name="operators" id="operators">
                 {props.operators.map((o) => {
-                    return <option className="bg-slate-900 text-white" value={o.name} key={o.name}>{o.name}</option>
+                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={o.name} key={o.name}>{o.name}</option>
                 })}
             </select>
-            {operator.input && <input value={search} onChange={(e) => setSearch(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 bg-slate-700 text-slate-300" id="filter" type="text" placeholder="" />}
+            {operator.input && <input value={search} onChange={(e) => setSearch(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 dark:bg-slate-700 bg-slate-200 dark:text-slate-300 text-slate-800" id="filter" type="text" placeholder="" />}
         </div>
     )
 }

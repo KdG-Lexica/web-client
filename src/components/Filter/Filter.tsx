@@ -45,7 +45,7 @@ export const Filter = (props: FilterProps) => {
     return (
         <>
             <div className="flex flex-row justify-center items-center h-screen">
-                <div className="rounded-lg bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-blue-900 border-2 p-2">
+                <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-blue-900 border-2 p-2">
                     <div className="flex flex-col">
                         <p className="font-sans text-slate-400 font-medium text-lg p-2">In this view, show records</p>
                         <div>{filters.length > 0 ? drawConditions() : ""}</div>
@@ -64,7 +64,7 @@ export const Filter = (props: FilterProps) => {
                         </button>}
                     </div >
                 </div>
-                <pre className="m-4 bg-slate-800 text-slate-200 rounded overflow-y-scroll h-96 w-80">
+                <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
                     {JSON.stringify(filters, null, 4)}
                 </pre>
             </div>
