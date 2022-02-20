@@ -1,4 +1,4 @@
-import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
+import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from "@react-three/drei";
 import { Camera, Canvas } from "@react-three/fiber";
 import React, { useState } from "react";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
@@ -11,17 +11,19 @@ interface DefaultViewerCanvasProps {
 
 const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
+    const scale = 30;
 
     return (
         <>
             <Canvas style={{height: "100%", width: "100%"}}>
               <ambientLight intensity={0.5} />
+              <PerspectiveCamera position={[scale/2.5, scale/2.5, scale/2.5]} fov={100} makeDefault/>
               <OrbitControls enablePan={true}/>
 
-              <AxisMesh showScale={true} scale={30}/>
+              <AxisMesh showScale={true} scale={scale}/>
               <InstancedDocumentMesh documents={props.documents} setHoveredDocument={setHoveredDocument}/>
 
-          </Canvas>
+            </Canvas>
           {
               hoveredDocument !== null && 
               <div style={{position: "absolute", left: 0, bottom: 0}}>
