@@ -35,7 +35,7 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
 
           meshRef.current!.setMatrixAt(index, matrix);
         }
-        meshRef.current!.instanceMatrix.needsUpdate = true;
+        meshRef.current!.instanceMatrix.needsUpdate = true;        
     }, []);
 
     useEffect(() => {
