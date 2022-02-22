@@ -1,10 +1,13 @@
-import React from "react";
-import OperatorType from "./OperatorType";
+export interface RuleType {
+    id: string;
+    field: string; // author, title
+    operator: string; // contains, does not contain, ...
+    value: string;
+}
 
 export default interface FilterItemType {
-    id: number;
-    clause: string; // where, and, or
-    field: string; // author, title
-    operator: OperatorType; // contains, does not contain, ...
-    search: string;
+    id: string;
+    combinator: string; // where, and, or
+    rules: RuleType[];
 }
+

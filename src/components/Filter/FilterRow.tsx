@@ -1,62 +1,97 @@
-import { Typography } from "@mui/material";
 import { useEffect, useState } from "react"
-import FilterItemType from "../../types/FilterItemType"
+import FilterItemType, { RuleType } from "../../types/FilterItemType"
 import OperatorType from "../../types/OperatorType";
+import { Rule } from "./Rule";
+
 
 interface FilterRowProps {
-    id: number,
-    fields: Array<string>,
-    operators: Array<OperatorType>,
-    clauses: Array<string>
-    handleDelete: (id: number) => void,
-    updateFilters: (f: FilterItemType) => void,
-    setFilters: React.Dispatch<React.SetStateAction<FilterItemType[]>>,
-    filterItem: FilterItemType
+    id: string;
+    fields: Array<string>;
+    operators: Array<OperatorType>;
+    combinators: Array<string>;
+    updateFilters: (f: FilterItemType) => void;
+    setFilters: React.Dispatch<React.SetStateAction<FilterItemType[]>>;
+    filterItem: FilterItemType;
+    amountOfFilterRows: number;
+    filterId: string;
 }
 
 export const FilterRow = (props: FilterRowProps) => {
-    const [search, setSearch] = useState("");
-    const [clause, setClause] = useState(props.clauses[0]);
-    const [field, setField] = useState(props.fields[0]);
-    const [operator, setOperator] = useState<OperatorType>(props.operators[0]);
+    const [rules, setRules] = useState<RuleType[]>([]);
+    const [combinator, setCombinator] = useState<string>("AND");
+
 
     useEffect(() => {
-        props.updateFilters({ clause: clause, field: field, id: props.id, operator: operator, search: search } as FilterItemType)
-    }, [search, clause, field, operator])
+        addRule();
+    }, []);
 
-    const updateOperator = (e: any) => {
-        console.log(e.target.value)
-        const operator = props.operators.find((o) => o.name === e.target.value);
-        setOperator(operator!!)
+    useEffect(() => {
+        drawRules();
+    }, [rules]);
+
+    useEffect(() => {
+
+        if (rules.length > 0)
+            props.updateFilters({ combinator: combinator, id: props.id, rules: rules })
+    }, [combinator, rules])
+
+
+
+    const updateFilterRow = (rule: RuleType) => {
+        const newRules = rules;
+        const index = rules.findIndex((r) => r.id == rule.id);
+        newRules[index] = rule;
+        setRules(newRules);
+        props.updateFilters({ combinator: combinator, id: props.id, rules: newRules });
+    }
+
+    const handleDelete = (id: string) => {
+        const newRules = rules.filter(r => r.id !== id);
+        setRules(newRules);
+        props.updateFilters({ combinator: combinator, id: props.id, rules: newRules });
+    }
+
+    const drawRules = () => {
+        return rules.map((r, index) => {
+            return <Rule
+                key={index}
+                id={rules[index].id}
+                combinator={combinator}
+                combinators={index == 0 ? ["Where"] : ["and", "or"]}
+                filterItem={props.filterItem}
+                fields={props.fields}
+                operators={props.operators}
+                amountOfFilterRows={props.amountOfFilterRows}
+                handleDelete={handleDelete}
+                updateFilterRows={updateFilterRow}
+                setCombinator={setCombinator}
+            />
+        })
+    }
+
+    const addRule = () => {
+        // in de juiste filterrow en extra rule toevoegen
+        const newRules = [...rules, { id: Math.random().toString(16).slice(2), field: props.fields[0], operator: props.operators[0].name, value: "" }] as RuleType[];
+        setRules(newRules);
+        props.updateFilters({ combinator: combinator, rules: newRules, id: props.id } as FilterItemType);
     }
 
     return (
-        <div className="flex flex-row items-center">
-            <button onClick={() => props.handleDelete(props.id)}>
-                <svg style={{ height: 30, width: 30 }}
-                    xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            {props.clauses.length == 1 ? <p className="text-slate-400 font-medium text-md m-1 pl-0.5 w-16">{props.clauses[0]}</p> :
-                <select name="clause" onChange={(e) => setClause(e.target.value)} className="m-1 rounded bg-transparent text-slate-400 font-medium text-md w-16" id="clause">
-                    {props.clauses.map((c) => {
-                        return <option className="bg-slate-900 text-slate-400 w-16" value={c} key={c}>{c}</option>
-                    })}
-                </select>
-            }
-
-            <select name="field" onChange={(e) => setField(e.target.value)} className="m-1 rounded h-8 bg-transparent dark:text-white" id="field">
-                {props.fields.map((k) => {
-                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={k} key={k}>{k}</option>
-                })}
-            </select>
-            <select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent dark:text-white" name="operators" id="operators">
-                {props.operators.map((o) => {
-                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={o.name} key={o.name}>{o.name}</option>
-                })}
-            </select>
-            {operator.input && <input value={search} onChange={(e) => setSearch(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 dark:bg-slate-700 bg-slate-200 dark:text-slate-300 text-slate-800" id="filter" type="text" placeholder="" />}
+        <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-blue-900 border-2 p-2 mt-2">
+            <div className="flex flex-col">
+                <div>{props.amountOfFilterRows > 0 && drawRules()}</div>
+                <div className="flex flex-row">
+                    {props.amountOfFilterRows < 6 &&
+                        <button className="flex flex-row items-center" onClick={() => addRule()}>
+                            <svg style={{ height: 30, width: 30 }}
+                                xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            <p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add rule</p>
+                        </button>
+                    }
+                </div>
+            </div>
         </div>
     )
 }
