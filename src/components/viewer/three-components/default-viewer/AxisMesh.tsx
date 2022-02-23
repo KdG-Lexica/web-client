@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@react-three/drei";
+import { Billboard, Text } from "@react-three/drei";
 
 interface AxisProps {
     showScale : boolean;
@@ -16,51 +16,51 @@ const AxisMesh = (props : AxisProps) => {
                 <boxBufferGeometry args={[props.scale, 0.01, 0.01]}/>
                 <meshToonMaterial color={"blue"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
-                <Text
-                key={"x" + scaleNumber}
-                scale={[1, 1, 1]}
-                color="black"
-                anchorX="center"
-                anchorY="middle"
-                rotation={[0,0,0]}
-                position={[scaleNumber - offset, 0.1, 0]}
-                >
-                    {scaleNumber - offset}
-                </Text>
+                <Billboard key={"x" + scaleNumber} position={[scaleNumber - offset, 0.1, 0]}>
+                    <Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    </Text>
+                </Billboard>
                 )}
             </mesh>
             <mesh>
                 <boxBufferGeometry args={[0.01, props.scale, 0.01]}/>
                 <meshToonMaterial color={"red"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
-                <Text
-                key={"y" + scaleNumber}
-                scale={[1, 1, 1]}
-                color="black"
-                anchorX="center"
-                anchorY="middle"
-                rotation={[0,0,0]}
-                position={[0.1, scaleNumber - offset, 0]}
-                >
-                    {scaleNumber - offset}
-                </Text>
+                <Billboard key={"y" + scaleNumber} position={[0.1, scaleNumber - offset, 0]}>
+                    <Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    </Text>
+                </Billboard>
                 )}
             </mesh>
             <mesh>
                 <boxBufferGeometry args={[0.01, 0.01, props.scale]}/>
                 <meshToonMaterial color={"green"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
-                <Text
-                key={"z" + scaleNumber}
-                scale={[1, 1, 1]}
-                color="black"
-                anchorX="center"
-                anchorY="middle"
-                rotation={[0, Math.PI / 2, 0]}
-                position={[0, 0.1, scaleNumber - offset]}
-                >
-                    {scaleNumber - offset}
-                </Text>
+                <Billboard key={"z" + scaleNumber} position={[0, 0.1, scaleNumber - offset]}>
+                    <Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    </Text>
+                </Billboard>
                 )}
             </mesh>
         </>
