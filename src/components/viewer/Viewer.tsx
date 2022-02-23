@@ -3,18 +3,28 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
+import ModelType from "../../types/ModelType";
+import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
-import TimeViewerCanvas from "./three-components/time-viewer/TimeViewerCanvas";
 
-const Viewer = () => {
-  const { view } = useParams();
-  const [documents, setDocuments] = useState<BasicDocumentType[]>([]);  
+interface ViewerProps {
+  modelId: string
+  chunkSize : number;
+}
+
+const Viewer = (props : ViewerProps) => {
+  const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
+  const [model, setModel] = useState<ModelType>({_id: "", collectionName: "", meta: []});
+  const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
 
   const {isLoading} = useQuery(
-    "getDocuments",
+    "getData",
     async () => {
         try {
-          const docs = await documentApi.getDocuments();          
+          const mod = await documentApi.getModel(props.modelId)
+          setModel(mod as unknown as ModelType)
+
+          const docs = await documentApi.getDocuments(props.modelId, 1000);          
           setDocuments(docs as unknown as BasicDocumentType[]);
         } catch (error) {
             console.log(error)
@@ -31,14 +41,16 @@ const Viewer = () => {
   }
 
   return (
-    <div style={{height: "100vh", width: "100vw"}}>
-      {view === "default" &&
-        <DefaultViewerCanvas documents={documents}/>
-      }
-      {view === "time" &&
-        <TimeViewerCanvas documents={documents}/>
-      }
-    </div>
+      <div style={{height: "100vh", width: "100vw", display: "flex"}}>
+        <div style={{height: "100%", width: "66%", backgroundColor: "#EEEEEE"}}>
+          <DefaultViewerCanvas documents={documents} scale={30} setClickedDocument={setClickedDocument}/>
+        </div>
+        <div style={{maxHeight: "100%", width: "33%", overflowX: "hidden"}}>
+          {
+            clickedDocument !== null && <DocumentViewer model={model} document={clickedDocument} />
+          }
+        </div>
+      </div>
   );
 }
 

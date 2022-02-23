@@ -17,6 +17,7 @@ const AxisMesh = (props : AxisProps) => {
                 <meshToonMaterial color={"blue"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
                 <Text
+                key={"x" + scaleNumber}
                 scale={[1, 1, 1]}
                 color="black"
                 anchorX="center"
@@ -33,6 +34,7 @@ const AxisMesh = (props : AxisProps) => {
                 <meshToonMaterial color={"red"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
                 <Text
+                key={"y" + scaleNumber}
                 scale={[1, 1, 1]}
                 color="black"
                 anchorX="center"
@@ -49,6 +51,7 @@ const AxisMesh = (props : AxisProps) => {
                 <meshToonMaterial color={"green"}/>
                 {props.showScale && scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
                 <Text
+                key={"z" + scaleNumber}
                 scale={[1, 1, 1]}
                 color="black"
                 anchorX="center"
