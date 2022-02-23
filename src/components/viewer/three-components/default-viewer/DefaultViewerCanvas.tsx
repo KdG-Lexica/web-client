@@ -37,6 +37,11 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
     }, [clickedDocument])
     */
 
+    function resetCamera() {
+        camera.current.position.set(props.scale/2.5, props.scale/2.5, props.scale/2.5);
+        controls.current.target.set(0,0,0);
+    }
+
     return (
         <div style={{height: "100%", width: "100%"}} onMouseMove={(e) => {setMouse({x: e.clientX, y: e.clientY});}}>
             { hoveredDocument !== null && 
