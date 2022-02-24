@@ -46,10 +46,6 @@ export const ThemeProvider = ({ initialTheme, children }: ThemeProviderProps) =>
         localStorage.setItem('color-theme', rawTheme);
     };
 
-    if (initialTheme) {
-        rawSetTheme(initialTheme);
-    }
-
     useEffect(() => {
         rawSetTheme(theme);
     }, [theme])

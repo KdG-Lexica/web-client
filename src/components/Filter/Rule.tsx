@@ -7,6 +7,7 @@ interface RuleProps {
     fields: Array<string>;
     operators: Array<OperatorType>;
     combinators: Array<string>;
+    rule: RuleType;
     handleDelete: (id: string) => void;
     updateFilterRows: (r: RuleType) => void;
     filterItem: FilterItemType;
@@ -17,13 +18,13 @@ interface RuleProps {
 
 
 export const Rule = (props: RuleProps) => {
-    const [value, setvalue] = useState("");
-    const [field, setField] = useState(props.fields[0]);
-    const [operator, setOperator] = useState<OperatorType>(props.operators[0]);
+    const [value, setvalue] = useState(props.rule.value);
+    const [field, setField] = useState(props.rule.field);
+    const [operator, setOperator] = useState<OperatorType>(props.rule.operator);
 
 
     useEffect(() => {
-        props.updateFilterRows({ id: props.id, field: field.toLowerCase(), operator: operator.name.replace(" ", "_").toUpperCase(), value: value } as RuleType);
+        props.updateFilterRows({ id: props.id, field: field.toLowerCase(), operator: props.operators.find((o) => o.name == operator.name), value: value } as RuleType);
     }, [value, field, operator])
 
     const updateOperator = (e: any) => {
