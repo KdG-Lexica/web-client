@@ -52,7 +52,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/viewer" element={<Viewer />} />
+          <Route path="/viewer" element={<Viewer modelId="6213958a1f691c06487cf848" chunkSize={1000}/>}/>
           <Route path="/home" element={<Viewer />} />
           <Route path="/filter" element={
             <Background>
@@ -66,7 +66,7 @@ function App() {
             </Background>
           }
           />
-        </Routes>
+       </Routes>
       </BrowserRouter>
     </QueryClientProvider>
 
