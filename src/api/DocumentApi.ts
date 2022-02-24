@@ -1,4 +1,5 @@
 import axios from "axios";
+import FilterItemType from "../types/FilterItemType";
 
 const api = axios.create({
     baseURL: "https://lexica-api.verhelst.dev"
@@ -9,8 +10,15 @@ export async function getModel(model : string) {
 	return response.data;
 }
 
-export async function getDocuments(model : string, limit : number, offset: number = 0) {
-	const response = await api.post(`/models/${model}/documents?limit=${limit}&offset=${offset}`, {filter : []} );
+export interface GetDocumentsProps {
+	model : string;
+	limit : number;
+	offset : number;
+	filter : FilterItemType[];
+}
+
+export async function getDocuments(props : GetDocumentsProps) {
+	const response = await api.post(`/models/${props.model}/documents?limit=${props.limit}&offset=${props.offset}`, {filter : props.filter} );
 	return response.data;
 }
 

@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Background } from "./components/common/Background";
-import { Filter } from "./components/filter/Filter";
+import { Filter } from "./components/Filter/Filter";
 import Login from "./components/login/Login";
 import { Sidebar } from "./components/viewer/sidebar/Sidebar";
 import Viewer from "./components/viewer/Viewer";
 import './index.css'
 import { ThemeToggle } from "./components/theme/ThemeToggle";
+import FilterItemType from "./types/FilterItemType";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -53,7 +54,6 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/viewer" element={<Viewer modelId="6213958a1f691c06487cf848" chunkSize={1000}/>}/>
-          <Route path="/home" element={<Viewer />} />
           <Route path="/filter" element={
             <Background>
               <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
@@ -62,6 +62,7 @@ function App() {
               <Filter
                 fields={["Title", "Author", "Source"]}
                 operators={operators}
+                executeFilter={(filter : FilterItemType[]) => {}}
               />
             </Background>
           }

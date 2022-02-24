@@ -6,6 +6,7 @@ import { FilterRow } from "./FilterRow";
 interface FilterProps {
     fields: Array<string>;
     operators: Array<OperatorType>;
+    executeFilter: (filter : FilterItemType[]) => void;
 }
 
 export const Filter = (props: FilterProps) => {
@@ -58,7 +59,7 @@ export const Filter = (props: FilterProps) => {
 
     return (
         <>
-            <div className="flex flex-row justify-center items-center h-screen">
+            <div className="flex flex-row justify-center items-start h-screen">
                 <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-blue-900 border-2 p-2">
                     <div className="flex flex-col">
                         <p className="font-sans text-slate-400 font-medium text-lg p-2">In this view, show records</p>
@@ -71,14 +72,17 @@ export const Filter = (props: FilterProps) => {
                                 <p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add filter</p></button>}
 
                         </div>
-                        {filters.length > 0 && <button onClick={() => console.log(filters)} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
+                        {filters.length > 0 && <button type="button" onClick={() => {props.executeFilter(filters)}} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
                             Execute Query
                         </button>}
                     </div >
                 </div>
-                <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
-                    {JSON.stringify(filters, null, 4)}
-                </pre>
+                { /*
+                    <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
+                        {JSON.stringify(filters, null, 4)}
+                    </pre>
+                */
+                } 
             </div>
         </>
     )

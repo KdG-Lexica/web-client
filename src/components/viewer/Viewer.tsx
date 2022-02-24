@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
+import FilterItemType from "../../types/FilterItemType";
 import ModelType from "../../types/ModelType";
+import { Filter } from "../Filter/Filter";
 import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
 
@@ -60,6 +62,17 @@ const words : BasicDocumentType[] = [
   }
 ]
 
+const operators = [
+  {
+    name: "CONTAINS",
+    input: true
+  },
+  {
+    name: "EQUALS",
+    input: true
+  }
+];
+
 interface ViewerProps {
   modelId: string
   chunkSize : number;
@@ -69,23 +82,43 @@ const Viewer = (props : ViewerProps) => {
   const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
   const [model, setModel] = useState<ModelType>({_id: "", collectionName: "", meta: []});
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
+  const [showingFilter, setShowingFilter] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const { mutate } = useMutation(documentApi.getDocuments, {
+    onSuccess: (data: BasicDocumentType[]) => {
+        setDocuments(data);
+        setLoading(false);
+    },
+    onError: (error: any) => {
+        console.log(error);
+    }
+});
 
   const {isLoading} = useQuery(
-    "getData",
+    "getModel",
     async () => {
         try {
           const mod = await documentApi.getModel(props.modelId)
           setModel(mod as unknown as ModelType)
-
-          const docs = await documentApi.getDocuments(props.modelId, 5000);          
-          setDocuments(docs as unknown as BasicDocumentType[]);
         } catch (error) {
             console.log(error)
         }
     }
   );
 
-  if(isLoading) {
+  useEffect(() => {
+    if(!isLoading) {
+      mutate({model : props.modelId, limit : 2000, offset : 0, filter: []});
+    }
+  }, [isLoading])
+
+  function executeFilter(filter : FilterItemType[]) {
+    setLoading(true);
+    mutate({model : props.modelId, limit : 2000, offset : 0, filter: filter});
+  }
+
+  if(loading) {
     return (
       <div>
         Loading
@@ -95,6 +128,17 @@ const Viewer = (props : ViewerProps) => {
 
   return (
       <div style={{height: "100vh", width: "100vw", display: "flex"}}>
+        <div style={{position: "absolute", top: 10, left: 10, height: 32, width: 32, background: "#90caf9",
+              zIndex: 50, borderRadius: 100}} onClick={() => {setShowingFilter(!showingFilter);}}>
+          <img src="/filter.png" alt="home" style={{height: "100%", width: "100%", padding: "20%"}}/>
+        </div>
+        <div style={{position: "absolute", zIndex:100, top: 10, left: 52, display: showingFilter? "block" : "none"}}>
+          <Filter 
+            fields={model.meta.map(metaData => metaData.value)}
+            operators={operators}
+            executeFilter={executeFilter}
+          />
+        </div>
         <div style={{height: "100%", width: "66%", backgroundColor: "#EEEEEE"}}>
           <DefaultViewerCanvas documents={documents} words={words} scale={30} setClickedDocument={setClickedDocument}/>
         </div>

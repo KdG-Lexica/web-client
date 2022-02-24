@@ -45,6 +45,10 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
 
     return (
         <div style={{height: "100%", width: "100%"}}>
+            <div style={{position: "absolute", bottom: 10, left: 10, height: 32, width: 32, background: "#90caf9",
+                    zIndex: 50, borderRadius: 100}} onClick={resetCamera}>
+                <img src="/home.png" alt="home" style={{height: "100%", width: "100%", padding: "20%"}}/>
+            </div>
             <Canvas style={{height: "100%", width: "100%"}}>
                 <ambientLight intensity={0.5} />
                 <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={100} makeDefault/>
