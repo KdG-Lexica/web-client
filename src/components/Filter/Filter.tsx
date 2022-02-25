@@ -1,12 +1,14 @@
 import React, { useState, useEffect, Component } from "react";
 import FilterItemType, { RuleType } from "../../types/FilterItemType";
 import OperatorType from "../../types/OperatorType";
+import QueryFilterDtoType from "../../types/QueryFilterType";
+import RuleDtoType from "../../types/RuleDtoType";
 import { FilterRow } from "./FilterRow";
 
 interface FilterProps {
     fields: Array<string>;
     operators: Array<OperatorType>;
-    executeFilter: (filter : FilterItemType[]) => void;
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
 }
 
 export const Filter = (props: FilterProps) => {
@@ -32,8 +34,6 @@ export const Filter = (props: FilterProps) => {
         const index = filters.findIndex((f) => f.id == filterItem.id);
         newFilters[index] = filterItem;
         if (filterItem.rules !== null && filterItem.rules.length == 0) {
-
-            /* [ "durum", "pizza", "boom", "appel", "kers"]*/
             newFilters = newFilters.filter((f) => f.id !== filterItem.id);
             newFilters = newFilters.filter((f) => f.id !== newFilters[index - 1].id);
         }
@@ -57,6 +57,25 @@ export const Filter = (props: FilterProps) => {
         })
     }
 
+    const filterToDto = (filters: FilterItemType[]): Array<QueryFilterDtoType> => {
+        const arr: Array<QueryFilterDtoType> = [];
+
+        filters.forEach((f) => {
+            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field, operator: r.operator.name, value: r.value })) : null
+            arr.push({
+                combinator: f.combinator,
+                rules: rules
+            })
+        });
+
+        return arr;
+    }
+
+    const postQuery = (filters: FilterItemType[]) => {
+        const arr = filterToDto(filters);
+        props.executeFilter(arr)
+    }
+
     return (
         <>
             <div className="flex flex-row justify-center items-start h-screen">
@@ -72,17 +91,16 @@ export const Filter = (props: FilterProps) => {
                                 <p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add filter</p></button>}
 
                         </div>
-                        {filters.length > 0 && <button type="button" onClick={() => {props.executeFilter(filters)}} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
+                        {filters.length > 0 && <button type="button" onClick={() => { postQuery(filters) }} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
                             Execute Query
                         </button>}
                     </div >
                 </div>
-                { /*
+                {
                     <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
-                        {JSON.stringify(filters, null, 4)}
+                        {JSON.stringify(filterToDto(filters), null, 4)}
                     </pre>
-                */
-                } 
+                }
             </div>
         </>
     )

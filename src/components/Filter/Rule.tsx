@@ -11,7 +11,6 @@ interface RuleProps {
     handleDelete: (id: string) => void;
     updateFilterRows: (r: RuleType) => void;
     filterItem: FilterItemType;
-    amountOfFilterRows: number;
     setCombinator: React.Dispatch<React.SetStateAction<string>>;
     combinator: string;
 }

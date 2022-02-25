@@ -18,7 +18,7 @@ interface FilterRowProps {
 
 export const FilterRow = (props: FilterRowProps) => {
     const [rules, setRules] = useState<RuleType[]>(props.filterItem.rules !== null ? props.filterItem.rules : []);
-    const [combinator, setCombinator] = useState<string>("AND");
+    const [combinator, setCombinator] = useState<string>(props.filterItem.combinator);
 
     useEffect(() => {
         if (props.filterItem.rules !== null)
@@ -59,7 +59,6 @@ export const FilterRow = (props: FilterRowProps) => {
                 filterItem={props.filterItem}
                 fields={props.fields}
                 operators={props.operators}
-                amountOfFilterRows={props.amountOfFilterRows}
                 handleDelete={handleDelete}
                 updateFilterRows={updateFilterRow}
                 setCombinator={setCombinator}
