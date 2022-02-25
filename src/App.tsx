@@ -3,12 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Background } from "./components/common/Background";
 import { Filter } from "./components/filter/Filter";
 import Login from "./components/login/Login";
-import { Sidebar } from "./components/viewer/sidebar/Sidebar";
 import Viewer from "./components/viewer/Viewer";
 import './index.css'
 import { ThemeToggle } from "./components/theme/ThemeToggle";
-import FilterItemType from "./types/FilterItemType";
 import QueryFilterDtoType from "./types/QueryFilterType";
+import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +66,14 @@ function App() {
               />
             </Background>
           }
+          />
+          <Route path="/select-dataset" element={
+            <Background>
+              <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
+                <ThemeToggle />
+              </div>
+              <DatasetSelector />
+            </Background>}
           />
         </Routes>
       </BrowserRouter>

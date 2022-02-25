@@ -1,4 +1,4 @@
-export default interface ModelType {
+export default interface MetaType {
     value: string;
     type: string;
 }
