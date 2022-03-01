@@ -54,7 +54,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/viewer" element={<Viewer modelId="6213958a1f691c06487cf848" chunkSize={1000} />} />
+          <Route path="/viewer" element={
+            <Background>
+              <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
+                <ThemeToggle />
+              </div>
+              <Viewer modelId="1" chunkSize={1000}/>
+            </Background>
+          }>
+          
+          </Route>
           <Route path="/filter" element={
             <Background>
               <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">

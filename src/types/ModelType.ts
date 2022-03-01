@@ -1,7 +1,9 @@
 import MetaType from "./MetaType";
 
 export default interface ModelType {
-    _id: string;
+    id: string;
     collectionName: string;
+    createdAt: Date,
+	updatedAt: Date,
     meta: MetaType[];
 }

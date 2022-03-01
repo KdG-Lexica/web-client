@@ -3,21 +3,24 @@ import BasicDocumentType from "../../types/BasicDocumentType";
 import * as documentApi from "../../api/DocumentApi"
 import { useMutation } from "react-query";
 import ModelType from "../../types/ModelType";
+import DocumentLink from "./DocumentLink";
 
 interface DocumentViewerProps {
     model: ModelType;
-    document: BasicDocumentType;
+    document: BasicDocumentType | null;
+    duration: number;
+    count: number;
 }
 
 const DocumentViewer = (props : DocumentViewerProps) => {
-    const [document, setDocument] = useState<any>();
-    const [isLoading, setIsloading] = useState(true);
+    const [document, setDocument] = useState<any>(null);
+    const [isLoading, setIsloading] = useState(false);
     const [links, setLinks] = useState<string[]>([]);
-    
+
     const { mutate } = useMutation(documentApi.getDocument, {
         onSuccess: (data: any) => {
-            setDocument(data)
-
+            setDocument(data);
+            
             const dataLinks = JSON.stringify(data).match(/(?<=")https?:\/\/[^\"]+/g);
 
             if(dataLinks !== null && dataLinks?.length > 0) {
@@ -34,8 +37,10 @@ const DocumentViewer = (props : DocumentViewerProps) => {
     });
 
     useEffect(() => {
-        setIsloading(true);
-        mutate({model: props.model._id, document: props.document.id})
+        if(props.document !== null) {
+            setIsloading(true);
+            mutate({model: props.model.id, document: props.document.id})
+        }
     }, [props.document])
 
 
@@ -48,34 +53,62 @@ const DocumentViewer = (props : DocumentViewerProps) => {
     }
 
     return (
-      <div style={{paddingLeft: "1rem", paddingRight: "1rem", overflowY: "auto"}}>
-          <h1>{props.document.name}</h1>
-          {links.length > 0 &&
-            <div>
-                <h2>
-                    Document Links
-                </h2>
-                {links.map(link => {
-                    return(
-                        <a key={link} href={link} target="_blank">{link}</a>
-                    )
-                })}
-            </div>
-          }
-          {props.model.meta.map(metaData => {   
-              return (
-                <div key={metaData.value}>
-                    <h2>
-                        {metaData.value}
-                    </h2>
-                    <p>
-                        {metaData.type === "string" && document[metaData.value]} 
-                        {metaData.type === "date" && new Date(document[metaData.value]).toString()} 
-                    </p>
+        <div className="flex flex-col justify-start items-start h-screen p-2 overflow-auto space-y-4">
+            { document !== null ?
+                <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-blue-900 border-2 p-2">
+                    <p className="font-sans text-slate-400 font-medium text-xl p-2">{props.document!.name}</p>
+                      {links.length > 0 &&
+                        <div>
+                            <p className="font-sans text-slate-400 font-medium text-lg p-2">
+                                Document Links
+                            </p>
+                            {links.map(link => {
+                                return (
+                                    <DocumentLink key={link} link={link}/>
+                                )
+                            })}
+                        </div>
+                      }
+                      {props.model.meta.map(metaData => {   
+                          return (
+                            <div key={metaData.key}>
+                                <p className="font-sans text-slate-400 font-medium text-lg p-2">
+                                    {metaData.name}
+                                </p>
+                                <p className="font-sans text-slate-600 dark:text-white font-medium p-2">
+                                    {metaData.type === "string" && document[metaData.key]} 
+                                    {metaData.type === "date" && new Date(document[metaData.key]).toString()} 
+                                </p>
+                            </div>
+                          )
+                      })}
                 </div>
-              )
-          })}
-      </div>
+                :
+                <>
+                    <div className="rounded-lg bg-white dark:bg-slate-900 min-w-full border-solid border-blue-900 border-2 p-2">
+                        <p className="font-sans text-slate-400 font-medium text-xl p-2">Current search</p>
+                        <p className="font-sans text-slate-600 dark:text-white font-medium p-2">
+                            Fetched {props.count} documents in {props.duration}ms.
+                        </p>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-slate-900 min-w-full border-solid border-blue-900 border-2 p-2">
+                        <p className="font-sans text-slate-400 font-medium text-xl p-2">Dataset</p>
+                        <p className="font-sans text-slate-600 dark:text-white font-medium p-2">
+                            Name: {props.model.collectionName}
+                        </p>
+                        <p className="font-sans text-slate-600 dark:text-white font-medium p-2">
+                            Id: {props.model.id}
+                        </p>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-slate-900 min-w-full border-solid border-blue-900 border-2 p-2">
+                        <p className="font-sans text-slate-400 font-medium text-xl p-2">How to navigate</p>
+                        <p className="font-sans text-slate-600 dark:text-white font-medium p-2">
+                            Tutorial
+                        </p>
+                    </div>
+                </> 
+            }
+        </div>
     )
 }
 
