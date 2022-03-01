@@ -1,13 +1,12 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Background } from "./components/common/Background";
 import { Filter } from "./components/filter/Filter";
 import Login from "./components/login/Login";
 import Viewer from "./components/viewer/Viewer";
 import './index.css'
-import { ThemeToggle } from "./components/theme/ThemeToggle";
-import QueryFilterDtoType from "./types/QueryFilterType";
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
+import { MainLayout } from "./components/layouts/MainLayout";
+import { ServerError } from "./components/error/ServerError";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -52,32 +51,26 @@ function App() {
     <QueryClientProvider client={queryGeneralClient} contextSharing={true}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/viewer" element={<Viewer modelId="6213958a1f691c06487cf848" chunkSize={1000} />} />
-          <Route path="/filter" element={
-            <Background>
-              <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
-                <ThemeToggle />
-              </div>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={
+              <DatasetSelector />
+            } />
+            <Route path="/login" element={<Login />} />
+            <Route path="/viewer" element={<Viewer modelId="6213958a1f691c06487cf848" chunkSize={1000} />} />
+            <Route path="/filter" element={
               <Filter
                 fields={["Title", "Author", "Source"]}
                 operators={operators}
-                executeFilter={(filter: QueryFilterDtoType[]) => { }}
+                executeFilter={() => { }}
               />
-            </Background>
-          }
-          />
-          <Route path="/select-dataset" element={
-            <Background>
-              <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
-                <ThemeToggle />
-              </div>
-              <DatasetSelector />
-            </Background>}
-          />
+            }
+            />
+            <Route path="/server-error" element={<ServerError />} />
+          </Route>
+
         </Routes>
       </BrowserRouter>
-    </QueryClientProvider>
+    </QueryClientProvider >
 
   )
 }

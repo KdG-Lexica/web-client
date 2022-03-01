@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { isError, useMutation, useQuery } from "react-query";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
-import FilterItemType from "../../types/FilterItemType";
 import ModelType from "../../types/ModelType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import { Filter } from "../filter/Filter";
 import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
+import useQueryParams from "../../hooks/useQueryParams";
+import { useNavigate } from "react-router-dom";
+
 
 const words: BasicDocumentType[] = [
   {
@@ -81,10 +82,16 @@ interface ViewerProps {
 
 const Viewer = (props: ViewerProps) => {
   const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
-  const [model, setModel] = useState<ModelType>({ _id: "", collectionName: "", meta: [] });
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", meta: [] });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [showingFilter, setShowingFilter] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+
+  const params = useQueryParams();
+  const dataPercentage = params.get("size");
+  const setId = params.get("set");
 
   const { mutate } = useMutation(documentApi.getDocuments, {
     onSuccess: (data: BasicDocumentType[]) => {
@@ -96,17 +103,14 @@ const Viewer = (props: ViewerProps) => {
     }
   });
 
-  const { isLoading } = useQuery(
-    "getModel",
-    async () => {
-      try {
-        const mod = await documentApi.getModel(props.modelId)
-        setModel(mod as unknown as ModelType)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  );
+  const getModel = async (id: string) => {
+    const mod = await documentApi.getModel(id)
+    setModel(mod as unknown as ModelType)
+  }
+
+  const { isLoading, isError } = useQuery("getModel", () => getModel(props.modelId));
+
+
 
   useEffect(() => {
     if (!isLoading) {
@@ -117,6 +121,10 @@ const Viewer = (props: ViewerProps) => {
   function executeFilter(filter: QueryFilterDtoType[]) {
     setLoading(true);
     mutate({ model: props.modelId, limit: 2000, offset: 0, filter: filter });
+  }
+
+  if (isError) {
+    navigate("/server-error")
   }
 
   if (loading) {

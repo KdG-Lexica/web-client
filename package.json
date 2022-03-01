@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.4.2",
     "@mui/icons-material": "^5.4.1",
     "@mui/material": "^5.4.1",
     "@react-three/drei": "^8.8.4",
