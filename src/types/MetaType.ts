@@ -1,4 +1,7 @@
-export default interface ModelType {
-    value: string;
-    type: string;
+export default interface MetaType {
+    id: string,
+    VectorModelId: string,
+    key: string,
+    type: string,
+    name: string
 }

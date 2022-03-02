@@ -4,7 +4,6 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 
 export const ThemeToggle = () => {
     const { theme, setTheme } = useContext(ThemeContext);
-    console.log(theme);
 
     return (
         <div className="transition duration-500 ease-in-out rounded-full p-2">

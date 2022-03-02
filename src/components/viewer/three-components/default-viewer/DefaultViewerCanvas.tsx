@@ -1,3 +1,4 @@
+import zIndex from "@mui/material/styles/zIndex";
 import { Billboard, OrbitControls, Text, PerspectiveCamera } from "@react-three/drei";
 import { Camera, Canvas } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
@@ -15,8 +16,10 @@ interface DefaultViewerCanvasProps {
     setClickedDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
-const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
+const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {    
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
+    const [showScale, setShowScale] = useState(false);
+    const [showAxis, setShowAxis] = useState(true);
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
     const controls = useRef<any>();
 
@@ -44,33 +47,46 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
     }
 
     return (
-        <div style={{height: "100%", width: "100%"}}>
-            <div style={{position: "absolute", bottom: 10, left: 10, height: 32, width: 32, background: "#90caf9",
-                    zIndex: 50, borderRadius: 100}} onClick={resetCamera}>
-                <img src="/home.png" alt="home" style={{height: "100%", width: "100%", padding: "20%"}}/>
-            </div>
-            <Canvas style={{height: "100%", width: "100%"}}>
-                <ambientLight intensity={0.5} />
-                <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={100} makeDefault/>
-                <OrbitControls ref={controls} enablePan={true} target={[0,0,0]}/>
+        <div className="min-w-full min-h-screen p-2 flex flex items-stretch">
+            <div className="rounded-lg bg-white dark:bg-slate-900 min-w-full min-h-full border-solid border-blue-900 border-2">
+                <div style={{position: "absolute", bottom: 20, left: 20, height: 34, zIndex:50}}>
+                    <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
+                        <div className="max-h-9 rounded-full bg-blue-900" onClick={resetCamera}>
+                            <img src="/home.png" alt="home" style={{height: 34, width: 34}}/>
+                        </div>
+                        <div className="max-h-9 rounded-full bg-blue-900" onClick={() => {setShowAxis(!showAxis)}}>
+                            <img src="/home.png" alt="home" style={{height: 34, width: 34}}/>
+                        </div>
+                        <div className="max-h-9 rounded-full bg-blue-900" onClick={() => {setShowScale(!showScale)}}>
+                            <img src="/home.png" alt="home" style={{height: 34, width: 34}}/>
+                        </div>
+                    </div>
+                </div>
+                <Canvas style={{width: "100%", height: "100%"}}>
+                    <ambientLight intensity={0.5} />
+                    <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={100} makeDefault/>
+                    <OrbitControls ref={controls} enablePan={true} target={[0,0,0]}/>
 
-                <AxisMesh showScale={true} scale={props.scale}/>
-                <InstancedDocumentMesh 
-                    documents={props.documents} 
-                    setHoveredDocument={setHoveredDocument}
-                    setClickedDocument={props.setClickedDocument}/>
-                <InstancedWordMesh
-                    documents={props.words}
-                    setHoveredDocument={setHoveredDocument}/>
-                
-                {hoveredDocument != null && 
-                    <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>
-                        <Text color="black" fontSize={0.1} outlineWidth={'5%'} outlineColor="white">
-                            {hoveredDocument.name}
-                        </Text>
-                    </Billboard>
-                }
-            </Canvas>
+                    {showAxis && 
+                        <AxisMesh showScale={showScale} scale={props.scale}/>
+                    }
+                    <InstancedDocumentMesh 
+                        documents={props.documents} 
+                        setHoveredDocument={setHoveredDocument}
+                        setClickedDocument={props.setClickedDocument}/>
+                    <InstancedWordMesh
+                        documents={props.words}
+                        setHoveredDocument={setHoveredDocument}/>
+
+                    {hoveredDocument != null && 
+                        <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>
+                            <Text color="black" fontSize={0.1} outlineWidth={'5%'} outlineColor="white">
+                                {hoveredDocument.name}
+                            </Text>
+                        </Billboard>
+                    }
+                </Canvas>
+            </div>
         </div>
     );
 }

@@ -1,67 +1,16 @@
+import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
+import DatasetType from "../../types/DatasetType";
 import FilterItemType from "../../types/FilterItemType";
 import ModelType from "../../types/ModelType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import { Filter } from "../filter/Filter";
 import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
-
-const words: BasicDocumentType[] = [
-  {
-    id: "1",
-    name: "1",
-    date: new Date(),
-    vector3: {
-      x: 1,
-      y: 1,
-      z: 1
-    }
-  },
-  {
-    id: "2",
-    name: "2",
-    date: new Date(),
-    vector3: {
-      x: 2,
-      y: 2,
-      z: 2
-    }
-  },
-  {
-    id: "3",
-    name: "3",
-    date: new Date(),
-    vector3: {
-      x: 3,
-      y: 3,
-      z: 3
-    }
-  },
-  {
-    id: "4",
-    name: "4",
-    date: new Date(),
-    vector3: {
-      x: 4,
-      y: 4,
-      z: 4
-    }
-  },
-  {
-    id: "5",
-    name: "5",
-    date: new Date(),
-    vector3: {
-      x: 5,
-      y: 5,
-      z: 5
-    }
-  }
-]
 
 const operators = [
   {
@@ -80,15 +29,15 @@ interface ViewerProps {
 }
 
 const Viewer = (props: ViewerProps) => {
-  const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
-  const [model, setModel] = useState<ModelType>({ _id: "", collectionName: "", meta: [] });
+  const [dataset, setDataset] = useState<DatasetType>({count: 0, rows: [], duration: 0});
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [] });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [showingFilter, setShowingFilter] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const { mutate } = useMutation(documentApi.getDocuments, {
-    onSuccess: (data: BasicDocumentType[]) => {
-      setDocuments(data);
+    onSuccess: (data: DatasetType) => {     
+      setDataset(data);
       setLoading(false);
     },
     onError: (error: any) => {
@@ -137,18 +86,17 @@ const Viewer = (props: ViewerProps) => {
       </div>
       <div style={{ position: "absolute", zIndex: 100, top: 10, left: 52, display: showingFilter ? "block" : "none" }}>
         <Filter
-          fields={model.meta.map(metaData => metaData.value)}
+          fields={model.meta.map(metaData => metaData.key)}
           operators={operators}
           executeFilter={executeFilter}
         />
       </div>
-      <div style={{ height: "100%", width: "66%", backgroundColor: "#EEEEEE" }}>
-        <DefaultViewerCanvas documents={documents} words={words} scale={30} setClickedDocument={setClickedDocument} />
+      <div style={{ height: "100%", width: "66%"}}>
+        <DefaultViewerCanvas documents={dataset.rows} words={[]} scale={30} setClickedDocument={setClickedDocument} />
       </div>
-      <div style={{ maxHeight: "100%", width: "33%", overflowX: "hidden" }}>
-        {
-          clickedDocument !== null && <DocumentViewer model={model} document={clickedDocument} />
-        }
+      <div style={{ maxHeight: "100%", width: "33%"}}>
+        <DocumentViewer model={model}
+            document={clickedDocument} duration={dataset.duration} count={dataset.count}/>
       </div>
     </div>
   );
