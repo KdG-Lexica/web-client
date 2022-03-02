@@ -1,4 +1,7 @@
 export default interface MetaType {
-    value: string;
-    type: string;
+    id: string,
+    VectorModelId: string,
+    key: string,
+    type: string,
+    name: string
 }

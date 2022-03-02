@@ -19,10 +19,6 @@ export const DatasetSelector = () => {
 
     const getModels = async () => {
         let data = await documentApi.getModels();
-        console.log(data);
-
-        /* mock data */
-        data = [...data, { id: "999", collectionName: "The Bible", meta: [] } as ModelType];
         setModels(data);
     };
 

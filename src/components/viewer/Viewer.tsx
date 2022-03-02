@@ -82,7 +82,7 @@ interface ViewerProps {
 
 const Viewer = (props: ViewerProps) => {
   const [documents, setDocuments] = useState<BasicDocumentType[]>([]);
-  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", meta: [] });
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", meta: [], updatedAt: new Date(), createdAt: new Date() });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [showingFilter, setShowingFilter] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -145,7 +145,7 @@ const Viewer = (props: ViewerProps) => {
       </div>
       <div style={{ position: "absolute", zIndex: 100, top: 10, left: 52, display: showingFilter ? "block" : "none" }}>
         <Filter
-          fields={model.meta.map(metaData => metaData.value)}
+          fields={model.meta.map(metaData => metaData.key)}
           operators={operators}
           executeFilter={executeFilter}
         />
