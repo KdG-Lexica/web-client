@@ -11,6 +11,11 @@ export async function getModel(model: string) {
 	return response.data;
 }
 
+export async function getModels() {
+	const response = await api.get("/models");
+	return response.data;
+}
+
 export interface GetDocumentsProps {
 	model: string;
 	limit: number;

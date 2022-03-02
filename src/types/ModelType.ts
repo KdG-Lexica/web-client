@@ -6,4 +6,6 @@ export default interface ModelType {
     createdAt: Date,
 	updatedAt: Date,
     meta: MetaType[];
+    createdAt: Date,
+    updatedAt: Date,
 }

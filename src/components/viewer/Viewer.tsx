@@ -11,6 +11,9 @@ import QueryFilterDtoType from "../../types/QueryFilterType";
 import { Filter } from "../filter/Filter";
 import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
+import useQueryParams from "../../hooks/useQueryParams";
+import { useNavigate } from "react-router-dom";
+
 
 const operators = [
   {
@@ -34,6 +37,12 @@ const Viewer = (props: ViewerProps) => {
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [showingFilter, setShowingFilter] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+
+  const params = useQueryParams();
+  const dataPercentage = params.get("size");
+  const setId = params.get("set");
 
   const { mutate } = useMutation(documentApi.getDocuments, {
     onSuccess: (data: DatasetType) => {     
@@ -45,17 +54,14 @@ const Viewer = (props: ViewerProps) => {
     }
   });
 
-  const { isLoading } = useQuery(
-    "getModel",
-    async () => {
-      try {
-        const mod = await documentApi.getModel(props.modelId)
-        setModel(mod as unknown as ModelType)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  );
+  const getModel = async (id: string) => {
+    const mod = await documentApi.getModel(id)
+    setModel(mod as unknown as ModelType)
+  }
+
+  const { isLoading, isError } = useQuery("getModel", () => getModel(props.modelId));
+
+
 
   useEffect(() => {
     if (!isLoading) {
@@ -66,6 +72,10 @@ const Viewer = (props: ViewerProps) => {
   function executeFilter(filter: QueryFilterDtoType[]) {
     setLoading(true);
     mutate({ model: props.modelId, limit: 2000, offset: 0, filter: filter });
+  }
+
+  if (isError) {
+    navigate("/server-error")
   }
 
   if (loading) {
