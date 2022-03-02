@@ -96,11 +96,11 @@ export const Filter = (props: FilterProps) => {
                         </button>}
                     </div >
                 </div>
-                {
+                { /*
                     <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
                         {JSON.stringify(filterToDto(filters), null, 4)}
                     </pre>
-                }
+                */ }
             </div>
         </>
     )
