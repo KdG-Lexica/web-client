@@ -20,8 +20,27 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
     const [showScale, setShowScale] = useState(false);
     const [showAxis, setShowAxis] = useState(true);
+    const [isDarkTheme, setIsDarkTheme] = useState(true);
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
     const controls = useRef<any>();
+
+    useEffect(() => {
+
+        function checkTheme() {
+            const theme = localStorage.getItem('color-theme');
+            if (theme === "dark") {
+                setIsDarkTheme(true);
+            } else {
+                setIsDarkTheme(false);
+            }
+        }
+
+        checkTheme();
+
+        window.addEventListener("storage", (event) => {           
+            checkTheme();
+          });
+    }, [])
 
     /*
     useEffect(() => {
@@ -62,7 +81,7 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
                         </div>
                     </div>
                 </div>
-                <Canvas style={{width: "100%", height: "100%"}}>
+                <Canvas style={{width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : ""}}>
                     <ambientLight intensity={0.5} />
                     <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={100} makeDefault/>
                     <OrbitControls ref={controls} enablePan={true} target={[0,0,0]}/>

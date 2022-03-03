@@ -43,6 +43,7 @@ export const ThemeProvider = ({ initialTheme, children }: ThemeProviderProps) =>
         root.classList.add(rawTheme);
 
         localStorage.setItem('color-theme', rawTheme);
+        window.dispatchEvent(new Event('storage'))
     };
 
     useEffect(() => {
