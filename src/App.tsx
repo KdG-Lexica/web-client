@@ -7,6 +7,7 @@ import './index.css'
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
+import ModelEditor from "./components/model/ModelEditor";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +58,7 @@ function App() {
             } />
             <Route path="/login" element={<Login />} />
             <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
+            <Route path="/modeleditor" element={<ModelEditor/>} />
             <Route path="/filter" element={
               <Filter
                 fields={["Title", "Author", "Source"]}

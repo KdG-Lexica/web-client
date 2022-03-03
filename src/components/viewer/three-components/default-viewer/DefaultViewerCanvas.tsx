@@ -83,7 +83,7 @@ const DefaultViewerCanvas = (props : DefaultViewerCanvasProps) => {
                 </div>
                 <Canvas style={{width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : ""}}>
                     <ambientLight intensity={0.5} />
-                    <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={100} makeDefault/>
+                    <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={50} makeDefault/>
                     <OrbitControls ref={controls} enablePan={true} target={[0,0,0]}/>
 
                     {showAxis && 

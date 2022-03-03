@@ -39,3 +39,8 @@ export async function getDocument(props: GetDocumentProps) {
 	const response = await api.get(`/models/${props.model}/documents/${props.document}`);
 	return response.data;
 }
+
+export async function createModel(body: string) {
+	const response = await api.post(`/models`, body);
+	return response.data;
+}
