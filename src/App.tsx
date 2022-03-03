@@ -7,6 +7,7 @@ import './index.css'
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
+import { ViewerLayout } from "./components/layouts/ViewerLayout";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -52,22 +53,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path="/" element={
-              <DatasetSelector />
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
-            <Route path="/filter" element={
-              <Filter
-                fields={["Title", "Author", "Source"]}
-                operators={operators}
-                executeFilter={() => { }}
-              />
-            }
-            />
+            <Route path="/" element={<DatasetSelector />} />
             <Route path="/server-error" element={<ServerError />} />
           </Route>
-
+          <Route element={<ViewerLayout />}>
+            <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider >
