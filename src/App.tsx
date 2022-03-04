@@ -63,7 +63,7 @@ function App() {
             <Route path="/modeleditor" element={<ModelEditor/>} />
           </Route>
           <Route element={<ViewerLayout />}>
-            <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
+            <Route path="/viewer" element={<Viewer/>} />
           </Route>
         </Routes>
       </BrowserRouter>

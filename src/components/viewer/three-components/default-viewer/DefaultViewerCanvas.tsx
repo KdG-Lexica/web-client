@@ -68,7 +68,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     return (
         <div className="p-2 w-full h-full" style={{ minHeight: "calc(100vh - 80px)" }}>
             <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full">
-                <div>
+                <div className="absolute z-50">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
                         <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

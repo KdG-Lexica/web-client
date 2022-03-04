@@ -14,19 +14,12 @@ import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewer
 import useQueryParams from "../../hooks/useQueryParams";
 import { useNavigate } from "react-router-dom";
 
-
-interface ViewerProps {
-  modelId: string
-  chunkSize: number;
-}
-
-const Viewer = (props: ViewerProps) => {
+const Viewer = () => {
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, rows: [], duration: 0 });
   const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [] });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
 
   const params = useQueryParams();
   const dataPercentage = params.get("size");
@@ -45,7 +38,7 @@ const Viewer = (props: ViewerProps) => {
 
   function executeFilter(filter: QueryFilterDtoType[]) {
     setLoading(true);
-    mutate({ model: props.modelId, limit: 2000, offset: 0, filter: filter });
+    mutate({ model: setId!, limit: parseFloat(dataPercentage!) * 100000, offset: 0, filter: filter });
   }
 
   const getModel = async (id: string) => {
@@ -53,13 +46,13 @@ const Viewer = (props: ViewerProps) => {
     setModel(mod as unknown as ModelType)
   }
 
-  const { isLoading, isError } = useQuery("getModel", () => getModel(props.modelId));
+  const { isLoading, isError } = useQuery("getModel", () => getModel(setId!));
 
 
 
   useEffect(() => {
     if (!isLoading) {
-      mutate({ model: props.modelId, limit: 2000, offset: 0, filter: [] });
+      mutate({ model: setId!, limit: parseFloat(dataPercentage!) * 100000, offset: 0, filter: [] });
     }
   }, [isLoading])
 
