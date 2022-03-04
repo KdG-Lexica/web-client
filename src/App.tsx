@@ -7,6 +7,9 @@ import './index.css'
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
+import { ViewerLayout } from "./components/layouts/ViewerLayout";
+import { Tutorial } from "./components/viewer/tutorial/Tutorial";
+import { About } from "./components/viewer/about/About";
 import ModelEditor from "./components/model/ModelEditor";
 
 const queryGeneralClient = new QueryClient({
@@ -53,23 +56,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path="/" element={
-              <DatasetSelector />
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
-            <Route path="/modeleditor" element={<ModelEditor/>} />
-            <Route path="/filter" element={
-              <Filter
-                fields={["Title", "Author", "Source"]}
-                operators={operators}
-                executeFilter={() => { }}
-              />
-            }
-            />
+            <Route path="/" element={<DatasetSelector />} />
+            <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/about" element={<About />} />
             <Route path="/server-error" element={<ServerError />} />
+            <Route path="/modeleditor" element={<ModelEditor/>} />
           </Route>
-
+          <Route element={<ViewerLayout />}>
+            <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider >
