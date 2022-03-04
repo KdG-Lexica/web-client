@@ -10,6 +10,7 @@ import { ServerError } from "./components/error/ServerError";
 import { ViewerLayout } from "./components/layouts/ViewerLayout";
 import { Tutorial } from "./components/viewer/tutorial/Tutorial";
 import { About } from "./components/viewer/about/About";
+import ModelEditor from "./components/model/ModelEditor";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -58,10 +59,11 @@ function App() {
             <Route path="/" element={<DatasetSelector />} />
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/about" element={<About />} />
+            <Route path="/server-error" element={<ServerError />} />
+            <Route path="/modeleditor" element={<ModelEditor/>} />
           </Route>
           <Route element={<ViewerLayout />}>
             <Route path="/viewer" element={<Viewer modelId="1" chunkSize={1000} />} />
-            <Route path="/server-error" element={<ServerError />} />
           </Route>
         </Routes>
       </BrowserRouter>
