@@ -90,7 +90,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                             </svg>
                         </button>
-                        <div style={{ position: "absolute", left: "450px", top: "95px", zIndex: 999, display: showingFilter ? "block" : "none" }}>
+                        <div style={{ position: "absolute", left: "120px", top: "45px", zIndex: 999, display: showingFilter ? "block" : "none" }}>
                             <Filter
                                 fields={props.filterFields.map(metaData => metaData.key)}
                                 operators={operators}

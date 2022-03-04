@@ -37,6 +37,7 @@ const Viewer = () => {
 
 
   function executeFilter(filter: QueryFilterDtoType[]) {
+    setClickedDocument(null);
     setLoading(true);
     mutate({ model: setId!, limit: parseFloat(dataPercentage!) * 100000, offset: 0, filter: filter });
   }
