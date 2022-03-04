@@ -88,22 +88,22 @@ const DocumentViewer = (props: DocumentViewerProps) => {
                 </div>
                 :
                 <>
-                    <div className="bg-slate-100 dark:bg-slate-900 min-w-full p-2">
+                    <div className="rounded bg-slate-100 dark:bg-slate-800 min-w-full p-2">
                         <p className="font-sans dark:text-white black:text-black font-medium text-xl p-2">Current search</p>
                         <p className="font-sans text-slate-600 dark:text-slate-400 p-2">
                             Fetched {props.count} documents in {props.duration}ms.
                         </p>
                     </div>
-                    <div className="bg-slate-100 dark:bg-slate-900 min-w-full p-2">
+                    <div className="rounded bg-slate-100 dark:bg-slate-800 min-w-full p-2">
                         <p className="font-sans dark:text-white black:text-black font-medium text-xl p-2">Dataset</p>
                         <p className="font-sans text-slate-600 dark:text-slate-400 p-2">
                             Name: {props.model.collectionName}
                         </p>
-                        <p className="font-sans text-slate-600 dark:text-slate-400 p-2">
+                        <p className="font-sans text-slate-800 dark:text-slate-400 p-2">
                             Id: {props.model.id}
                         </p>
                     </div>
-                    <div className="bg-slate-100 dark:bg-slate-900 min-w-full p-2">
+                    <div className="rounded bg-slate-100 dark:bg-slate-800 min-w-full p-2">
                         <p className="font-sans dark:text-white black:text-black font-medium text-xl p-2">How to navigate</p>
                         <p className="font-sans text-slate-600 dark:text-slate-400 p-2">
                             Tutorial
