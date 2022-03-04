@@ -1,13 +1,16 @@
-import ThemeToggle from "../theme/ThemeToggle";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
+import ThemeToggle from "../theme/ThemeToggle"
+import { Appbar } from "../viewer/appbar/Appbar"
+import { Sidebar } from "../viewer/sidebar/Sidebar"
 
 export const MainLayout = () => {
     return (
-        <div className="bg-slate-200 dark:bg-zinc-900 h-screen">
-            <div className="absolute right-0 top-0 mr-4 mt-4 md:mr-6 md:mt-6">
-                <ThemeToggle />
+        <div className="bg-slate-200 dark:bg-zinc-900 h-screen flex flex-col">
+            <Appbar />
+            <div className="flex flex-row grow">
+                <div className="grow h-full">
+                    <Outlet />
+                </div>
             </div>
-            <Outlet />
-        </div>
-    )
+        </div>)
 }

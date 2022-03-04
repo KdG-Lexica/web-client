@@ -1,19 +1,36 @@
-import zIndex from "@mui/material/styles/zIndex";
 import { Billboard, OrbitControls, Text, PerspectiveCamera } from "@react-three/drei";
 import { Camera, Canvas } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
-import CoordinateType from "../../../../types/CoordinateType";
+import MetaType from "../../../../types/MetaType";
+import QueryFilterDtoType from "../../../../types/QueryFilterType";
+import { Filter } from "../../../filter/Filter";
 import AxisMesh from "./AxisMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
 import InstancedWordMesh from "./InstancedWordMesh";
+
+
+
+const operators = [
+    {
+        name: "CONTAINS",
+        input: true
+    },
+    {
+        name: "EQUALS",
+        input: true
+    }
+];
+
 
 interface DefaultViewerCanvasProps {
     documents: BasicDocumentType[];
     words: BasicDocumentType[];
     scale: number;
     setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
+    filterFields: MetaType[];
 }
 
 const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
@@ -22,6 +39,13 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [showAxis, setShowAxis] = useState(true);
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
     const controls = useRef<any>();
+    const [showingFilter, setShowingFilter] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+
+
+
+
 
     /*
     useEffect(() => {
@@ -48,7 +72,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
 
     return (
         <div className="p-2 w-full h-full" style={{ minHeight: "calc(100vh - 80px)" }}>
-            <div className="flex flex-row bg-slate-100 dark:bg-slate-900 h-full">
+            <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full">
                 <div>
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
                         <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
@@ -66,6 +90,18 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                             </svg>
                         </button>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowingFilter(!showingFilter); }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            </svg>
+                        </button>
+                        <div style={{ position: "absolute", left: "450px", top: "95px", zIndex: 999, display: showingFilter ? "block" : "none" }}>
+                            <Filter
+                                fields={props.filterFields.map(metaData => metaData.key)}
+                                operators={operators}
+                                executeFilter={props.executeFilter}
+                            />
+                        </div>
                     </div>
                 </div>
                 <Canvas>
@@ -93,7 +129,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                     }
                 </Canvas>
             </div>
-        </div>
+        </div >
     );
 }
 
