@@ -43,13 +43,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [showingFilter, setShowingFilter] = useState(false);
     const [loading, setLoading] = useState(true);
 
-
-
-
-
-
     useEffect(() => {
-
         function checkTheme() {
             const theme = localStorage.getItem('color-theme');
             if (theme === "dark") {
@@ -61,28 +55,10 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
 
         checkTheme();
 
-        window.addEventListener("storage", (event) => {           
+        window.addEventListener("storage", (event) => {
             checkTheme();
-          });
+        });
     }, [])
-
-    /*
-    useEffect(() => {
-        if (clickedDocument !== null) {
-            controls.current.target.set(
-                parseFloat(`${clickedDocument.vector3.x}`), 
-                parseFloat(`${clickedDocument.vector3.y}`), 
-                parseFloat(`${clickedDocument.vector3.z}`)
-                );
-            
-            camera.current.position.set(
-                parseFloat(`${clickedDocument.vector3.x}`) + 0.1, 
-                parseFloat(`${clickedDocument.vector3.y}`) + 0.1, 
-                parseFloat(`${clickedDocument.vector3.z}`) + 0.1
-            );
-        }
-    }, [clickedDocument])
-    */
 
     function resetCamera() {
         camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
@@ -123,10 +99,10 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         </div>
                     </div>
                 </div>
-                <Canvas style={{width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : ""}}>
+                <Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
                     <ambientLight intensity={0.5} />
-                    <PerspectiveCamera ref={camera} position={[props.scale/2.5, props.scale/2.5, props.scale/2.5]} fov={50} makeDefault/>
-                    <OrbitControls ref={controls} enablePan={true} target={[0,0,0]}/>
+                    <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
+                    <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} />
 
                     {showAxis &&
                         <AxisMesh showScale={showScale} scale={props.scale} />

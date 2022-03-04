@@ -12,6 +12,7 @@ interface DocumentViewerProps {
     count: number;
 }
 
+
 const DocumentViewer = (props: DocumentViewerProps) => {
     const [document, setDocument] = useState<any>(null);
     const [isLoading, setIsloading] = useState(false);
@@ -46,9 +47,11 @@ const DocumentViewer = (props: DocumentViewerProps) => {
 
     if (isLoading) {
         return (
-            <div>
-                Loading
-            </div>
+            <p className="text-black font-medium dark:text-white">
+                <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+                </svg>
+                Procesing...
+            </p>
         )
     }
 
