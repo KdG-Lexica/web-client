@@ -44,3 +44,8 @@ export async function createModel(body: string) {
 	const response = await api.post(`/models`, body);
 	return response.data;
 }
+
+export async function getCosineDistanceDocuments(model: string, range: number, documentId: string) {
+	const response = await api.get(`/models/${model}/documents/cosine?rangeFactor=${range}&document=${documentId}`)
+	return response.data;
+}

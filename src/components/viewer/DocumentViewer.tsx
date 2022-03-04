@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BasicDocumentType from "../../types/BasicDocumentType";
 import * as documentApi from "../../api/DocumentApi"
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import ModelType from "../../types/ModelType";
 import DocumentLink from "./DocumentLink";
+import { CosineDocuments } from "./CosineDocuments";
 
 interface DocumentViewerProps {
     model: ModelType;
@@ -17,6 +18,7 @@ const DocumentViewer = (props: DocumentViewerProps) => {
     const [document, setDocument] = useState<any>(null);
     const [isLoading, setIsloading] = useState(false);
     const [links, setLinks] = useState<string[]>([]);
+
 
     const { mutate } = useMutation(documentApi.getDocument, {
         onSuccess: (data: any) => {
@@ -45,12 +47,13 @@ const DocumentViewer = (props: DocumentViewerProps) => {
     }, [props.document])
 
 
+
     if (isLoading) {
         return (
             <p className="text-black font-medium dark:text-white">
                 <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
                 </svg>
-                Procesing...
+                Searching...
             </p>
         )
     }
@@ -85,6 +88,7 @@ const DocumentViewer = (props: DocumentViewerProps) => {
                             </div>
                         )
                     })}
+                    <CosineDocuments modelId={props.model.id} documentId={props.document?.id!!} range={0.4} key={props.model.id} />
                 </div>
                 :
                 <>

@@ -78,7 +78,7 @@ export const Filter = (props: FilterProps) => {
 
     return (
         <>
-            <div className="flex flex-row justify-center items-start h-screen">
+            <div className="flex flex-row justify-center items-start min-w-1/4">
                 <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 max-w-1/4 border-solid border-slate-200 dark:border-slate-800 border-2 p-2">
                     <div className="flex flex-col">
                         <p className="font-sans text-slate-400 font-medium text-lg p-2">In this view, show records</p>

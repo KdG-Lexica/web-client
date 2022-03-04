@@ -74,25 +74,13 @@ const Viewer = () => {
 
   return (
     <>
-
       <div className="flex flex-row h-full w-full">
         <DefaultViewerCanvas documents={dataset.rows} words={[]} scale={30} setClickedDocument={setClickedDocument} executeFilter={executeFilter} filterFields={model.meta} />
-        <div className="w-1/3">
+        <div className="w-1/3 overflow-hidden">
           <DocumentViewer model={model}
             document={clickedDocument} duration={dataset.duration} count={dataset.count} />
-
         </div>
       </div>
-
-      {/*
-        <div style={{ height: "100%", width: "66%" }}>
-          <DefaultViewerCanvas documents={dataset.rows} words={[]} scale={30} setClickedDocument={setClickedDocument} />
-        </div>
-        <div style={{ maxHeight: "100%", width: "33%" }}>
-          <DocumentViewer model={model}
-            document={clickedDocument} duration={dataset.duration} count={dataset.count} />
-        </div>
-      </div> */}
     </>
 
   );
