@@ -59,7 +59,7 @@ const DocumentViewer = (props: DocumentViewerProps) => {
     }
 
     return (
-        <div className="flex flex-col justify-start items-start h-full p-2 overflow-auto space-y-4">
+        <div className="flex flex-col justify-start items-start h-full p-2 overflow-auto space-y-4" style={{ maxHeight: "calc(100vh - 80px)" }}>
             {document !== null ?
                 <div className="bg-slate-100 dark:bg-neutral-900 min-w-1/4 max-w-1/4 p-2">
                     <p className="font-sans text-black dark:text-white font-medium text-xl p-2">{props.document!.name}</p>

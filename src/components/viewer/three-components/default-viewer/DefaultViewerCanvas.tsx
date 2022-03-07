@@ -66,7 +66,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }
 
     return (
-        <div className="p-2 w-full h-full" style={{ minHeight: "calc(100vh - 80px)" }}>
+        <div className="p-2 w-full h-full" style={{ maxHeight: "calc(100vh - 80px)" }}>
             <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full">
                 <div className="absolute z-50">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
