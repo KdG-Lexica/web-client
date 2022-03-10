@@ -1,14 +1,11 @@
 import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi"
 import BasicDocumentType from "../../types/BasicDocumentType";
 import DatasetType from "../../types/DatasetType";
-import FilterItemType from "../../types/FilterItemType";
 import ModelType from "../../types/ModelType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
-import { Filter } from "../filter/Filter";
 import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
 import useQueryParams from "../../hooks/useQueryParams";

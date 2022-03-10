@@ -1,13 +1,14 @@
 import React, { useState, useEffect, Component } from "react";
 import FilterItemType, { RuleType } from "../../types/FilterItemType";
+import MetaType from "../../types/MetaType";
 import OperatorType from "../../types/OperatorType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import RuleDtoType from "../../types/RuleDtoType";
 import { FilterRow } from "./FilterRow";
 
 interface FilterProps {
-    fields: Array<string>;
-    operators: Array<OperatorType>;
+    fields: MetaType[];
+    operators: OperatorType[];
     executeFilter: (filter: QueryFilterDtoType[]) => void;
 }
 
@@ -59,15 +60,13 @@ export const Filter = (props: FilterProps) => {
 
     const filterToDto = (filters: FilterItemType[]): Array<QueryFilterDtoType> => {
         const arr: Array<QueryFilterDtoType> = [];
-
         filters.forEach((f) => {
-            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field, operator: r.operator.name, value: r.value })) : null
+            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field.key, operator: r.operator.name, value: r.value })) : null
             arr.push({
                 combinator: f.combinator,
                 rules: rules
             })
         });
-
         return arr;
     }
 
@@ -84,7 +83,7 @@ export const Filter = (props: FilterProps) => {
                         <p className="font-sans text-slate-400 font-medium text-lg p-2 w-96">In this view, show records</p>
                         <div>{filters.length > 0 && drawFilters()}</div>
                         <div className="flex flex-row">
-                            {filters.length < 4 && <button className="flex flex-row items-center" onClick={() => addFilterItem()}><svg style={{ height: 30, width: 30 }}
+                            {filters.length < 2 && <button className="flex flex-row items-center" onClick={() => addFilterItem()}><svg style={{ height: 30, width: 30 }}
                                 xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
@@ -96,11 +95,9 @@ export const Filter = (props: FilterProps) => {
                         </button>}
                     </div >
                 </div>
-                { /*
-                    <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
-                        {JSON.stringify(filterToDto(filters), null, 4)}
-                    </pre>
-                */ }
+                <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
+                    {JSON.stringify(filterToDto(filters), null, 4)}
+                </pre>
             </div>
         </>
     )
