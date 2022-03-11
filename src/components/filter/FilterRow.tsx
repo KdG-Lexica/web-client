@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
 import FilterItemType, { RuleType } from "../../types/FilterItemType"
+import MetaType from "../../types/MetaType";
 import OperatorType from "../../types/OperatorType";
 import { Rule } from "./Rule";
 
 
 interface FilterRowProps {
     id: string;
-    fields: Array<string>;
-    operators: Array<OperatorType>;
-    combinators: Array<string>;
+    fields: MetaType[];
+    operators: OperatorType[];
+    combinators: string[];
     updateFilters: (f: FilterItemType) => void;
     setFilters: React.Dispatch<React.SetStateAction<FilterItemType[]>>;
     filterItem: FilterItemType;
