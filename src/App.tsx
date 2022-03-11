@@ -1,7 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Filter } from "./components/filter/Filter";
-import Login from "./components/login/Login";
 import Viewer from "./components/viewer/Viewer";
 import './index.css'
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
@@ -23,34 +21,6 @@ const queryGeneralClient = new QueryClient({
 });
 
 function App() {
-  const operators = [
-    {
-      name: "contains",
-      input: true
-    },
-    {
-      name: "does not contain",
-      input: true
-    },
-    {
-      name: "is",
-      input: true
-    },
-    {
-      name: "is not",
-      input: true
-    },
-    {
-      name: "is empty",
-      input: false
-    },
-    {
-      name: "is not empty",
-      input: false
-    }
-  ];
-
-
   return (
     <QueryClientProvider client={queryGeneralClient} contextSharing={true}>
       <BrowserRouter>
@@ -60,10 +30,10 @@ function App() {
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/about" element={<About />} />
             <Route path="/server-error" element={<ServerError />} />
-            <Route path="/modeleditor" element={<ModelEditor/>} />
+            <Route path="/modeleditor" element={<ModelEditor />} />
           </Route>
           <Route element={<ViewerLayout />}>
-            <Route path="/viewer" element={<Viewer/>} />
+            <Route path="/viewer" element={<Viewer />} />
           </Route>
         </Routes>
       </BrowserRouter>

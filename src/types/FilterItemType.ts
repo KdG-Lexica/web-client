@@ -1,8 +1,9 @@
+import MetaType from "./MetaType";
 import OperatorType from "./OperatorType";
 
 export interface RuleType {
     id: string;
-    field: string; // author, title
+    field: MetaType; // author, title
     operator: OperatorType; // contains, does not contain, ...
     value: string;
 }

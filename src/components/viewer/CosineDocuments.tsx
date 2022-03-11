@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "react-query";
 import * as documentApi from "../../api/DocumentApi";
 
@@ -21,7 +22,9 @@ interface DataRow {
 
 
 export const CosineDocuments = (props: CosineDocumentsProps) => {
+    const [maxCosDocs, setMaxCosDocs] = useState(3);
     const { data, isLoading } = useQuery("getCosineDocuments", () => documentApi.getCosineDistanceDocuments(props.modelId, props.range, props.documentId));
+    console.log(data);
 
     if (isLoading) {
         return (
@@ -33,7 +36,7 @@ export const CosineDocuments = (props: CosineDocumentsProps) => {
             <p className="font-sans text-slate-400 font-medium text-lg p-2">
                 Cosine similar documents
             </p>
-            {data.rows.slice(1, 6).map((r: DataRow) => {
+            {data.rows.slice(1, maxCosDocs).map((r: DataRow) => {
                 return (
                     <div className="m-2 mx-1 md:mx-0 block p-6 max-w-sm max-h-fit  bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <p className="d-inline dark:text-white font-semibold">{r.doc.name}</p>
@@ -41,6 +44,9 @@ export const CosineDocuments = (props: CosineDocumentsProps) => {
                     </div>
                 )
             })}
+            <p className={`underline underline-offset-1 dark:text-white text-black cursor-pointer ${maxCosDocs >= 5 ? "hidden" : "block"}`} onClick={() => setMaxCosDocs(maxCosDocs + 3)}>View more</p>
+            <p className={`underline underline-offset-1 dark:text-white text-black cursor-pointer ${maxCosDocs >= 5 ? "block" : "hidden"}`} onClick={() => setMaxCosDocs(maxCosDocs - 3)}>View less</p>
+
         </>
     )
 }

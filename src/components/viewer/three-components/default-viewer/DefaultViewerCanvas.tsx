@@ -5,6 +5,7 @@ import * as THREE from "three";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
 import ChunkType from "../../../../types/ChunkType";
 import MetaType from "../../../../types/MetaType";
+import OperatorType from "../../../../types/OperatorType";
 import QueryFilterDtoType from "../../../../types/QueryFilterType";
 import Vector3Type from "../../../../types/Vector3Type";
 import { Filter } from "../../../filter/Filter";
@@ -13,20 +14,6 @@ import CursorMesh from "./CursorMesh";
 import InstancedChunkMesh from "./InstancedChunkMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
 import InstancedWordMesh from "./InstancedWordMesh";
-
-
-
-const operators = [
-    {
-        name: "CONTAINS",
-        input: true
-    },
-    {
-        name: "EQUALS",
-        input: true
-    }
-];
-
 
 interface DefaultViewerCanvasProps {
     chunkDistance: number;
@@ -39,6 +26,54 @@ interface DefaultViewerCanvasProps {
     filterFields: MetaType[];
 }
 
+const operators = [
+    {
+        name: "contains",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "does not contain",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "equals",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "does not equal",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "is empty",
+        input: false,
+        dateOperator: false
+    },
+    {
+        name: "is not empty",
+        input: false,
+        dateOperator: false
+    },
+    {
+        name: "before",
+        input: true,
+        dateOperator: true
+    },
+    {
+        name: "from",
+        input: true,
+        dateOperator: true
+    },
+    {
+        name: "after",
+        input: true,
+        dateOperator: true
+    }
+];
+
 const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
     const [clusters, setClusters] = useState<ChunkType[]>([]);
@@ -47,6 +82,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [showAxis, setShowAxis] = useState(true);
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [showingFilter, setShowingFilter] = useState(false);
+    const [showingTimeline, setShowingTimeline] = useState(false);
 
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
     const controls = useRef<any>({target: {x: 0, y: 0, z: 0}});
@@ -128,10 +164,18 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         </button>
                         <div style={{ position: "absolute", left: "120px", top: "45px", zIndex: 999, display: showingFilter ? "block" : "none" }}>
                             <Filter
-                                fields={props.filterFields.map(metaData => metaData.key)}
+                                fields={props.filterFields}
                                 operators={operators}
                                 executeFilter={props.executeFilter}
                             />
+                        </div>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowingTimeline(!showingTimeline) }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </button>
+                        <div style={{ position: "absolute", left: "160px", top: "45px", zIndex: 999, display: showingTimeline ? "block" : "none" }}>
+
                         </div>
                     </div>
                 </div>
