@@ -9,7 +9,7 @@ const news = [{
 
 export const News = () => {
     return (
-        <div className="flex flex-col items-center h-screen justify-center">
+        <div className="flex flex-col items-center h-full justify-center">
             {news.map((n) =>
                 <NewsCard {...n} />
             )}
