@@ -1,7 +1,8 @@
 import BasicDocumentType from "./BasicDocumentType";
+import ChunkType from "./ChunkType";
 
 export default interface DatasetType {
     count: number;
-    rows: BasicDocumentType[];
+    chunks: ChunkType[];
     duration: number;
 }

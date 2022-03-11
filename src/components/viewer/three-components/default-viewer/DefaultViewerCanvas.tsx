@@ -3,16 +3,22 @@ import { Camera, Canvas } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
+import ChunkType from "../../../../types/ChunkType";
 import MetaType from "../../../../types/MetaType";
 import OperatorType from "../../../../types/OperatorType";
 import QueryFilterDtoType from "../../../../types/QueryFilterType";
+import Vector3Type from "../../../../types/Vector3Type";
 import { Filter } from "../../../filter/Filter";
 import AxisMesh from "./AxisMesh";
+import CursorMesh from "./CursorMesh";
+import InstancedChunkMesh from "./InstancedChunkMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
 import InstancedWordMesh from "./InstancedWordMesh";
 
 interface DefaultViewerCanvasProps {
-    documents: BasicDocumentType[];
+    chunkDistance: number;
+    size: number;
+    documents: ChunkType[];
     words: BasicDocumentType[];
     scale: number;
     setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
@@ -70,13 +76,21 @@ const operators = [
 
 const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
+    const [clusters, setClusters] = useState<ChunkType[]>([]);
+
     const [showScale, setShowScale] = useState(false);
     const [showAxis, setShowAxis] = useState(true);
     const [isDarkTheme, setIsDarkTheme] = useState(true);
-    const camera = useRef<Camera>(new THREE.PerspectiveCamera());
-    const controls = useRef<any>();
     const [showingFilter, setShowingFilter] = useState(false);
     const [showingTimeline, setShowingTimeline] = useState(false);
+
+    const camera = useRef<Camera>(new THREE.PerspectiveCamera());
+    const controls = useRef<any>({target: {x: 0, y: 0, z: 0}});
+
+    const [mouseDown, setMouseDown] = useState(false);
+    const [cursorVector, setCursorVector] = useState<Vector3Type>({x: 0, y: 0, z: 0});
+    const [cameraDistance, setCameraDistance] = useState<number>(props.scale);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -90,11 +104,33 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
         }
 
         checkTheme();
+        camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
 
         window.addEventListener("storage", (event) => {
             checkTheme();
         });
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(mouseDown) {
+            setCursorVector(controls.current.target);
+        }        
+    }, [mouseDown, controls.current.target.x, controls.current.target.y, controls.current.target.z]);
+
+    useEffect(() => {
+        setCameraDistance(Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) + 
+        Math.pow(camera.current.position.y - controls.current.target.y, 2) + 
+        Math.pow(camera.current.position.z - controls.current.target.z, 2)));
+        
+    }, [camera.current.position.x, camera.current.position.y, camera.current.position.z]);
+
+    useEffect(() => {
+        setClusters(props.documents.filter(chunk => 
+            chunk.vector.x >= Math.floor(cursorVector.x) - props.chunkDistance && chunk.vector.x <= Math.floor(cursorVector.x) + props.chunkDistance &&
+            chunk.vector.y >= Math.floor(cursorVector.y) - props.chunkDistance && chunk.vector.y <= Math.floor(cursorVector.y) + props.chunkDistance &&
+            chunk.vector.z >= Math.floor(cursorVector.z) - props.chunkDistance && chunk.vector.z <= Math.floor(cursorVector.z) + props.chunkDistance
+        ));
+    }, [cursorVector.x, cursorVector.y, cursorVector.z])
 
     function resetCamera() {
         camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
@@ -143,30 +179,56 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         </div>
                     </div>
                 </div>
+                {hoveredDocument != null &&
+                <div className="absolute bottom-0 z-50">
+                    <div className="flex-row flex justify-start items-stretch space-x-2s">
+                        <p className="font-sans dark:text-white black:text-black font-medium text-xl p-2">{hoveredDocument.name}</p>
+                    </div>
+                </div>
+                }
+                <div style={{ width: "100%", height: "100%"}} onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => {setMouseDown(false);}} onScrollCapture={() => {console.log("scrolling");
+                }}>
                 <Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
                     <ambientLight intensity={0.5} />
                     <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
-                    <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} />
-
+                    <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} enableDamping={false}/>
                     {showAxis &&
                         <AxisMesh showScale={showScale} scale={props.scale} />
                     }
-                    <InstancedDocumentMesh
-                        documents={props.documents}
-                        setHoveredDocument={setHoveredDocument}
-                        setClickedDocument={props.setClickedDocument} />
+                    {props.documents.length > 0 && 
+                        <InstancedDocumentMesh
+                            pointSize={cameraDistance}
+                            size={props.size}
+                            documents={props.documents}
+                            setHoveredDocument={setHoveredDocument}
+                            setClickedDocument={props.setClickedDocument} />
+                    }
+                    {
+                        clusters.map((chunk, index) => {                           
+                            return (
+                                <InstancedChunkMesh key={index}
+                                pointSize={cameraDistance}
+                                documents={chunk.rows}
+                                setHoveredDocument={setHoveredDocument}
+                                setClickedDocument={props.setClickedDocument}/>
+                            )
+                        })
+                    }
                     <InstancedWordMesh
                         documents={props.words}
                         setHoveredDocument={setHoveredDocument} />
 
-                    {hoveredDocument != null &&
+                    <CursorMesh vector3={cursorVector}/>
+
+                    {/*hoveredDocument != null &&
                         <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>
                             <Text color="black" fontSize={0.1} outlineWidth={'5%'} outlineColor="white">
                                 {hoveredDocument.name}
                             </Text>
                         </Billboard>
-                    }
+                    */}
                 </Canvas>
+                </div>
             </div>
         </div >
     );

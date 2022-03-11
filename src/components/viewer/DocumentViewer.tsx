@@ -83,7 +83,7 @@ const DocumentViewer = (props: DocumentViewerProps) => {
                                 </p>
                                 <p className="font-sans text-slate-700 dark:text-slate-100 p-2">
                                     {metaData.type === "string" && document[metaData.key]}
-                                    {metaData.type === "date" && new Date(document[metaData.key]).toString()}
+                                    {metaData.type === "date" && new Date(document[metaData.key]).toLocaleDateString()}
                                 </p>
                             </div>
                         )
