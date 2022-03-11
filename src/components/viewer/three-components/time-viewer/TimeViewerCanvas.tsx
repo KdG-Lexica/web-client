@@ -16,7 +16,7 @@ const TimeViewerCanvas = (props : TimeViewerCanvasProps) => {
 
     useEffect(() => {
       const localDateDocuments : [BasicDocumentType[]] = [[]];
-      const documents = props.documents.map(document => {return {id: document.id, name: document.name, date: new Date(document.date), vector3: document.vector3}})
+      const documents = props.documents.map(document => {return {id: document.id, name: document.name, date: new Date(), vector3: document.vector3}})
       const allYears = documents.map(document => document.date.getFullYear());
       const distinctYears = Array.from(new Set(allYears)).sort();      
       distinctYears.forEach(year => {        
@@ -35,7 +35,7 @@ const TimeViewerCanvas = (props : TimeViewerCanvasProps) => {
         {
           years.map((year, index) => 
             <InstancedTimeframeMesh key={year} year={year} offset={index} documents={dateDocuments.filter(
-              documentList => documentList[0].date.getFullYear() === year).flat()} dimensions={5}/>
+              documentList => 1 === 1).flat()} dimensions={5}/>
           )
         }
     </Canvas>
