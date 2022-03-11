@@ -7,8 +7,9 @@ import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
 import { ViewerLayout } from "./components/layouts/ViewerLayout";
 import { Tutorial } from "./components/viewer/tutorial/Tutorial";
-import { About } from "./components/viewer/about/About";
+import { News } from "./components/viewer/news/News";
 import ModelEditor from "./components/model/ModelEditor";
+import { NewsArticle } from "./components/viewer/news/NewsArticle";
 
 const queryGeneralClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +29,8 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<DatasetSelector />} />
             <Route path="/tutorial" element={<Tutorial />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:id" element={<NewsArticle />} />
             <Route path="/server-error" element={<ServerError />} />
             <Route path="/modeleditor" element={<ModelEditor />} />
           </Route>
