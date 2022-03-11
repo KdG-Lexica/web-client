@@ -15,8 +15,8 @@ import useQueryParams from "../../hooks/useQueryParams";
 import { useNavigate } from "react-router-dom";
 
 const Viewer = () => {
-  const [dataset, setDataset] = useState<DatasetType>({ count: 0, rows: [], duration: 0 });
-  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [] });
+  const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0 });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Viewer = () => {
   function executeFilter(filter: QueryFilterDtoType[]) {
     setClickedDocument(null);
     setLoading(true);
-    mutate({ model: setId!, limit: parseFloat(dataPercentage!) * 100000, offset: 0, filter: filter });
+    mutate({ model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: filter });
   }
 
   const getModel = async (id: string) => {
@@ -49,11 +49,9 @@ const Viewer = () => {
 
   const { isLoading, isError } = useQuery("getModel", () => getModel(setId!));
 
-
-
   useEffect(() => {
     if (!isLoading) {
-      mutate({ model: setId!, limit: parseFloat(dataPercentage!) * 100000, offset: 0, filter: [] });
+      mutate({ model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [] });
     }
   }, [isLoading])
 
@@ -76,7 +74,8 @@ const Viewer = () => {
   return (
     <>
       <div className="flex flex-row h-full w-full">
-        <DefaultViewerCanvas documents={dataset.rows} words={[]} scale={30} setClickedDocument={setClickedDocument} executeFilter={executeFilter} filterFields={model.meta} />
+        <DefaultViewerCanvas chunkDistance={1} size={0.01} documents={dataset.chunks} words={[]} 
+        scale={30} setClickedDocument={setClickedDocument} executeFilter={executeFilter} filterFields={model.meta} />
         <div className="w-1/3 overflow-hidden max-h-full">
           <DocumentViewer model={model}
             document={clickedDocument} duration={dataset.duration} count={dataset.count} />

@@ -3,7 +3,6 @@ import ThemeToggle from "../../theme/ThemeToggle"
 
 export const Appbar = () => {
     const location = useLocation();
-    console.log(location);
 
     const navigate = useNavigate();
     return (

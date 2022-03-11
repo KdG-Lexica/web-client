@@ -4,6 +4,7 @@ export default interface ModelType {
     id: string;
     collectionName: string;
     meta: MetaType[];
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: Date;
+    updatedAt: Date;
+    documentCount: number;
 }
