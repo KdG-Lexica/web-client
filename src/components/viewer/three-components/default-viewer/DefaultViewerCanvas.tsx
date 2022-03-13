@@ -1,5 +1,5 @@
 import { Billboard, OrbitControls, Text, PerspectiveCamera } from "@react-three/drei";
-import { Camera, Canvas } from "@react-three/fiber";
+import { Camera, Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
@@ -89,9 +89,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
 
     const [mouseDown, setMouseDown] = useState(false);
     const [cursorVector, setCursorVector] = useState<Vector3Type>({x: 0, y: 0, z: 0});
-    const [cameraDistance, setCameraDistance] = useState<number>(props.scale);
-
-    const [loading, setLoading] = useState(true);
+    const [cameraDistance, setCameraDistance] = useState<number>(3);
 
     useEffect(() => {
         function checkTheme() {
@@ -112,25 +110,34 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }, []);
 
     useEffect(() => {
-        if(mouseDown) {
-            setCursorVector(controls.current.target);
-        }        
-    }, [mouseDown, controls.current.target.x, controls.current.target.y, controls.current.target.z]);
-
-    useEffect(() => {
-        setCameraDistance(Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) + 
-        Math.pow(camera.current.position.y - controls.current.target.y, 2) + 
-        Math.pow(camera.current.position.z - controls.current.target.z, 2)));
-        
-    }, [camera.current.position.x, camera.current.position.y, camera.current.position.z]);
-
-    useEffect(() => {
         setClusters(props.documents.filter(chunk => 
             chunk.vector.x >= Math.floor(cursorVector.x) - props.chunkDistance && chunk.vector.x <= Math.floor(cursorVector.x) + props.chunkDistance &&
             chunk.vector.y >= Math.floor(cursorVector.y) - props.chunkDistance && chunk.vector.y <= Math.floor(cursorVector.y) + props.chunkDistance &&
             chunk.vector.z >= Math.floor(cursorVector.z) - props.chunkDistance && chunk.vector.z <= Math.floor(cursorVector.z) + props.chunkDistance
         ));
     }, [cursorVector.x, cursorVector.y, cursorVector.z])
+
+    const HandleMovement = () => {
+        useFrame(() => {                 
+            setCursorVector(controls.current.target);
+        });
+
+        return(<></>);
+    }
+
+    function resize() {
+        const distance = Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) + 
+        Math.pow(camera.current.position.y - controls.current.target.y, 2) + 
+        Math.pow(camera.current.position.z - controls.current.target.z, 2));
+
+        if(distance > 3) {
+            setCameraDistance(3)
+        } else if (distance < 0.5)   {
+            setCameraDistance(0.5)
+        } else {
+            setCameraDistance(distance);
+        }
+    }
 
     function resetCamera() {
         camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
@@ -186,9 +193,11 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                     </div>
                 </div>
                 }
-                <div style={{ width: "100%", height: "100%"}} onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => {setMouseDown(false);}} onScrollCapture={() => {console.log("scrolling");
-                }}>
+                <div style={{ width: "100%", height: "100%"}} onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => {setMouseDown(false);}} onWheel={() => {resize()}}>
                 <Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
+                    {
+                        mouseDown && <HandleMovement/>
+                    }
                     <ambientLight intensity={0.5} />
                     <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
                     <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} enableDamping={false}/>
@@ -218,7 +227,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         documents={props.words}
                         setHoveredDocument={setHoveredDocument} />
 
-                    <CursorMesh vector3={cursorVector}/>
+                    <CursorMesh enableMovement={mouseDown} vector3={cursorVector} pointSize={cameraDistance}/>
 
                     {/*hoveredDocument != null &&
                         <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>

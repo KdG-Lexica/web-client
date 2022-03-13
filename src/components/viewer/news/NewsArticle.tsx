@@ -2,7 +2,6 @@ import useQueryParams from "../../../hooks/useQueryParams"
 
 export const NewsArticle = () => {
     const id = useQueryParams();
-    console.log(id);
 
     return (
         <div className="flex items-center h-full justify-center font-medium text-black dark:text-white">

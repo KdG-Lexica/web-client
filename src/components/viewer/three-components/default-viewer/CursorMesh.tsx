@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Vector3Type from "../../../../types/Vector3Type";
+import * as THREE from "three";
+import { Mesh } from "three";
+import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
 
 interface CursorMeshProps {
-    vector3 : Vector3Type;
+  enableMovement: boolean;
+  pointSize: number;
+  vector3 : Vector3Type;
 }
 
-const CursorMesh = (props : CursorMeshProps) => {
+const CursorMesh = (props : CursorMeshProps) => {  
+  const [x, setX] = useState<number>(0);
+  const [y, setY] = useState<number>(0);
+  const [z, setZ] = useState<number>(0);
+
+  const EnableMovement = () => {
+    useFrame(() => {
+      setX(props.vector3.x);
+      setY(props.vector3.y);
+      setZ(props.vector3.z);    
+    })
+
+    return (<></>)
+  }
+
+
   return (
-    <mesh position={[props.vector3.x, props.vector3.y, props.vector3.z]}>
-        <sphereBufferGeometry attach="geometry" args={[0.05, 16, 16]}/>
-        <meshToonMaterial attach="material" color={"black"} opacity={1} transparent/>
-    </mesh>
+    <>
+      <mesh position={[x, y, z]}>
+        <sphereBufferGeometry attach="geometry" args={[0.05 * props.pointSize, 4, 0]}/>
+        <meshLambertMaterial attach="material" color={"yellow"} wireframe/>
+      </mesh>
+      {props.enableMovement && <EnableMovement/>}
+    </>
   )
 }
 
