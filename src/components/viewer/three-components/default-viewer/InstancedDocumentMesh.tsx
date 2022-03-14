@@ -14,10 +14,13 @@ interface InstancedDocumentMeshProps {
 const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
     const [hovered, setHovered] = useState<number | undefined>(undefined);
     const [clicked, setClicked] = useState<number | undefined>(undefined);
-    
-    const data = props.documents.flatMap(chunk => chunk.rows.slice(0, chunk.count * props.size));
+    const [data, setData] = useState<BasicDocumentType[]>([]);
     
     const meshRef = useRef<InstancedMesh>();
+
+    useEffect(() => {
+        setData(props.documents.flatMap(chunk => chunk.rows.slice(0, chunk.count * props.size)));
+    }, [props.size])
 
     useLayoutEffect(() => {      
         const rotation = new Euler();
@@ -40,7 +43,7 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
             meshRef.current!.setMatrixAt(index, matrix);
         }
         meshRef.current!.instanceMatrix.needsUpdate = true;        
-    }, []);
+    }, [data]);
 
     useEffect(() => {
         if(clicked !== undefined) {

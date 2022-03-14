@@ -14,7 +14,6 @@ const InstancedChunkMesh = (props : InstancedChunkMeshProps) => {
     const [clicked, setClicked] = useState<number | undefined>(undefined);
         
     const meshRef = useRef<InstancedMesh>();
-    
 
     useLayoutEffect(() => {      
         const rotation = new Euler();
@@ -39,7 +38,7 @@ const InstancedChunkMesh = (props : InstancedChunkMeshProps) => {
         meshRef.current!.instanceMatrix.needsUpdate = true;        
     }, [props.documents]);
 
-    useEffect(() => {
+    useEffect(() => {        
         if(clicked !== undefined) {
             props.setClickedDocument(props.documents[clicked]);
         }
