@@ -21,11 +21,12 @@ export interface GetDocumentsProps {
 	limit: number;
 	offset: number;
 	filter: QueryFilterDtoType[];
+	config?: any;
 }
 
 export async function getDocuments(props: GetDocumentsProps) {
 	const start = performance.now();
-	const response = await api.post(`/models/${props.model}/documents?limit=${props.limit}&offset=${props.offset}&chunkData=yes`, { filter: props.filter });
+	const response = await api.post(`/models/${props.model}/documents?limit=${props.limit}&offset=${props.offset}&chunkData=yes`, { filter: props.filter }, props.config);
 	response.data.duration = Math.floor(performance.now() - start);
 	return response.data;
 }
