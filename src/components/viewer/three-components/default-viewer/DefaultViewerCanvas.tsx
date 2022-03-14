@@ -52,6 +52,11 @@ const operators = [
         dateOperator: false
     },
     {
+        name: "regex",
+        input: false,
+        dateOperator: false
+    },
+    {
         name: "before",
         input: true,
         dateOperator: true

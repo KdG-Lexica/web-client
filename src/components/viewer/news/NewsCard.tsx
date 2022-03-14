@@ -4,12 +4,13 @@ export interface NewsCardProps {
     title: string;
     description: string;
     id: number;
+    fullText: string;
 }
 
 export const NewsCard = (props: NewsCardProps) => {
     const navigate = useNavigate();
     return (
-        <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700" style={{ flexBasis: "30%" }}>
             <a href="#">
                 <img className="rounded-t-lg" src="/news_photos/march11update.png" alt="update photo" />
             </a>

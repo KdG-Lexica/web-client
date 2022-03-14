@@ -20,7 +20,6 @@ interface DataRow {
     }
 }
 
-
 export const CosineDocuments = (props: CosineDocumentsProps) => {
     const [maxCosDocs, setMaxCosDocs] = useState(3);
     const { data, isLoading } = useQuery("getCosineDocuments", () => documentApi.getCosineDistanceDocuments(props.modelId, props.range, props.documentId));
@@ -36,6 +35,7 @@ export const CosineDocuments = (props: CosineDocumentsProps) => {
             <p className="font-sans text-slate-400 font-medium text-lg p-2">
                 Cosine similar documents
             </p>
+            {/* starts from 1 because 0 is document itself */}
             {data.rows.slice(1, maxCosDocs).map((r: DataRow) => {
                 return (
                     <div className="m-2 mx-1 md:mx-0 block p-6 max-w-sm max-h-fit  bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
