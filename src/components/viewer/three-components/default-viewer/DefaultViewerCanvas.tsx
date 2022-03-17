@@ -12,8 +12,9 @@ import AxisMesh from "./AxisMesh";
 import CursorMesh from "./CursorMesh";
 import InstancedChunkMesh from "./InstancedChunkMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
-import InstancedWordMesh from "./InstancedWordMesh";
+import WordMesh from "./WordMesh";
 import SelectedDocumentMesh from "./SelectedDocumentMesh";
+import IPTCType from "../../../../types/IPTCType";
 
 interface DefaultViewerCanvasProps {
     chunkDistance: number;
@@ -28,6 +29,7 @@ interface DefaultViewerCanvasProps {
     filterFields: MetaType[];
     setFocus: React.Dispatch<React.SetStateAction<boolean>>;
     focus: boolean;
+    IPTC: IPTCType | null;
 }
 
 const operators = [
@@ -234,9 +236,8 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                             )
                         })
                     }
-                    <InstancedWordMesh
-                        documents={props.words}
-                        setHoveredDocument={props.setHoveredDocument} />
+                    
+                    {props.IPTC !== null && <WordMesh pointSize={cameraDistance} IPTC={props.IPTC}/>}
 
                     <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance}/>
 

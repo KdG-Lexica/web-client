@@ -1,9 +1,8 @@
 import axios from "axios";
-import FilterItemType from "../types/FilterItemType";
 import QueryFilterDtoType from "../types/QueryFilterType";
 
 const api = axios.create({
-	baseURL: "https://lexica-api.verhelst.dev"
+	baseURL: "https://api.lexica.ovh"
 })
 
 export async function getModel(model: string) {
@@ -47,5 +46,15 @@ export async function createModel(body: string) {
 
 export async function getCosineDistanceDocuments(model: string, range: number, documentId: string) {
 	const response = await api.get(`/models/${model}/documents/cosine?rangeFactor=${range}&document=${documentId}`)
+	return response.data;
+}
+
+export async function getIPTCs() {
+	const response = await api.get(`/iptc`)
+	return response.data;
+}
+
+export async function getIPTC(IPTCId : number) {
+	const response = await api.get(`/iptc/${IPTCId}`)
 	return response.data;
 }
