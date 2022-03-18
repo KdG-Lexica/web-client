@@ -64,7 +64,7 @@ const operators = [
     },
     {
         name: "regex",
-        input: false,
+        input: true,
         dateOperator: false
     },
     {
@@ -94,11 +94,11 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [fullScreen, setFullScreen] = useState(false);
 
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
-    const controls = useRef<any>({target: {x: 0, y: 0, z: 0}});
+    const controls = useRef<any>({ target: { x: 0, y: 0, z: 0 } });
 
     const [mouseDown, setMouseDown] = useState(false);
     const [requiresUpdate, setRequiresUpdate] = useState(false);
-    const [cursorVector, setCursorVector] = useState<Vector3Type>({x: 0, y: 0, z: 0});
+    const [cursorVector, setCursorVector] = useState<Vector3Type>({ x: 0, y: 0, z: 0 });
     const [cameraDistance, setCameraDistance] = useState<number>(3);
 
     useEffect(() => {
@@ -120,7 +120,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }, []);
 
     useEffect(() => {
-        setClusters(props.documents.filter(chunk => 
+        setClusters(props.documents.filter(chunk =>
             chunk.vector.x >= Math.floor(cursorVector.x) - props.chunkDistance && chunk.vector.x <= Math.floor(cursorVector.x) + props.chunkDistance &&
             chunk.vector.y >= Math.floor(cursorVector.y) - props.chunkDistance && chunk.vector.y <= Math.floor(cursorVector.y) + props.chunkDistance &&
             chunk.vector.z >= Math.floor(cursorVector.z) - props.chunkDistance && chunk.vector.z <= Math.floor(cursorVector.z) + props.chunkDistance
@@ -144,22 +144,22 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }, [props.focus])
 
     const HandleMovement = () => {
-        useFrame(() => {                 
-            setCursorVector(controls.current.target);            
+        useFrame(() => {
+            setCursorVector(controls.current.target);
             setRequiresUpdate(false);
         });
 
-        return(<></>);
+        return (<></>);
     }
 
     function resize() {
-        const distance = Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) + 
-        Math.pow(camera.current.position.y - controls.current.target.y, 2) + 
-        Math.pow(camera.current.position.z - controls.current.target.z, 2));
+        const distance = Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) +
+            Math.pow(camera.current.position.y - controls.current.target.y, 2) +
+            Math.pow(camera.current.position.z - controls.current.target.z, 2));
 
-        if(distance > 3) {
+        if (distance > 3) {
             setCameraDistance(3)
-        } else if (distance < 0.5)   {
+        } else if (distance < 0.5) {
             setCameraDistance(0.5)
         } else {
             setCameraDistance(distance);
@@ -172,8 +172,8 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }
 
     return (
-        <div className={"p-2 w-full h-full"} style={{ maxHeight: "calc(100vh - 80px)", width: "60%"}}>
-            <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full" style={!fullScreen ? {} : {position: "absolute", zIndex: "30", top: 0, left: 0, bottom: 0, right: 0}}>
+        <div className={"p-2 w-full h-full"} style={{ maxHeight: "calc(100vh - 80px)", width: "60%" }}>
+            <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full" style={!fullScreen ? {} : { position: "absolute", zIndex: "30", top: 0, left: 0, bottom: 0, right: 0 }}>
                 <div className="absolute z-50">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
                         <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
@@ -203,60 +203,60 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                                 executeFilter={props.executeFilter}
                             />
                         </div>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => {setFullScreen(!fullScreen) }}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setFullScreen(!fullScreen) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                             </svg>
                         </button>
                     </div>
                 </div>
-                <div style={{width: "100%", height: "100%"}} onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => {setMouseDown(false);}} onWheel={() => {resize()}}>
-                <Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
-                    {
-                        (mouseDown || requiresUpdate) && <HandleMovement/>
-                    }
-                    <ambientLight intensity={0.5} />
-                    <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
-                    <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} enableDamping={false}/>
-                    {showAxis &&
-                        <AxisMesh showScale={showScale} scale={props.scale} />
-                    }
-                    {props.documents.length > 0 && 
-                        <InstancedDocumentMesh
-                            pointSize={cameraDistance}
-                            size={props.size}
-                            documents={props.documents}
-                            setHoveredDocument={props.setHoveredDocument}
-                            setClickedDocument={props.setClickedDocument} />
-                    }
-                    {
-                        clusters.map((chunk, index) => {                           
-                            return (
-                                <InstancedChunkMesh key={index}
+                <div style={{ width: "100%", height: "100%" }} onMouseDown={() => { setMouseDown(true); }} onMouseUp={() => { setMouseDown(false); }} onWheel={() => { resize() }}>
+                    <Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
+                        {
+                            (mouseDown || requiresUpdate) && <HandleMovement />
+                        }
+                        <ambientLight intensity={0.5} />
+                        <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
+                        <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} enableDamping={false} />
+                        {showAxis &&
+                            <AxisMesh showScale={showScale} scale={props.scale} />
+                        }
+                        {props.documents.length > 0 &&
+                            <InstancedDocumentMesh
                                 pointSize={cameraDistance}
-                                documents={chunk.rows}
+                                size={props.size}
+                                documents={props.documents}
                                 setHoveredDocument={props.setHoveredDocument}
-                                setClickedDocument={props.setClickedDocument}/>
-                            )
-                        })
-                    }
-                    
-                    {props.IPTC !== null && <WordMesh pointSize={cameraDistance} IPTC={props.IPTC}/>}
+                                setClickedDocument={props.setClickedDocument} />
+                        }
+                        {
+                            clusters.map((chunk, index) => {
+                                return (
+                                    <InstancedChunkMesh key={index}
+                                        pointSize={cameraDistance}
+                                        documents={chunk.rows}
+                                        setHoveredDocument={props.setHoveredDocument}
+                                        setClickedDocument={props.setClickedDocument} />
+                                )
+                            })
+                        }
 
-                    <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance}/>
+                        {props.IPTC !== null && <WordMesh pointSize={cameraDistance} IPTC={props.IPTC} />}
 
-                    {props.clickedDocument !== null && 
-                        <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance}/>
-                    }
+                        <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance} />
 
-                    {/*hoveredDocument != null &&
+                        {props.clickedDocument !== null &&
+                            <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance} />
+                        }
+
+                        {/*hoveredDocument != null &&
                         <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>
                             <Text color="black" fontSize={0.1} outlineWidth={'5%'} outlineColor="white">
                                 {hoveredDocument.name}
                             </Text>
                         </Billboard>
                     */}
-                </Canvas>
+                    </Canvas>
                 </div>
             </div>
         </div >

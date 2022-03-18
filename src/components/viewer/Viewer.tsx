@@ -47,8 +47,14 @@ const Viewer = () => {
   function executeFilter(filter: QueryFilterDtoType[]) {
     setClickedDocument(null);
     setLoading(true);
+    setProgress(0)
     mutate({
-      model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: filter
+      model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: filter, config: {
+        onDownloadProgress: (progressEvent: any) => {
+          let percentCompleted = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+          setProgress(percentCompleted);
+        }
+      }
     });
   }
 
@@ -63,6 +69,7 @@ const Viewer = () => {
 
   useEffect(() => {
     if (!isLoading) {
+      setProgress(0)
       mutate({
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
           onDownloadProgress: (progressEvent: any) => {
@@ -75,6 +82,7 @@ const Viewer = () => {
   }, [isLoading])
 
 
+
   if (isError) {
     navigate("/server-error")
   }
@@ -82,7 +90,7 @@ const Viewer = () => {
   if (loading) {
     return (
       <>
-        {progress == 0 ?
+        {progress == 0 || progress == 100 ?
           <p className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
             Querying data
             <svg role="status" className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,35 +114,35 @@ const Viewer = () => {
   return (
     <>
       <div className="flex flex-row h-full w-full">
-        <Sidebar 
-        size={size} 
-        setSize={setSize} 
-        chunkDistance={chunkDistance} 
-        setChunkDistance={setChunkDistance} 
-        document={hoveredDocument}
-        IPTCs={IPTCs}
-        setIPTC={setIPTC}
+        <Sidebar
+          size={size}
+          setSize={setSize}
+          chunkDistance={chunkDistance}
+          setChunkDistance={setChunkDistance}
+          document={hoveredDocument}
+          IPTCs={IPTCs}
+          setIPTC={setIPTC}
         />
-        <DefaultViewerCanvas 
-        chunkDistance={chunkDistance}
-        size={size}
-        documents={dataset.chunks}
-        scale={30}
-        setClickedDocument={setClickedDocument}
-        clickedDocument={clickedDocument}
-        executeFilter={executeFilter}
-        filterFields={model.meta} 
-        setFocus={setFocus} focus={focus}
-        setHoveredDocument={setHoveredDocument}
-        IPTC={IPTC}/>
-        <div className="overflow-hidden max-h-full" style={{width: "22.5%"}}>
+        <DefaultViewerCanvas
+          chunkDistance={chunkDistance}
+          size={size}
+          documents={dataset.chunks}
+          scale={30}
+          setClickedDocument={setClickedDocument}
+          clickedDocument={clickedDocument}
+          executeFilter={executeFilter}
+          filterFields={model.meta}
+          setFocus={setFocus} focus={focus}
+          setHoveredDocument={setHoveredDocument}
+          IPTC={IPTC} />
+        <div className="overflow-hidden max-h-full" style={{ width: "22.5%" }}>
           <DocumentViewer
             model={model}
-            document={clickedDocument} 
-            duration={dataset.duration} 
+            document={clickedDocument}
+            duration={dataset.duration}
             count={dataset.count}
-            setClickedDocument={setClickedDocument} 
-            setFocus={setFocus}/>
+            setClickedDocument={setClickedDocument}
+            setFocus={setFocus} />
         </div>
       </div>
     </>
