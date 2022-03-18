@@ -8,7 +8,7 @@ export const ViewerLayout = () => {
         <div className="bg-slate-200 dark:bg-zinc-900 flex flex-col h-full">
             <Appbar />
             <div className="flex flex-row grow">
-                <Sidebar />
+                {/* <Sidebar /> */}
                 <div className="grow">
                     <Outlet />
                 </div>
