@@ -5,7 +5,7 @@ const api = axios.create({
 	baseURL: "https://api.lexica.ovh"
 })
 
-export async function getModel(model: string) {
+export async function getModel(model: string) {	
 	const response = await api.get(`/models/${model}`);
 	return response.data;
 }
