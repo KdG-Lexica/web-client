@@ -20,7 +20,6 @@ interface DataRow {
     }
 }
 
-
 export const CosineDocuments = (props: CosineDocumentsProps) => {
     const [maxCosDocs, setMaxCosDocs] = useState(3);
     const { data, isLoading } = useQuery("getCosineDocuments", () => documentApi.getCosineDistanceDocuments(props.modelId, props.range, props.documentId));

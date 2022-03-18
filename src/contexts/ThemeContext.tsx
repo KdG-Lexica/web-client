@@ -4,6 +4,7 @@ export interface ThemeContextType {
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
 }
+
 const getInitialTheme = (): string => {
     if (typeof window !== "undefined" && window.localStorage) {
         const storedPrefs = window.localStorage.getItem("color-theme");
@@ -33,7 +34,6 @@ export interface ThemeProviderProps {
 
 export const ThemeProvider = ({ initialTheme, children }: ThemeProviderProps) => {
     const [theme, setTheme] = useState<string>(getInitialTheme);
-
 
     const rawSetTheme = (rawTheme: string) => {
         const root = window.document.documentElement;

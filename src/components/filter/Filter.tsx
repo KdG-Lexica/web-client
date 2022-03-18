@@ -61,7 +61,7 @@ export const Filter = (props: FilterProps) => {
     const filterToDto = (filters: FilterItemType[]): Array<QueryFilterDtoType> => {
         const arr: Array<QueryFilterDtoType> = [];
         filters.forEach((f) => {
-            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field.key, operator: r.operator.name, value: r.value })) : null
+            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field.key, operator: r.operator.name.toUpperCase(), value: r.value })) : null
             arr.push({
                 combinator: f.combinator,
                 rules: rules
