@@ -10,13 +10,18 @@ import DocumentViewer from "./DocumentViewer";
 import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
 import useQueryParams from "../../hooks/useQueryParams";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Sidebar } from "./sidebar/Sidebar";
 
 const Viewer = () => {
+  const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });
   const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0 });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [focus, setFocus] = useState(false);
+  const [chunkDistance, setChunkDistance] = useState<number>(1);
+  const [size, setSize] = useState<number>(0.01);
+
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
 
@@ -96,11 +101,24 @@ const Viewer = () => {
   return (
     <>
       <div className="flex flex-row h-full w-full">
-        <DefaultViewerCanvas chunkDistance={1} size={0.01} documents={dataset.chunks} words={[]}
-          scale={30} setClickedDocument={setClickedDocument} executeFilter={executeFilter} filterFields={model.meta} />
+        <Sidebar size={size} setSize={setSize} chunkDistance={chunkDistance} setChunkDistance={setChunkDistance} document={hoveredDocument}/>
+        <DefaultViewerCanvas 
+        chunkDistance={chunkDistance}
+        size={size}
+        documents={dataset.chunks}
+        words={[]} 
+        scale={30}
+        setClickedDocument={setClickedDocument}
+        clickedDocument={clickedDocument}
+        executeFilter={executeFilter}
+        filterFields={model.meta} 
+        setFocus={setFocus} focus={focus}
+        setHoveredDocument={setHoveredDocument}/>
         <div className="w-1/3 overflow-hidden max-h-full">
-          <DocumentViewer model={model}
-            document={clickedDocument} duration={dataset.duration} count={dataset.count} />
+          <DocumentViewer
+            model={model}
+            document={clickedDocument} duration={dataset.duration} count={dataset.count}
+            setClickedDocument={setClickedDocument} setFocus={setFocus} />
         </div>
       </div>
     </>
