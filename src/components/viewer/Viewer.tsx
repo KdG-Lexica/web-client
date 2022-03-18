@@ -82,9 +82,10 @@ const Viewer = () => {
           </p>
           :
           <p className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
-            Downloading data
-            <div className="w-1/2 bg-gray-200 rounded-full transition dark:bg-gray-700">
-              <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}> {progress}%</div>
+            Downloading data {progress}%
+            <div className="w-1/2 bg-gray-200 rounded-full flex transition dark:bg-gray-700">
+
+              <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}></div>
             </div>
           </p>
         }
