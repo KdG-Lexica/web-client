@@ -22,11 +22,9 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
 
     useLayoutEffect(() => {   
         let chunk = 1;
-        console.log("Loading");
 
         setInterval(() => {
             if(chunk < 10) {
-                console.log("Loading chunk: " + chunk);
                 for (let index = 100 * chunk; index < (props.documents.length / 10) + 100 * chunk; index++) {
                     const position = new Vector3();
                     const matrix = new Matrix4();

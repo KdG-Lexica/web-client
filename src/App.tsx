@@ -33,8 +33,6 @@ function App() {
             <Route path="/news/:id" element={<NewsArticle />} />
             <Route path="/server-error" element={<ServerError />} />
             <Route path="/modeleditor" element={<ModelEditor />} />
-          </Route>
-          <Route element={<ViewerLayout />}>
             <Route path="/viewer" element={<Viewer />} />
           </Route>
         </Routes>
