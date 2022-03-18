@@ -11,6 +11,7 @@ import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewer
 import useQueryParams from "../../hooks/useQueryParams";
 import { useNavigate } from "react-router-dom";
 import { Sidebar } from "./sidebar/Sidebar";
+import IPTCType from "../../types/IPTCType";
 
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
@@ -21,6 +22,8 @@ const Viewer = () => {
   const [focus, setFocus] = useState(false);
   const [chunkDistance, setChunkDistance] = useState<number>(1);
   const [size, setSize] = useState<number>(0.01);
+  const [IPTCs, setIPTCs] = useState<IPTCType[]>([]);
+  const [IPTC, setIPTC] = useState<IPTCType | null>(null);
 
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
@@ -50,8 +53,10 @@ const Viewer = () => {
   }
 
   const getModel = async (id: string) => {
-    const mod = await documentApi.getModel(id)
-    setModel(mod as unknown as ModelType)
+    const mod = await documentApi.getModel(id);
+    setModel(mod as unknown as ModelType);
+    const words = await documentApi.getIPTCs();
+    setIPTCs(words as unknown as IPTCType[])
   }
 
   const { isLoading, isError } = useQuery("getModel", () => getModel(setId!));
@@ -101,24 +106,35 @@ const Viewer = () => {
   return (
     <>
       <div className="flex flex-row h-full w-full">
-        <Sidebar size={size} setSize={setSize} chunkDistance={chunkDistance} setChunkDistance={setChunkDistance} document={hoveredDocument}/>
+        <Sidebar 
+        size={size} 
+        setSize={setSize} 
+        chunkDistance={chunkDistance} 
+        setChunkDistance={setChunkDistance} 
+        document={hoveredDocument}
+        IPTCs={IPTCs}
+        setIPTC={setIPTC}
+        />
         <DefaultViewerCanvas 
         chunkDistance={chunkDistance}
         size={size}
         documents={dataset.chunks}
-        words={[]} 
         scale={30}
         setClickedDocument={setClickedDocument}
         clickedDocument={clickedDocument}
         executeFilter={executeFilter}
         filterFields={model.meta} 
         setFocus={setFocus} focus={focus}
-        setHoveredDocument={setHoveredDocument}/>
-        <div className="w-1/3 overflow-hidden max-h-full">
+        setHoveredDocument={setHoveredDocument}
+        IPTC={IPTC}/>
+        <div className="overflow-hidden max-h-full" style={{width: "22.5%"}}>
           <DocumentViewer
             model={model}
-            document={clickedDocument} duration={dataset.duration} count={dataset.count}
-            setClickedDocument={setClickedDocument} setFocus={setFocus} />
+            document={clickedDocument} 
+            duration={dataset.duration} 
+            count={dataset.count}
+            setClickedDocument={setClickedDocument} 
+            setFocus={setFocus}/>
         </div>
       </div>
     </>

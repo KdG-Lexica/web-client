@@ -12,14 +12,14 @@ import AxisMesh from "./AxisMesh";
 import CursorMesh from "./CursorMesh";
 import InstancedChunkMesh from "./InstancedChunkMesh";
 import InstancedDocumentMesh from "./InstancedDocumentMesh";
-import InstancedWordMesh from "./InstancedWordMesh";
+import WordMesh from "./WordMesh";
 import SelectedDocumentMesh from "./SelectedDocumentMesh";
+import IPTCType from "../../../../types/IPTCType";
 
 interface DefaultViewerCanvasProps {
     chunkDistance: number;
     size: number;
     documents: ChunkType[];
-    words: BasicDocumentType[];
     scale: number;
     setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
     clickedDocument: BasicDocumentType | null;
@@ -28,6 +28,7 @@ interface DefaultViewerCanvasProps {
     filterFields: MetaType[];
     setFocus: React.Dispatch<React.SetStateAction<boolean>>;
     focus: boolean;
+    IPTC: IPTCType | null;
 }
 
 const operators = [
@@ -166,7 +167,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     }
 
     return (
-        <div className={"p-2 w-full h-full"} style={{ maxHeight: "calc(100vh - 80px)", width: "66%"}}>
+        <div className={"p-2 w-full h-full"} style={{ maxHeight: "calc(100vh - 80px)", width: "60%"}}>
             <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full" style={!fullScreen ? {} : {position: "absolute", zIndex: "30", top: 0, left: 0, bottom: 0, right: 0}}>
                 <div className="absolute z-50">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
@@ -234,9 +235,8 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                             )
                         })
                     }
-                    <InstancedWordMesh
-                        documents={props.words}
-                        setHoveredDocument={props.setHoveredDocument} />
+                    
+                    {props.IPTC !== null && <WordMesh pointSize={cameraDistance} IPTC={props.IPTC}/>}
 
                     <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance}/>
 
