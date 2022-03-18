@@ -95,7 +95,6 @@ const Viewer = () => {
         chunkDistance={chunkDistance}
         size={size}
         documents={dataset.chunks}
-        words={[{id: "1", name: "Arts", vector3: {x: 1, y: 1, z: 1}}, {id: "2", name: "Politics", vector3: {x: 2, y: 4, z: 5}}]} 
         scale={30}
         setClickedDocument={setClickedDocument}
         clickedDocument={clickedDocument}
@@ -104,7 +103,7 @@ const Viewer = () => {
         setFocus={setFocus} focus={focus}
         setHoveredDocument={setHoveredDocument}
         IPTC={IPTC}/>
-        <div className="w-1/3 overflow-hidden max-h-full">
+        <div className="overflow-hidden max-h-full" style={{width: "22.5%"}}>
           <DocumentViewer
             model={model}
             document={clickedDocument} 

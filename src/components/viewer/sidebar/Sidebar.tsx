@@ -56,7 +56,7 @@ export const Sidebar = (props : SidebarProps) => {
     }, [IPTC, level])
 
     return (
-        <aside className="w-72" aria-label="Sidebar">
+        <aside style={{width: "17.5%"}} aria-label="Sidebar">
             <div className="overflow-y-hidden py-4 px-3 heigt-full bg-gray-50 dark:bg-gray-800" style={{ height: "calc(100vh - 80px)" }}>
 
             <div id="dropdown-cta" className="p-4 mb-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
@@ -68,30 +68,36 @@ export const Sidebar = (props : SidebarProps) => {
                     </p>
                 </div>
 
-                <div className="space-y-2 mb-2">
-                    <select className="items-center w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                    name="IPTCs" id="IPTCs"
-                    onChange={(e) => {selectIPTC(e.target.value)}}>
-                    <option value="none">Select a wordlist</option>
-                    {props.IPTCs.map((IPTCOption) => {
-                        return (
-                            <option key={IPTCOption.id} value={IPTCOption.id}>{IPTCOption.name}</option>
-                        )
-                    })}
-                    </select>
-                    {
-                        levels.map((lvl) => {
+                <div className="mb-2 nowrap flex flex-row">
+                    <div style={levels.length > 0 ? {width: "63%", marginRight: "3%"} : {width: "100%", marginRight: "0"}}>
+                        <select className="items-center w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                        name="IPTCs" id="IPTCs"
+                        onChange={(e) => {selectIPTC(e.target.value)}}>
+                        <option value="none">Select a wordlist</option>
+                        {props.IPTCs.map((IPTCOption) => {
                             return (
-                                <button key={lvl} className={"mr-1 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" + (lvl === level && "ring-blue-500 border-blue-500 dark:ring-blue-500 dark:border-blue-500")}
-                                    onClick={() => {setLevel(lvl)}}>
-                                    {lvl}
-                                </button>
+                                <option key={IPTCOption.id} value={IPTCOption.id}>{IPTCOption.name}</option>
                             )
-                        })
+                        })}
+                        </select>
+                    </div>
+
+                    {levels.length > 0 && 
+                        <div style={{width: "33%"}}>
+                            <select className="items-center w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            name="IPTCs" id="IPTCs"
+                            onChange={(e) => {setLevel(parseInt(e.target.value))}}>                        
+                            {
+                                levels.map((lvl) => {
+                                    return (
+                                        <option key={lvl} value={lvl}>{lvl}</option>
+                                    )
+                                })
+                            }
+                            </select>
+                        </div>
                     }
-
                 </div>
-
                 
                 <div className="lex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
                     <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Performance</span>
