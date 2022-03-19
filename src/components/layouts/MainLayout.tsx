@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom"
-import ThemeToggle from "../theme/ThemeToggle"
 import { Appbar } from "../viewer/appbar/Appbar";
 
 export const MainLayout = () => {

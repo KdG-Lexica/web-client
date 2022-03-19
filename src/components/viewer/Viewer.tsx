@@ -1,4 +1,3 @@
-import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import * as documentApi from "../../api/DocumentApi"
@@ -27,7 +26,6 @@ const Viewer = () => {
 
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
-
 
   const params = useQueryParams();
   const dataPercentage = params.get("size");
@@ -65,11 +63,17 @@ const Viewer = () => {
     setIPTCs(words as unknown as IPTCType[])
   }
 
-  const { isLoading, isError } = useQuery("getModel", () => getModel(setId!));
+  const { isLoading, isError, refetch } = useQuery("getModel", async () => {await getModel(setId!)});
+
+  useEffect(() => {    
+    refetch();    
+  }, [])
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && model.documentCount > 0) {
       setProgress(0)
+      console.log(model);
+      
       mutate({
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
           onDownloadProgress: (progressEvent: any) => {
@@ -79,7 +83,7 @@ const Viewer = () => {
         }
       });
     }
-  }, [isLoading])
+  }, [isLoading, model.documentCount])
 
 
 
@@ -99,13 +103,13 @@ const Viewer = () => {
             </svg>
           </p>
           :
-          <p className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
+          <div className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
             Downloading data {progress}%
             <div className="w-1/2 bg-gray-200 rounded-full flex transition dark:bg-gray-700">
 
               <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}></div>
             </div>
-          </p>
+          </div>
         }
       </>
     )

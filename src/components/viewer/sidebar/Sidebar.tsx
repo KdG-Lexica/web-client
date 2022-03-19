@@ -6,11 +6,11 @@ import { useMutation } from "react-query";
 
 interface SidebarProps {
     chunkDistance: number;
-    setChunkDistance: React.Dispatch<React.SetStateAction<number>>;
     size: number;
-    setSize: React.Dispatch<React.SetStateAction<number>>;
     document: BasicDocumentType | null;
     IPTCs: IPTCType[];
+    setSize: React.Dispatch<React.SetStateAction<number>>;
+    setChunkDistance: React.Dispatch<React.SetStateAction<number>>;
     setIPTC: React.Dispatch<React.SetStateAction<IPTCType | null>>;
 }
 
@@ -31,7 +31,6 @@ export const Sidebar = (props : SidebarProps) => {
             setIPTC(null);
         }
     });
-
 
     function selectIPTC(id : string) {
         const IPTCSet = props.IPTCs.filter(set => set.id === parseInt(id));
@@ -123,7 +122,7 @@ export const Sidebar = (props : SidebarProps) => {
                     <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Document</span>
                 </div>
                 <div className="lex items-center pl-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
-                    <span className="self-center text-base font-semibold whitespace-wrap  text-slate-600 dark:text-slate-400">{
+                    <span className="self-center text-base font-semibold whitespace-wrap">{
                         props.document === null ? "Hover over a document to see the title." : props.document.name
                     }</span>
                 </div>

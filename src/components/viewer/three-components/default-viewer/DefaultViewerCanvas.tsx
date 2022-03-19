@@ -1,4 +1,4 @@
-import { Billboard, OrbitControls, Text, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Camera, Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -21,14 +21,14 @@ interface DefaultViewerCanvasProps {
     size: number;
     documents: ChunkType[];
     scale: number;
-    setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
     clickedDocument: BasicDocumentType | null;
-    setHoveredDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
-    executeFilter: (filter: QueryFilterDtoType[]) => void;
     filterFields: MetaType[];
-    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
     focus: boolean;
     IPTC: IPTCType | null;
+    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
+    setHoveredDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
+    setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
 const operators = [
@@ -157,13 +157,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
             Math.pow(camera.current.position.y - controls.current.target.y, 2) +
             Math.pow(camera.current.position.z - controls.current.target.z, 2));
 
-        if (distance > 3) {
-            setCameraDistance(3)
-        } else if (distance < 0.5) {
-            setCameraDistance(0.5)
-        } else {
-            setCameraDistance(distance);
-        }
+        setCameraDistance(distance);
     }
 
     function resetCamera() {
@@ -223,7 +217,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         }
                         {props.documents.length > 0 &&
                             <InstancedDocumentMesh
-                                pointSize={cameraDistance}
+                                pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance}
                                 size={props.size}
                                 documents={props.documents}
                                 setHoveredDocument={props.setHoveredDocument}
@@ -233,7 +227,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                             clusters.map((chunk, index) => {
                                 return (
                                     <InstancedChunkMesh key={index}
-                                        pointSize={cameraDistance}
+                                        pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance}
                                         documents={chunk.rows}
                                         setHoveredDocument={props.setHoveredDocument}
                                         setClickedDocument={props.setClickedDocument} />
@@ -241,21 +235,13 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                             })
                         }
 
-                        {props.IPTC !== null && <WordMesh pointSize={cameraDistance} IPTC={props.IPTC} />}
+                        {props.IPTC !== null && <WordMesh pointSize={cameraDistance > 5 ? 5 : cameraDistance < 0.5 ? 0.5 : cameraDistance} IPTC={props.IPTC} />}
 
-                        <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance} />
+                        <CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} />
 
                         {props.clickedDocument !== null &&
-                            <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance} />
+                            <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} />
                         }
-
-                        {/*hoveredDocument != null &&
-                        <Billboard position={[hoveredDocument.vector3.x, hoveredDocument.vector3.y + 0.1, hoveredDocument.vector3.z]}>
-                            <Text color="black" fontSize={0.1} outlineWidth={'5%'} outlineColor="white">
-                                {hoveredDocument.name}
-                            </Text>
-                        </Billboard>
-                    */}
                     </Canvas>
                 </div>
             </div>

@@ -5,7 +5,6 @@ import './index.css'
 import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
-import { ViewerLayout } from "./components/layouts/ViewerLayout";
 import { Tutorial } from "./components/viewer/tutorial/Tutorial";
 import { News } from "./components/viewer/news/News";
 import ModelEditor from "./components/model/ModelEditor";

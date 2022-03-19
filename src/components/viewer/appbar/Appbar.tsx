@@ -4,6 +4,7 @@ import ThemeToggle from "../../theme/ThemeToggle"
 export const Appbar = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    
     return (
         <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
             <div className="container flex flex-wrap justify-between items-center mx-auto">
@@ -23,9 +24,6 @@ export const Appbar = () => {
                     <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                         <li>
                             <a onClick={() => navigate("/")} className={`cursor-pointer block py-2 pr-4 pl-3 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ${location.pathname === "/" || location.pathname === "/home" ? "md:text-blue-700 dark:text-white" : "text-gray-700 dark:text-gray-400"}`}>Home</a>
-                        </li>
-                        <li>
-                            <a onClick={() => navigate("/viewer?size=0.25&set=1")} className={`cursor-pointer block py-2 pr-4 pl-3 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ${location.pathname === "/viewer" ? "md:text-blue-700 dark:text-white" : "text-gray-700 dark:text-gray-400"}`}>Viewer</a>
                         </li>
                         <li>
                             <a onClick={() => navigate("/tutorial")} className={`cursor-pointer block py-2 pr-4 pl-3 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ${location.pathname === "/tutorial" ? "md:text-blue-700 dark:text-white" : "text-gray-700 dark:text-gray-400"}`}>Tutorial</a>

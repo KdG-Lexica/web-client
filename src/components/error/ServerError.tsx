@@ -16,7 +16,6 @@ export const ServerError = () => {
                     Go back
                 </button>
             </div>
-
         </>
     )
 }
