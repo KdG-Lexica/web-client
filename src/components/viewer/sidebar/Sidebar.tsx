@@ -6,11 +6,11 @@ import { useMutation } from "react-query";
 
 interface SidebarProps {
     chunkDistance: number;
-    setChunkDistance: React.Dispatch<React.SetStateAction<number>>;
     size: number;
-    setSize: React.Dispatch<React.SetStateAction<number>>;
     document: BasicDocumentType | null;
     IPTCs: IPTCType[];
+    setSize: React.Dispatch<React.SetStateAction<number>>;
+    setChunkDistance: React.Dispatch<React.SetStateAction<number>>;
     setIPTC: React.Dispatch<React.SetStateAction<IPTCType | null>>;
 }
 
@@ -31,7 +31,6 @@ export const Sidebar = (props : SidebarProps) => {
             setIPTC(null);
         }
     });
-
 
     function selectIPTC(id : string) {
         const IPTCSet = props.IPTCs.filter(set => set.id === parseInt(id));

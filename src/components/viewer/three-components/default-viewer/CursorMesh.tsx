@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Vector3Type from "../../../../types/Vector3Type";
-import * as THREE from "three";
-import { Mesh } from "three";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 

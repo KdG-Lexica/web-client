@@ -1,4 +1,4 @@
-import { Billboard, OrbitControls, Text, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Camera, Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -21,14 +21,14 @@ interface DefaultViewerCanvasProps {
     size: number;
     documents: ChunkType[];
     scale: number;
-    setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
     clickedDocument: BasicDocumentType | null;
-    setHoveredDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
-    executeFilter: (filter: QueryFilterDtoType[]) => void;
     filterFields: MetaType[];
-    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
     focus: boolean;
     IPTC: IPTCType | null;
+    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
+    setHoveredDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
+    setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
 const operators = [

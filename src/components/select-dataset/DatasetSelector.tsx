@@ -12,7 +12,6 @@ export const DatasetSelector = () => {
         refetch
     } = useQuery("getModels", () => getModels);
 
-    /* usequery wasnt triggering refresh when you press go back button in browser so added this useeffect */
     useEffect(() => {
         refetch();
     }, [])

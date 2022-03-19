@@ -1,7 +1,4 @@
-import { useFrame } from "@react-three/fiber";
-import React, { useState } from "react";
 import BasicDocumentType from "../../../../types/BasicDocumentType";
-import Vector3Type from "../../../../types/Vector3Type";
 
 interface SelectedDocumentMeshProps {
     pointSize: number;

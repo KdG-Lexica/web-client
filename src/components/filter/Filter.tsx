@@ -3,7 +3,6 @@ import FilterItemType, { RuleType } from "../../types/FilterItemType";
 import MetaType from "../../types/MetaType";
 import OperatorType from "../../types/OperatorType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
-import RuleDtoType from "../../types/RuleDtoType";
 import { FilterRow } from "./FilterRow";
 
 interface FilterProps {
@@ -88,16 +87,12 @@ export const Filter = (props: FilterProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
                                 <p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add filter</p></button>}
-
                         </div>
                         {filters.length > 0 && <button type="button" onClick={() => { postQuery(filters) }} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
                             Execute Query
                         </button>}
                     </div >
                 </div>
-                {/* <pre className="m-4 bg-white dark:bg-slate-800 text-black dark:text-slate-200 rounded overflow-y-scroll h-96 w-80">
-                    {JSON.stringify(filterToDto(filters), null, 4)}
-                </pre> */}
             </div>
         </>
     )

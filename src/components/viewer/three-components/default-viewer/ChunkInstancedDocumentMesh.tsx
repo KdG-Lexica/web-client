@@ -28,18 +28,18 @@ const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
                 for (let index = 100 * chunk; index < (props.documents.length / 10) + 100 * chunk; index++) {
                     const position = new Vector3();
                     const matrix = new Matrix4();
-          
+
                     position.x = props.documents[index].vector3.x;
                     position.y = props.documents[index].vector3.y;
                     position.z = props.documents[index].vector3.z;
-          
+
                     matrix.compose(position, quaternion, scale);
-          
+
                     meshRef.current!.setMatrixAt(index, matrix);
-                  }
+                }
     
-                  meshRef.current!.instanceMatrix.needsUpdate = true;
-                  chunk +=1
+                meshRef.current!.instanceMatrix.needsUpdate = true;
+                chunk +=1
             }
 
         }, 1000);
