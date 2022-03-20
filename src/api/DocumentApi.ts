@@ -2,7 +2,7 @@ import axios from "axios";
 import QueryFilterDtoType from "../types/QueryFilterType";
 
 const api = axios.create({
-	baseURL: "https://api.lexica.ovh"
+	baseURL: "https://api.lexica.ovh/api"
 })
 
 export async function getModel(model: string) {	
@@ -36,7 +36,7 @@ export interface GetDocumentProps {
 }
 
 export async function getDocument(props: GetDocumentProps) {
-	const response = await api.get(`/models/${props.model}/documents?document=${props.document}`);
+	const response = await api.get(`/models/${props.model}/documents?document=${props.document}`);	
 	return response.data;
 }
 

@@ -24,7 +24,7 @@ const DocumentViewer = (props: DocumentViewerProps) => {
 
     const { mutate } = useMutation(documentApi.getDocument, {
         onSuccess: (data: any) => {
-            setDocument(data);
+            setDocument(data.meta);
 
             const dataLinks = JSON.stringify(data).match(/(?<=")https?:\/\/[^\"]+/g);
 
