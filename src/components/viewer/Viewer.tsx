@@ -11,6 +11,7 @@ import useQueryParams from "../../hooks/useQueryParams";
 import { useNavigate } from "react-router-dom";
 import { Sidebar } from "./sidebar/Sidebar";
 import IPTCType from "../../types/IPTCType";
+import CosineDocumentType from "../../types/CosineDocumentType";
 
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
@@ -23,6 +24,8 @@ const Viewer = () => {
   const [size, setSize] = useState<number>(0.01);
   const [IPTCs, setIPTCs] = useState<IPTCType[]>([]);
   const [IPTC, setIPTC] = useState<IPTCType | null>(null);
+  const [cosineDocuments, setCosineDocuments] = useState<CosineDocumentType[]>([]);
+  const [showingCosine, setShowingCosine] = useState(false);
 
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
@@ -82,9 +85,14 @@ const Viewer = () => {
         }
       });
     }
-  }, [isLoading, model.documentCount])
+  }, [isLoading, model.documentCount]);
 
-
+  useEffect(() => {
+    console.log("Changed");
+    
+    setShowingCosine(false);
+    setCosineDocuments([]);
+  }, [clickedDocument]);
 
   if (isError) {
     navigate("/server-error")
@@ -138,7 +146,10 @@ const Viewer = () => {
           filterFields={model.meta}
           setFocus={setFocus} focus={focus}
           setHoveredDocument={setHoveredDocument}
-          IPTC={IPTC} />
+          IPTC={IPTC}
+          showingCosine={showingCosine}
+          cosineDocuments={cosineDocuments}
+          />
         <div className="overflow-hidden max-h-full" style={{ width: "22.5%" }}>
           <DocumentViewer
             model={model}
@@ -146,7 +157,12 @@ const Viewer = () => {
             duration={dataset.duration}
             count={dataset.count}
             setClickedDocument={setClickedDocument}
-            setFocus={setFocus} />
+            setFocus={setFocus}
+            cosineDocuments={cosineDocuments}
+            setCosineDocuments={setCosineDocuments}
+            showingCosine={showingCosine}
+            setShowingCosine={setShowingCosine}
+            />
         </div>
       </div>
     </>

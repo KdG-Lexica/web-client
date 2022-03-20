@@ -15,6 +15,8 @@ import InstancedDocumentMesh from "./InstancedDocumentMesh";
 import WordMesh from "./WordMesh";
 import SelectedDocumentMesh from "./SelectedDocumentMesh";
 import IPTCType from "../../../../types/IPTCType";
+import CosineDocumentType from "../../../../types/CosineDocumentType";
+import InstancedCosineMesh from "./InstancedCosineMesh";
 
 interface DefaultViewerCanvasProps {
     center: Vector3Type;
@@ -26,6 +28,8 @@ interface DefaultViewerCanvasProps {
     filterFields: MetaType[];
     focus: boolean;
     IPTC: IPTCType | null;
+    cosineDocuments: CosineDocumentType[];
+    showingCosine: boolean;
     setFocus: React.Dispatch<React.SetStateAction<boolean>>;
     setHoveredDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
     executeFilter: (filter: QueryFilterDtoType[]) => void;
@@ -243,6 +247,12 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
 
                         {props.clickedDocument !== null &&
                             <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} />
+                        }
+
+                        {props.showingCosine &&
+                            <InstancedCosineMesh pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} documents={props.cosineDocuments}
+                                setHoveredDocument={props.setHoveredDocument}
+                                setClickedDocument={props.setClickedDocument}/>
                         }
                     </Canvas>
                 </div>
