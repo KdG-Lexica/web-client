@@ -1,4 +1,5 @@
 import MetaType from "./MetaType";
+import Vector3Type from "./Vector3Type";
 
 export default interface ModelType {
     id: string;
@@ -7,4 +8,5 @@ export default interface ModelType {
     createdAt: Date;
     updatedAt: Date;
     documentCount: number;
+    center: Vector3Type;
 }

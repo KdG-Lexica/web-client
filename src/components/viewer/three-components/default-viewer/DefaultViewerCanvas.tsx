@@ -17,6 +17,7 @@ import SelectedDocumentMesh from "./SelectedDocumentMesh";
 import IPTCType from "../../../../types/IPTCType";
 
 interface DefaultViewerCanvasProps {
+    center: Vector3Type;
     chunkDistance: number;
     size: number;
     documents: ChunkType[];
@@ -93,12 +94,13 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [showingFilter, setShowingFilter] = useState(false);
     const [fullScreen, setFullScreen] = useState(false);
 
+
     const camera = useRef<Camera>(new THREE.PerspectiveCamera());
-    const controls = useRef<any>({ target: { x: 0, y: 0, z: 0 } });
+    const controls = useRef<any>({ target: { x: props.center.x, y: props.center.y, z: props.center.z } });
 
     const [mouseDown, setMouseDown] = useState(false);
     const [requiresUpdate, setRequiresUpdate] = useState(false);
-    const [cursorVector, setCursorVector] = useState<Vector3Type>({ x: 0, y: 0, z: 0 });
+    const [cursorVector, setCursorVector] = useState<Vector3Type>(props.center);
     const [cameraDistance, setCameraDistance] = useState<number>(3);
 
     useEffect(() => {
@@ -211,7 +213,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         }
                         <ambientLight intensity={0.5} />
                         <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
-                        <OrbitControls ref={controls} enablePan={true} target={[0, 0, 0]} enableDamping={false} />
+                        <OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z ]} enableDamping={false}/>
                         {showAxis &&
                             <AxisMesh showScale={showScale} scale={props.scale} />
                         }

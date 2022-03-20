@@ -10,9 +10,9 @@ interface CursorMeshProps {
 }
 
 const CursorMesh = (props : CursorMeshProps) => {  
-  const [x, setX] = useState<number>(0);
-  const [y, setY] = useState<number>(0);
-  const [z, setZ] = useState<number>(0);
+  const [x, setX] = useState<number>(props.vector3.x);
+  const [y, setY] = useState<number>(props.vector3.y);
+  const [z, setZ] = useState<number>(props.vector3.z);
 
   const EnableMovement = () => {
     useFrame(() => {

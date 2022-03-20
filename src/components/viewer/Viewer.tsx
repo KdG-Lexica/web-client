@@ -15,7 +15,7 @@ import IPTCType from "../../types/IPTCType";
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });
-  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0 });
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: {x: 0, y: 0, z: 0} });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
   const [focus, setFocus] = useState(false);
@@ -72,7 +72,6 @@ const Viewer = () => {
   useEffect(() => {
     if (!isLoading && model.documentCount > 0) {
       setProgress(0)
-      console.log(model);
       
       mutate({
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
@@ -128,6 +127,7 @@ const Viewer = () => {
           setIPTC={setIPTC}
         />
         <DefaultViewerCanvas
+          center={model.center}
           chunkDistance={chunkDistance}
           size={size}
           documents={dataset.chunks}
