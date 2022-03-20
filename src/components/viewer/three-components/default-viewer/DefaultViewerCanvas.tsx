@@ -114,7 +114,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
         }
 
         checkTheme();
-        camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
+        camera.current.position.set(props.scale / 2.5 + props.center.x, props.scale / 2.5 + props.center.y, props.scale / 2.5 + props.center.z);
 
         window.addEventListener("storage", (event) => {
             checkTheme();
