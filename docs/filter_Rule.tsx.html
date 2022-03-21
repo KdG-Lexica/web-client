@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs filter/Rule.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>filter/Rule.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from "react";
+import FilterItemType, { RuleType } from "../../types/FilterItemType";
+import MetaType from "../../types/MetaType";
+import OperatorType from "../../types/OperatorType";
+
+
+interface RuleProps {
+    id: string;
+    fields: MetaType[];
+    operators: OperatorType[];
+    combinators: string[];
+    rule: RuleType;
+    handleDelete: (id: string) => void;
+    updateFilterRows: (r: RuleType) => void;
+    filterItem: FilterItemType;
+    setCombinator: React.Dispatch&lt;React.SetStateAction&lt;string>>;
+    combinator: string;
+}
+
+/** 
+ * Rule 
+ * A rule defines a single filter. Ex: Where snippet contains 'year'
+ * You can chain up to 6 rules by an AND or OR operator.
+ * 
+ * @component
+ * @example
+ * return (
+*   &lt;Rule
+        key={index}
+        rule={r}
+        id={rules[index].id}
+        combinator={combinator}
+        combinators={index == 0 ? ["Where"] : ["and", "or"]}
+        filterItem={props.filterItem}
+        fields={props.fields}
+        operators={props.operators}
+        handleDelete={handleDelete}
+        updateFilterRows={updateFilterRow}
+        setCombinator={setCombinator}
+    />
+   )
+*/
+export const Rule = (props: RuleProps) => {
+    const START_DATE = Date.now();
+
+    const [value, setvalue] = useState(props.rule.value);
+    const [field, setField] = useState&lt;MetaType>(props.rule.field);
+    const [operator, setOperator] = useState&lt;OperatorType>(props.rule.operator);
+    const [startDate, setStartDate] = useState("")
+    const [endDate, setEndDate] = useState("")
+    const [focus, setFocus] = useState(START_DATE)
+
+    useEffect(() => {
+        if (field.type === "date") {
+            props.updateFilterRows({ id: props.id, field: field, operator: props.operators.find((o) => o.name == operator.name), value: `${startDate}${endDate !== "" ? "$" + endDate : ""}` } as RuleType);
+        } else {
+            props.updateFilterRows({ id: props.id, field: field, operator: props.operators.find((o) => o.name == operator.name), value: value } as RuleType);
+        }
+    }, [value, field, operator, endDate, startDate])
+
+    const updateOperator = (e: any) => {
+        const operator = props.operators.find((o) => o.name === e.target.value) ?? props.operators[0];
+        setOperator(operator)
+    }
+
+    const updateField = (e: any) => {
+        const field = props.fields.find((f) => f.key === e.target.value) ?? props.fields[0]
+        setField(field);
+    }
+
+    const drawDateRow = () => {
+        return (
+            &lt;>
+                &lt;select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent dark:text-white w-[141px]" name="operators" id="operators">
+                    {props.operators.filter((o) => o.dateOperator === true).map((o) => {
+                        return &lt;option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={o.name} key={o.name}>{o.name.replaceAll("_", " ").toLowerCase()}&lt;/option>
+                    })}
+                &lt;/select>
+                &lt;div className="relative">
+                    &lt;input name="start" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+                &lt;/div>
+                {operator.name === "from" &amp;&amp;
+                    &lt;>
+                        &lt;span className="mx-4 text-gray-500">to&lt;/span>
+                        &lt;div className="relative">
+                            &lt;input name="end" value={endDate} type="date" onChange={(e) => setEndDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg  block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+                        &lt;/div>
+                    &lt;/>
+                }
+            &lt;/>
+        );
+    }
+    return (
+        &lt;div className="flex flex-row items-center">
+            &lt;button onClick={() => props.handleDelete(props.id)}>
+                &lt;svg style={{ height: 30, width: 30 }}
+                    xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                &lt;/svg>
+            &lt;/button>
+            {props.combinators.length == 1 ? &lt;p className="text-slate-400 font-medium text-md m-1 pl-0.5 w-16">{props.combinators[0]}&lt;/p> :
+                &lt;select name="combinator" onChange={(e) => props.setCombinator(e.target.value)} value={props.combinator} className="m-1 rounded bg-transparent text-slate-400 font-medium text-md w-16" id="combinator">
+                    {props.combinators.map((c) => {
+                        return &lt;option className="bg-slate-900 text-slate-400 w-16" value={c.toUpperCase()} key={c}>{c}&lt;/option>
+                    })}
+                &lt;/select>
+            }
+            &lt;select name="field" onChange={(e) => updateField(e)} className="m-1 rounded h-8 bg-transparent dark:text-white" id="field">
+                {props.fields.map((k) => {
+                    return &lt;option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={k.key} key={k.id}>{k.key}&lt;/option>
+                })}
+            &lt;/select>
+            {field.type.toLowerCase() === "date" ? drawDateRow() :
+                &lt;>
+                    &lt;select onChange={(e) => updateOperator(e)} className="m-1 rounded h-8 bg-transparent dark:text-white" name="operators" id="operators">
+                        {props.operators.filter((o) => o.dateOperator === false).map((o) => {
+                            return &lt;option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={o.name} key={o.name}>{o.name.replaceAll("_", " ").toLowerCase()}&lt;/option>
+                        })}
+                    &lt;/select>
+                    {operator.input &amp;&amp; &lt;input value={value} onChange={(e) => setvalue(e.target.value)} className="rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-1 h-8 dark:bg-slate-700 bg-slate-200 dark:text-slate-300 text-slate-800" id="filter" type="text" placeholder="" />}
+                &lt;/>
+            }
+        &lt;/div>
+    )
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

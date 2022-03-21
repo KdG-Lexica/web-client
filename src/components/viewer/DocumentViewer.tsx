@@ -14,10 +14,10 @@ interface DocumentViewerProps {
     count: number;
     cosineDocuments: CosineDocumentType[];
     showingCosine: boolean;
-    setClickedDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
-    setFocus : React.Dispatch<React.SetStateAction<boolean>>;
-    setCosineDocuments : React.Dispatch<React.SetStateAction<CosineDocumentType[]>>;
-    setShowingCosine : React.Dispatch<React.SetStateAction<boolean>>;
+    setClickedDocument: React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
+    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
+    setCosineDocuments: React.Dispatch<React.SetStateAction<CosineDocumentType[]>>;
+    setShowingCosine: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -72,17 +72,17 @@ const DocumentViewer = (props: DocumentViewerProps) => {
             {document !== null ?
                 <div className="bg-slate-100 dark:bg-neutral-900 min-w-1/4 max-w-1/4 p-2">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => {setDocument(null); props.setClickedDocument(null)}}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setDocument(null); props.setClickedDocument(null) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => {props.setFocus(true)}}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { props.setFocus(true) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                         </button>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => {props.setShowingCosine(!props.showingCosine)}}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { props.setShowingCosine(!props.showingCosine) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>

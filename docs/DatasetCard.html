@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs FilterProps</title>
+  <title>Document Viewer Docs DatasetCard</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -90,7 +90,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="FilterProps.html">FilterProps</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
                 
             </nav>
         </div>
@@ -98,7 +98,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Components</p>
-                    <h1>FilterProps</h1>
+                    <h1>DatasetCard</h1>
                 </header>
                 
 
@@ -110,7 +110,7 @@
 <header>
     
         <h2>
-            &ltFilterProps  /&gt
+            &ltDatasetCard  /&gt
         </h2>
         
     
@@ -130,12 +130,12 @@
 
 
     
-    <h4 class="name" id="FilterProps">
-        <a class="href-link" href="#FilterProps">#</a>
+    <h4 class="name" id="DatasetCard">
+        <a class="href-link" href="#DatasetCard">#</a>
         
         <span class="code-name">
             
-                &ltFilterProps  /&gt
+                &ltDatasetCard  /&gt
             
         </span>
     </h4>
@@ -144,7 +144,9 @@
     
     
     <div class="description">
-        <p>Filter component</p>
+        <p>Datasetcard
+Renders a card component for all available models / datasets.
+It appears on the home page and you can select the initial datasize to improve performance on low end devices.</p>
     </div>
     
 
@@ -195,9 +197,9 @@
 
     
         <p class="tag-source">
-            <a href="Filter.tsx.html" class="button">View Source</a>
+            <a href="select-dataset_DatasetCard.tsx.html" class="button">View Source</a>
             <span>
-                <a href="Filter.tsx.html">Filter.tsx</a>, <a href="Filter.tsx.html#line68">line 68</a>
+                <a href="select-dataset_DatasetCard.tsx.html">select-dataset/DatasetCard.tsx</a>, <a href="select-dataset_DatasetCard.tsx.html#line12">line 12</a>
             </span>
         </p>
     
@@ -221,6 +223,12 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+
+  <pre class="prettyprint"><code>&lt;DatasetCard key={m.id} id={m.id} name={m.collectionName} description={"2M+ datapoints collected from the New York Times. Browse through documents in a 3D space and explore different clusters.".substring(0, 150).concat("...")} /></code></pre>
 
 
 

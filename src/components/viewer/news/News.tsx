@@ -8,7 +8,16 @@ const news = [{
     fullText: "lorem ipsum..."
 } as NewsCardProps]
 
-export const News = () => {
+/**
+ * News component renders all newscards in one page
+ * 
+ * @component
+ * @example
+ * return (
+ *   <News />
+ * )
+ */
+const News = () => {
     return (
         <div className="flex flex-row flex-wrap gap-4 mx-24 lg:mx-60 my-4 items-center justify-center h-full">
             {news.map((n) =>
@@ -19,3 +28,4 @@ export const News = () => {
         </div>
     )
 }
+export default News;

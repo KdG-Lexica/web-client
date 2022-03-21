@@ -6,7 +6,7 @@ import { DatasetSelector } from "./components/select-dataset/DatasetSelector";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { ServerError } from "./components/error/ServerError";
 import { Tutorial } from "./components/viewer/tutorial/Tutorial";
-import { News } from "./components/viewer/news/News";
+import News from "./components/viewer/news/News";
 import ModelEditor from "./components/model/ModelEditor";
 import { NewsArticle } from "./components/viewer/news/NewsArticle";
 

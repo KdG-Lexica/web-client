@@ -4,6 +4,13 @@ import * as documentApi from "../../api/DocumentApi";
 import ModelType from "../../types/ModelType";
 import { DatasetCard } from "./DatasetCard";
 
+/** 
+ * DatasetSelector
+ * Renders all datasetcards inside the home page.
+ * @component
+ * @example
+ * <Route path="/" element={<DatasetSelector />} />
+*/
 export const DatasetSelector = () => {
     const [models, setModels] = useState<ModelType[]>([]);
 

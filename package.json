@@ -8,6 +8,9 @@
     "preview": "vite preview",
     "docs": "jsdoc -c jsdoc.json"
   },
+  "alias": {
+    "shared": "./src/shared"
+  },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.4.2",
     "@mui/icons-material": "^5.4.1",

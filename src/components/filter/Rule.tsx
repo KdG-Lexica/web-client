@@ -17,7 +17,29 @@ interface RuleProps {
     combinator: string;
 }
 
-
+/** 
+ * Rule 
+ * A rule defines a single filter. Ex: Where snippet contains 'year'
+ * You can chain up to 6 rules by an AND or OR operator.
+ * 
+ * @component
+ * @example
+ * return (
+*   <Rule
+        key={index}
+        rule={r}
+        id={rules[index].id}
+        combinator={combinator}
+        combinators={index == 0 ? ["Where"] : ["and", "or"]}
+        filterItem={props.filterItem}
+        fields={props.fields}
+        operators={props.operators}
+        handleDelete={handleDelete}
+        updateFilterRows={updateFilterRow}
+        setCombinator={setCombinator}
+    />
+   )
+*/
 export const Rule = (props: RuleProps) => {
     const START_DATE = Date.now();
 
@@ -55,13 +77,13 @@ export const Rule = (props: RuleProps) => {
                     })}
                 </select>
                 <div className="relative">
-                    <input name="start" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    <input name="start" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
                 </div>
                 {operator.name === "from" &&
                     <>
                         <span className="mx-4 text-gray-500">to</span>
                         <div className="relative">
-                            <input name="end" value={endDate} type="date" onChange={(e) => setEndDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <input name="end" value={endDate} type="date" onChange={(e) => setEndDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 m-1 sm:text-sm rounded-lg  block w-fit pl-4 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
                         </div>
                     </>
                 }

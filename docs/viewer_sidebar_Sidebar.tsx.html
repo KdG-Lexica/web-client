@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs viewer/sidebar/Sidebar.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>viewer/sidebar/Sidebar.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
+import BasicDocumentType from "../../../types/BasicDocumentType";
+import IPTCType from "../../../types/IPTCType";
+import * as documentApi from "../../../api/DocumentApi"
+import { useMutation } from "react-query";
+
+interface SidebarProps {
+    chunkDistance: number;
+    size: number;
+    document: BasicDocumentType | null;
+    IPTCs: IPTCType[];
+    setSize: React.Dispatch&lt;React.SetStateAction&lt;number>>;
+    setChunkDistance: React.Dispatch&lt;React.SetStateAction&lt;number>>;
+    setIPTC: React.Dispatch&lt;React.SetStateAction&lt;IPTCType | null>>;
+}
+/**
+ * Sidebar component that contains various controls to change the viewer.
+ * 
+ * @component
+ * @example
+ * return (
+    &lt;Sidebar
+          size={size}
+          setSize={setSize}
+          chunkDistance={chunkDistance}
+          setChunkDistance={setChunkDistance}
+          document={hoveredDocument}
+          IPTCs={IPTCs}
+          setIPTC={setIPTC}
+        />
+ * )
+ */
+export const Sidebar = (props: SidebarProps) => {
+    const [IPTC, setIPTC] = useState&lt;IPTCType | null>(null);
+    const [levels, setLevels] = useState&lt;number[]>([]);
+    const [level, setLevel] = useState&lt;number>(0);
+
+    const { mutate, isLoading } = useMutation(documentApi.getIPTC, {
+        onSuccess: (data: IPTCType) => {
+            setIPTC(data);
+            const dataLevels = data.meta.map(entry => entry.level);
+            const uniqueLevels = [...new Set(dataLevels)]
+            setLevels(uniqueLevels);
+            setLevel(uniqueLevels[0]);
+        },
+        onError: (error: any) => {
+            setIPTC(null);
+        }
+    });
+
+    function selectIPTC(id: string) {
+        const IPTCSet = props.IPTCs.filter(set => set.id === parseInt(id));
+
+        if (IPTCSet.length > 0) {
+            mutate(IPTCSet[0].id);
+        } else {
+            setIPTC(null);
+            setLevels([]);
+            setLevel(0);
+        }
+    }
+
+    useEffect(() => {
+        if (IPTC === null) {
+            props.setIPTC(null)
+        } else {
+            const temp = IPTC!.meta.filter(x => x.level === level);
+            const tempy = { id: IPTC!.id, name: IPTC!.name, meta: temp }
+            props.setIPTC(tempy);
+        }
+    }, [IPTC, level])
+
+    return (
+        &lt;aside style={{ width: "17.5%" }} aria-label="Sidebar">
+            &lt;div className="overflow-y-hidden py-4 px-3 heigt-full bg-gray-50 dark:bg-gray-800" style={{ height: "calc(100vh - 80px)" }}>
+
+                &lt;div id="dropdown-cta" className="p-4 mb-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
+                    &lt;div className="flex items-center mb-3">
+                        &lt;span className="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Beta&lt;/span>
+                    &lt;/div>
+                    &lt;p className="mb-3 text-sm text-blue-900 dark:text-blue-400">
+                        This is a beta version of the application. Not all buttons will work and bugs may occur. Thanks for understanding.
+                    &lt;/p>
+                &lt;/div>
+
+                &lt;div className="mb-2 nowrap flex flex-row">
+                    &lt;div style={levels.length > 0 ? { width: "63%", marginRight: "3%" } : { width: "100%", marginRight: "0" }}>
+                        &lt;select className="items-center w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                            name="IPTCs" id="IPTCs"
+                            onChange={(e) => { selectIPTC(e.target.value) }}>
+                            &lt;option value="none">Select a wordlist&lt;/option>
+                            {props.IPTCs.map((IPTCOption) => {
+                                return (
+                                    &lt;option key={IPTCOption.id} value={IPTCOption.id}>{IPTCOption.name}&lt;/option>
+                                )
+                            })}
+                        &lt;/select>
+                    &lt;/div>
+
+                    {levels.length > 0 &amp;&amp;
+                        &lt;div style={{ width: "33%" }}>
+                            &lt;select className="items-center w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                name="IPTCs" id="IPTCs"
+                                onChange={(e) => { setLevel(parseInt(e.target.value)) }}>
+                                {
+                                    levels.map((lvl) => {
+                                        return (
+                                            &lt;option key={lvl} value={lvl}>{lvl}&lt;/option>
+                                        )
+                                    })
+                                }
+                            &lt;/select>
+                        &lt;/div>
+                    }
+                &lt;/div>
+
+                &lt;div className="lex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
+                    &lt;span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Performance&lt;/span>
+                &lt;/div>
+
+                &lt;div className="lex items-center pl-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
+                    &lt;span className="self-center text-base font-semibold whitespace-nowrap  text-slate-600 dark:text-slate-400">Chunk distance: {props.chunkDistance}&lt;/span>
+                &lt;/div>
+                &lt;div className="hidden md:block flex flex-col space-y-2 p-2 w-full mb-2">
+                    &lt;input defaultValue={props.chunkDistance} type="range" className="w-full" min="0" max="3" step="1"
+                        onChange={(e) => { props.setChunkDistance(parseInt(e.target.value)) }} />
+                &lt;/div>
+
+                &lt;div className="lex items-center pl-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
+                    &lt;span className="self-center text-base font-semibold whitespace-nowrap  text-slate-600 dark:text-slate-400">Showing: {Math.floor(props.size * 100)}%&lt;/span>
+                &lt;/div>
+                &lt;div className="hidden md:block flex flex-col space-y-2 p-2 w-full mb-2">
+                    &lt;input defaultValue={Math.floor(props.size * 100)} type="range" className="w-full" min="1" max="100" step="1"
+                        onChange={(e) => { props.setSize(parseInt(e.target.value) / 100) }} />
+                &lt;/div>
+
+                &lt;div className="lex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
+                    &lt;span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Document&lt;/span>
+                &lt;/div>
+                &lt;div className="lex items-center pl-2 text-base font-normal text-gray-900 rounded-lg dark:text-white">
+                    &lt;span className="self-center text-base font-semibold whitespace-wrap">{
+                        props.document === null ? "Hover over a document to see the title." : props.document.name
+                    }&lt;/span>
+                &lt;/div>
+
+            &lt;/div>
+        &lt;/aside >
+    )
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

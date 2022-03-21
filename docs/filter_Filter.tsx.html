@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Filter.tsx</title>
+  <title>Document Viewer Docs filter/Filter.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="FilterProps.html">FilterProps</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
                 
             </nav>
         </div>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>Filter.tsx</h1>
+                    <h1>filter/Filter.tsx</h1>
                 </header>
                 
 
@@ -116,17 +116,24 @@ import OperatorType from "../../types/OperatorType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import { FilterRow } from "./FilterRow";
 
-/**
- * Filter component
- *
- * @component
- */
+
 interface FilterProps {
     fields: MetaType[];
     operators: OperatorType[];
     executeFilter: (filter: QueryFilterDtoType[]) => void;
 }
-
+/** 
+ * Filter
+ * Filter component allows user to query data in an sql-like and user friendly way.
+ * A filter can contain up to 2 filterrows that hold up to 6 rules that can be chained by AND or OR operators.
+ * 
+ * @component
+ * @example
+ * return(
+ *  &lt;Filter fields={props.filterFields} operators={operators} executeFilter={props.executeFilter} />
+ * )
+ * 
+*/
 export const Filter = (props: FilterProps) => {
     const [filters, setFilters] = useState&lt;FilterItemType[]>([]);
 
@@ -192,7 +199,7 @@ export const Filter = (props: FilterProps) => {
 
     return (
         &lt;>
-            &lt;div className="flex flex-row justify-center items-start h-full">
+            &lt;div className="flex flex-row justify-center items-start h-full" style={{ zIndex: 999 }}>
                 &lt;div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 border-solid border-slate-200 dark:border-slate-800 border-2 p-2">
                     &lt;div className="flex flex-col">
                         &lt;p className="font-sans text-slate-400 font-medium text-lg p-2 w-96">In this view, show records&lt;/p>

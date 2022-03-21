@@ -6,7 +6,14 @@ export interface DatasetCardPropsType {
     name: string;
     description: string;
 }
-
+/** 
+ * Datasetcard 
+ * Renders a card component for all available models / datasets.
+ * It appears on the home page and you can select the initial datasize to improve performance on low end devices.
+ * @component
+ * @example
+ * <DatasetCard key={m.id} id={m.id} name={m.collectionName} description={"2M+ datapoints collected from the New York Times. Browse through documents in a 3D space and explore different clusters.".substring(0, 150).concat("...")} />
+*/
 export const DatasetCard = (props: DatasetCardPropsType) => {
     const navigate = useNavigate();
     const [dataPercentage, setDataPercentage] = useState<number>(0.5);
