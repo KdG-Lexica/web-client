@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs viewer/news/NewsCard.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>viewer/news/NewsCard.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useNavigate } from "react-router-dom";
+
+export interface NewsCardProps {
+    title: string;
+    description: string;
+    id: number;
+    fullText: string;
+}
+
+/**
+ * Newscard that previews articles to read.
+ * 
+ * @component
+ * @example
+ * return (
+    &lt;NewsCard {...n} key={n.id} />
+ * )
+ */
+export const NewsCard = (props: NewsCardProps) => {
+    const navigate = useNavigate();
+    return (
+        &lt;div className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700" style={{ flexBasis: "30%" }}>
+            &lt;a href="#">
+                &lt;img className="rounded-t-lg" src="/news_photos/march11update.png" alt="update photo" />
+            &lt;/a>
+            &lt;div className="p-5">
+                &lt;div className="div flex flex-row">
+                    &lt;div className="py-1.5 px-5 mr-2 mb-2 text-sm w-fit font-medium text-gray-900 bg-gray-200 border border-gray-200 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600">#Sprint2&lt;/div>
+                    &lt;div className="py-1.5 px-5 mr-2 mb-2 text-sm w-fit font-medium text-gray-900 bg-gray-200 border border-gray-200 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600">#March11th&lt;/div>
+                &lt;/div>
+                &lt;a href="#">
+                    &lt;h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{props.title}&lt;/h5>
+                &lt;/a>
+                &lt;p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{props.description}&lt;/p>
+                &lt;div onClick={() => navigate("/news/1")} className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Read more
+                    &lt;svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">&lt;path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd">&lt;/path>&lt;/svg>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    )
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

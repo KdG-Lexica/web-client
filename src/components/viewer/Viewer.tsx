@@ -16,7 +16,7 @@ import CosineDocumentType from "../../types/CosineDocumentType";
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });
-  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: {x: 0, y: 0, z: 0} });
+  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: { x: 0, y: 0, z: 0 } });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
   const [focus, setFocus] = useState(false);
@@ -66,16 +66,16 @@ const Viewer = () => {
     setIPTCs(words as unknown as IPTCType[])
   }
 
-  const { isLoading, isError, refetch } = useQuery("getModel", async () => {await getModel(setId!)});
+  const { isLoading, isError, refetch } = useQuery("getModel", async () => { await getModel(setId!) });
 
-  useEffect(() => {    
-    refetch();    
+  useEffect(() => {
+    refetch();
   }, [])
 
   useEffect(() => {
     if (!isLoading && model.documentCount > 0) {
       setProgress(0)
-      
+
       mutate({
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
           onDownloadProgress: (progressEvent: any) => {
@@ -89,7 +89,7 @@ const Viewer = () => {
 
   useEffect(() => {
     console.log("Changed");
-    
+
     setShowingCosine(false);
     setCosineDocuments([]);
   }, [clickedDocument]);
@@ -112,8 +112,7 @@ const Viewer = () => {
           :
           <div className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
             Downloading data {progress}%
-            <div className="w-1/2 bg-gray-200 rounded-full flex transition dark:bg-gray-700">
-
+            <div className="w-1/2 bg-gray-400 rounded-full flex transition dark:bg-gray-700">
               <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}></div>
             </div>
           </div>
@@ -149,7 +148,7 @@ const Viewer = () => {
           IPTC={IPTC}
           showingCosine={showingCosine}
           cosineDocuments={cosineDocuments}
-          />
+        />
         <div className="overflow-hidden max-h-full" style={{ width: "22.5%" }}>
           <DocumentViewer
             model={model}
@@ -162,7 +161,7 @@ const Viewer = () => {
             setCosineDocuments={setCosineDocuments}
             showingCosine={showingCosine}
             setShowingCosine={setShowingCosine}
-            />
+          />
         </div>
       </div>
     </>

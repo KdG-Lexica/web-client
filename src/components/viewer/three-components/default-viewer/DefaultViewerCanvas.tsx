@@ -176,22 +176,22 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
             <div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full" style={!fullScreen ? {} : { position: "absolute", zIndex: "30", top: 0, left: 0, bottom: 0, right: 0 }}>
                 <div className="absolute z-50">
                     <div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                         </button>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowAxis(!showAxis) }}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowAxis(!showAxis) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
                             </svg>
                         </button>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowScale(!showScale) }}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowScale(!showScale) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                             </svg>
                         </button>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowingFilter(!showingFilter); }}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowingFilter(!showingFilter); }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                             </svg>
@@ -203,7 +203,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                                 executeFilter={props.executeFilter}
                             />
                         </div>
-                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2" onClick={() => { setFullScreen(!fullScreen) }}>
+                        <button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setFullScreen(!fullScreen) }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                             </svg>
@@ -217,7 +217,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         }
                         <ambientLight intensity={0.5} />
                         <PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
-                        <OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z ]} enableDamping={false}/>
+                        <OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z]} enableDamping={false} />
                         {showAxis &&
                             <AxisMesh showScale={showScale} scale={props.scale} />
                         }
@@ -252,7 +252,7 @@ const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
                         {props.showingCosine &&
                             <InstancedCosineMesh pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} documents={props.cosineDocuments}
                                 setHoveredDocument={props.setHoveredDocument}
-                                setClickedDocument={props.setClickedDocument}/>
+                                setClickedDocument={props.setClickedDocument} />
                         }
                     </Canvas>
                 </div>

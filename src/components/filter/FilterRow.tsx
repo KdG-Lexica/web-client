@@ -16,7 +16,27 @@ interface FilterRowProps {
     filterId: string;
     index: number;
 }
-
+/** 
+ * Filterrow 
+ * A filterrow holds up to 6 rules. An example of a rule can be: Where pub_date is before 01-01-2010
+ * You can chain up to 2 filterrows by an AND or OR operator.
+ * 
+ * @component
+ * @example
+ * return(
+ * <FilterRow
+        key={index}
+        id={filters[index].id}
+        combinators={index == 0 ? ["Where"] : ["and", "or"]}
+        filterItem={f}
+        fields={props.fields}
+        operators={props.operators}
+        updateFilters={updateFilters}
+        filterId={f.id}
+        index={index}
+        setFilters={setFilters}
+   />
+*/
 export const FilterRow = (props: FilterRowProps) => {
     const [rules, setRules] = useState<RuleType[]>(props.filterItem.rules !== null ? props.filterItem.rules : []);
     const [combinator, setCombinator] = useState<string>(props.filterItem.combinator);

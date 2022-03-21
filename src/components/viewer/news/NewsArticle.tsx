@@ -1,5 +1,13 @@
 import useQueryParams from "../../../hooks/useQueryParams"
-
+/**
+ * Renders newsarticles from JSON file.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <NewsArticle />
+ * )
+ */
 export const NewsArticle = () => {
     const id = useQueryParams();
 

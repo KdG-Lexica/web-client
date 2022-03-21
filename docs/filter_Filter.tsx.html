@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs filter/Filter.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>filter/Filter.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect, Component } from "react";
+import FilterItemType, { RuleType } from "../../types/FilterItemType";
+import MetaType from "../../types/MetaType";
+import OperatorType from "../../types/OperatorType";
+import QueryFilterDtoType from "../../types/QueryFilterType";
+import { FilterRow } from "./FilterRow";
+
+
+interface FilterProps {
+    fields: MetaType[];
+    operators: OperatorType[];
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
+}
+/** 
+ * Filter
+ * Filter component allows user to query data in an sql-like and user friendly way.
+ * A filter can contain up to 2 filterrows that hold up to 6 rules that can be chained by AND or OR operators.
+ * 
+ * @component
+ * @example
+ * return(
+ *  &lt;Filter fields={props.filterFields} operators={operators} executeFilter={props.executeFilter} />
+ * )
+ * 
+*/
+export const Filter = (props: FilterProps) => {
+    const [filters, setFilters] = useState&lt;FilterItemType[]>([]);
+
+    useEffect(() => {
+        drawFilters();
+    }, [filters])
+
+    const addFilterItem = () => {
+        let newFilters = [...filters];
+        const newFilter = { combinator: "AND", id: Math.random().toString(16).slice(2), rules: [] } as FilterItemType;
+        if (filters.length !== 0) {
+            const combinatorFilter = { combinator: "AND", id: Math.random().toString(16).slice(2), rules: null } as FilterItemType;
+            newFilters = [...newFilters, combinatorFilter];
+        }
+        newFilters = [...newFilters, newFilter];
+        setFilters([...newFilters]);
+    }
+
+    const updateFilters = (filterItem: FilterItemType) => {
+        let newFilters = [...filters];
+        const index = filters.findIndex((f) => f.id == filterItem.id);
+        newFilters[index] = filterItem;
+        if (filterItem.rules !== null &amp;&amp; filterItem.rules.length == 0) {
+            newFilters = newFilters.filter((f) => f.id !== filterItem.id);
+            newFilters = newFilters.filter((f) => f.id !== newFilters[index - 1].id);
+        }
+        setFilters(newFilters);
+    }
+
+    const drawFilters = () => {
+        return filters.map((f, index) => {
+            return &lt;FilterRow
+                key={index}
+                id={filters[index].id}
+                combinators={index == 0 ? ["Where"] : ["and", "or"]}
+                filterItem={f}
+                fields={props.fields}
+                operators={props.operators}
+                updateFilters={updateFilters}
+                filterId={f.id}
+                index={index}
+                setFilters={setFilters}
+            />
+        })
+    }
+
+    const filterToDto = (filters: FilterItemType[]): Array&lt;QueryFilterDtoType> => {
+        const arr: Array&lt;QueryFilterDtoType> = [];
+        filters.forEach((f) => {
+            let rules = f.rules !== null ? f.rules?.map((r) => ({ field: r.field.key, operator: r.operator.name.toUpperCase(), value: r.value })) : null
+            arr.push({
+                combinator: f.combinator,
+                rules: rules
+            })
+        });
+        return arr;
+    }
+
+    const postQuery = (filters: FilterItemType[]) => {
+        const arr = filterToDto(filters);
+        props.executeFilter(arr)
+    }
+
+    return (
+        &lt;>
+            &lt;div className="flex flex-row justify-center items-start h-full" style={{ zIndex: 999 }}>
+                &lt;div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 border-solid border-slate-200 dark:border-slate-800 border-2 p-2">
+                    &lt;div className="flex flex-col">
+                        &lt;p className="font-sans text-slate-400 font-medium text-lg p-2 w-96">In this view, show records&lt;/p>
+                        &lt;div>{filters.length > 0 &amp;&amp; drawFilters()}&lt;/div>
+                        &lt;div className="flex flex-row">
+                            {filters.length &lt; 2 &amp;&amp; &lt;button className="flex flex-row items-center" onClick={() => addFilterItem()}>&lt;svg style={{ height: 30, width: 30 }}
+                                xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            &lt;/svg>
+                                &lt;p className="font-sans text-slate-400 font-medium text-md p-2 m-1">Add filter&lt;/p>&lt;/button>}
+                        &lt;/div>
+                        {filters.length > 0 &amp;&amp; &lt;button type="button" onClick={() => { postQuery(filters) }} className="float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
+                            Execute Query
+                        &lt;/button>}
+                    &lt;/div >
+                &lt;/div>
+            &lt;/div>
+        &lt;/>
+    )
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

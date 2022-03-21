@@ -5,12 +5,24 @@ import OperatorType from "../../types/OperatorType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import { FilterRow } from "./FilterRow";
 
+
 interface FilterProps {
     fields: MetaType[];
     operators: OperatorType[];
     executeFilter: (filter: QueryFilterDtoType[]) => void;
 }
-
+/** 
+ * Filter
+ * Filter component allows user to query data in an sql-like and user friendly way.
+ * A filter can contain up to 2 filterrows that hold up to 6 rules that can be chained by AND or OR operators.
+ * 
+ * @component
+ * @example
+ * return(
+ *  <Filter fields={props.filterFields} operators={operators} executeFilter={props.executeFilter} />
+ * )
+ * 
+*/
 export const Filter = (props: FilterProps) => {
     const [filters, setFilters] = useState<FilterItemType[]>([]);
 
@@ -76,7 +88,7 @@ export const Filter = (props: FilterProps) => {
 
     return (
         <>
-            <div className="flex flex-row justify-center items-start h-full">
+            <div className="flex flex-row justify-center items-start h-full" style={{ zIndex: 999 }}>
                 <div className="rounded-lg bg-white dark:bg-slate-900 min-w-1/4 border-solid border-slate-200 dark:border-slate-800 border-2 p-2">
                     <div className="flex flex-col">
                         <p className="font-sans text-slate-400 font-medium text-lg p-2 w-96">In this view, show records</p>

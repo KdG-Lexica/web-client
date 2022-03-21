@@ -7,6 +7,15 @@ export interface NewsCardProps {
     fullText: string;
 }
 
+/**
+ * Newscard that previews articles to read.
+ * 
+ * @component
+ * @example
+ * return (
+    <NewsCard {...n} key={n.id} />
+ * )
+ */
 export const NewsCard = (props: NewsCardProps) => {
     const navigate = useNavigate();
     return (
