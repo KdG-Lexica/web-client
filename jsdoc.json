@@ -1,0 +1,51 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "include": [
+            "src/components"
+        ],
+        "includePattern": "\\.(jsx|js|ts|tsx)$"
+    },
+    "plugins": [
+        "plugins/markdown",
+        "node_modules/better-docs/category",
+        "node_modules/better-docs/typedef-import",
+        "node_modules/better-docs/typescript",
+        "node_modules/better-docs/component"
+    ],
+    "markdown": {
+        "tags": [
+            "load"
+        ]
+    },
+    "opts": {
+        "encoding": "utf8",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true,
+        "readme": "readme.md",
+        "template": "node_modules/better-docs"
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "search": true,
+        "better-docs": {
+            "name": "Document Viewer Docs",
+            "title": "Document Viewer Docs",
+            "hideGenerator": false,
+            "navLinks": [
+                {
+                    "label": "Gitlab",
+                    "href": "https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                },
+                {
+                    "label": "Lexica",
+                    "href": "https://lexica.ovh"
+                }
+            ]
+        }
+    }
+}

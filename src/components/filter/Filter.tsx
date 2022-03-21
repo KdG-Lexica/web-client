@@ -5,6 +5,11 @@ import OperatorType from "../../types/OperatorType";
 import QueryFilterDtoType from "../../types/QueryFilterType";
 import { FilterRow } from "./FilterRow";
 
+/**
+ * Filter component
+ *
+ * @component
+ */
 interface FilterProps {
     fields: MetaType[];
     operators: OperatorType[];
