@@ -7,6 +7,17 @@ interface WordMeshProps {
     pointSize: number
 }
 
+/** 
+ * Displays a mesh with all the words in an IPTC.
+ * 
+ * @component
+ * @example
+ * return(
+        <WordMesh pointSize={cameraDistance > 5 ? 5 : cameraDistance < 0.5 ? 0.5 : cameraDistance} IPTC={props.IPTC} />
+    )
+ * 
+*/
+
 const WordMesh = (props: WordMeshProps) => {
     const size = 0.03 * props.pointSize;
 

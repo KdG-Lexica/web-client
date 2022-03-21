@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs viewer/three-components/default-viewer/DefaultViewerCanvas.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="AxisMesh.html">AxisMesh</a></li><li><a href="CosineDocuments.html">CosineDocuments</a></li><li><a href="CursorMesh.html">CursorMesh</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="DefaultViewerCanvas.html">DefaultViewerCanvas</a></li><li><a href="DocumentLink.html">DocumentLink</a></li><li><a href="DocumentViewer.html">DocumentViewer</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="InstancedChunkMesh.html">InstancedChunkMesh</a></li><li><a href="InstancedCosineMesh.html">InstancedCosineMesh</a></li><li><a href="InstancedDocumentMesh.html">InstancedDocumentMesh</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="SelectedDocumentMesh.html">SelectedDocumentMesh</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li><li><a href="Viewer.html">Viewer</a></li><li><a href="WordMesh.html">WordMesh</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>viewer/three-components/default-viewer/DefaultViewerCanvas.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { Camera, Canvas, useFrame } from "@react-three/fiber";
+import React, { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import BasicDocumentType from "../../../../types/BasicDocumentType";
+import ChunkType from "../../../../types/ChunkType";
+import MetaType from "../../../../types/MetaType";
+import QueryFilterDtoType from "../../../../types/QueryFilterType";
+import Vector3Type from "../../../../types/Vector3Type";
+import { Filter } from "../../../filter/Filter";
+import AxisMesh from "./AxisMesh";
+import CursorMesh from "./CursorMesh";
+import InstancedChunkMesh from "./InstancedChunkMesh";
+import InstancedDocumentMesh from "./InstancedDocumentMesh";
+import WordMesh from "./WordMesh";
+import SelectedDocumentMesh from "./SelectedDocumentMesh";
+import IPTCType from "../../../../types/IPTCType";
+import CosineDocumentType from "../../../../types/CosineDocumentType";
+import InstancedCosineMesh from "./InstancedCosineMesh";
+
+interface DefaultViewerCanvasProps {
+    center: Vector3Type;
+    chunkDistance: number;
+    size: number;
+    documents: ChunkType[];
+    scale: number;
+    clickedDocument: BasicDocumentType | null;
+    filterFields: MetaType[];
+    focus: boolean;
+    IPTC: IPTCType | null;
+    cosineDocuments: CosineDocumentType[];
+    showingCosine: boolean;
+    setFocus: React.Dispatch&lt;React.SetStateAction&lt;boolean>>;
+    setHoveredDocument: React.Dispatch&lt;React.SetStateAction&lt;BasicDocumentType | null>>;
+    executeFilter: (filter: QueryFilterDtoType[]) => void;
+    setClickedDocument: React.Dispatch&lt;React.SetStateAction&lt;BasicDocumentType | null>>;
+}
+
+const operators = [
+    {
+        name: "contains",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "does not contain",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "equals",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "does not equal",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "is empty",
+        input: false,
+        dateOperator: false
+    },
+    {
+        name: "is not empty",
+        input: false,
+        dateOperator: false
+    },
+    {
+        name: "regex",
+        input: true,
+        dateOperator: false
+    },
+    {
+        name: "before",
+        input: true,
+        dateOperator: true
+    },
+    {
+        name: "from",
+        input: true,
+        dateOperator: true
+    },
+    {
+        name: "after",
+        input: true,
+        dateOperator: true
+    }
+];
+
+/** 
+ * Wrapper component for 3D viewer.
+ * Handles what is displayed and manages meshes, cameras and controls
+ * 
+ * @component
+ * @example
+ * return(
+        &lt;DefaultViewerCanvas
+          center={model.center}
+          chunkDistance={chunkDistance}
+          size={size}
+          documents={dataset.chunks}
+          scale={30}
+          setClickedDocument={setClickedDocument}
+          clickedDocument={clickedDocument}
+          executeFilter={executeFilter}
+          filterFields={model.meta}
+          setFocus={setFocus} focus={focus}
+          setHoveredDocument={setHoveredDocument}
+          IPTC={IPTC}
+          showingCosine={showingCosine}
+          cosineDocuments={cosineDocuments}
+        /> * )
+ * 
+*/
+
+const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
+    const [clusters, setClusters] = useState&lt;ChunkType[]>([]);
+
+    const [showScale, setShowScale] = useState(false);
+    const [showAxis, setShowAxis] = useState(true);
+    const [isDarkTheme, setIsDarkTheme] = useState(true);
+    const [showingFilter, setShowingFilter] = useState(false);
+    const [fullScreen, setFullScreen] = useState(false);
+
+
+    const camera = useRef&lt;Camera>(new THREE.PerspectiveCamera());
+    const controls = useRef&lt;any>({ target: { x: props.center.x, y: props.center.y, z: props.center.z } });
+
+    const [mouseDown, setMouseDown] = useState(false);
+    const [requiresUpdate, setRequiresUpdate] = useState(false);
+    const [cursorVector, setCursorVector] = useState&lt;Vector3Type>(props.center);
+    const [cameraDistance, setCameraDistance] = useState&lt;number>(3);
+
+    useEffect(() => {
+        function checkTheme() {
+            const theme = localStorage.getItem('color-theme');
+            if (theme === "dark") {
+                setIsDarkTheme(true);
+            } else {
+                setIsDarkTheme(false);
+            }
+        }
+
+        checkTheme();
+        camera.current.position.set(props.scale / 2.5 + props.center.x, props.scale / 2.5 + props.center.y, props.scale / 2.5 + props.center.z);
+
+        window.addEventListener("storage", (event) => {
+            checkTheme();
+        });
+    }, []);
+
+    useEffect(() => {
+        setClusters(props.documents.filter(chunk =>
+            chunk.vector.x >= Math.floor(cursorVector.x) - props.chunkDistance &amp;&amp; chunk.vector.x &lt;= Math.floor(cursorVector.x) + props.chunkDistance &amp;&amp;
+            chunk.vector.y >= Math.floor(cursorVector.y) - props.chunkDistance &amp;&amp; chunk.vector.y &lt;= Math.floor(cursorVector.y) + props.chunkDistance &amp;&amp;
+            chunk.vector.z >= Math.floor(cursorVector.z) - props.chunkDistance &amp;&amp; chunk.vector.z &lt;= Math.floor(cursorVector.z) + props.chunkDistance
+        ));
+    }, [cursorVector.x, cursorVector.y, cursorVector.z]);
+
+    useEffect(() => {
+        if (props.focus &amp;&amp; props.clickedDocument !== null) {
+            controls.current.target.x = props.clickedDocument.vector3.x;
+            controls.current.target.y = props.clickedDocument.vector3.y;
+            controls.current.target.z = props.clickedDocument.vector3.z;
+            camera.current.position.set(
+                props.clickedDocument.vector3.x + 0.1,
+                props.clickedDocument.vector3.y + 0.1,
+                props.clickedDocument.vector3.z + 0.1
+            );
+            resize();
+            setRequiresUpdate(true);
+            props.setFocus(false);
+        }
+    }, [props.focus])
+
+    const HandleMovement = () => {
+        useFrame(() => {
+            setCursorVector(controls.current.target);
+            setRequiresUpdate(false);
+        });
+
+        return (&lt;>&lt;/>);
+    }
+
+    function resize() {
+        const distance = Math.sqrt(Math.pow(camera.current.position.x - controls.current.target.x, 2) +
+            Math.pow(camera.current.position.y - controls.current.target.y, 2) +
+            Math.pow(camera.current.position.z - controls.current.target.z, 2));
+
+        setCameraDistance(distance);
+    }
+
+    function resetCamera() {
+        camera.current.position.set(props.scale / 2.5, props.scale / 2.5, props.scale / 2.5);
+        controls.current.target.set(0, 0, 0);
+    }
+
+    return (
+        &lt;div className={"p-2 w-full h-full"} style={{ maxHeight: "calc(100vh - 80px)", width: "60%" }}>
+            &lt;div className="flex flex-row bg-slate-100 dark:bg-neutral-900 h-full" style={!fullScreen ? {} : { position: "absolute", zIndex: "30", top: 0, left: 0, bottom: 0, right: 0 }}>
+                &lt;div className="absolute z-50">
+                    &lt;div className="max-h-9 flex-row flex justify-start items-stretch space-x-2s">
+                        &lt;button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={resetCamera}>
+                            &lt;svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            &lt;/svg>
+                        &lt;/button>
+                        &lt;button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowAxis(!showAxis) }}>
+                            &lt;svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                            &lt;/svg>
+                        &lt;/button>
+                        &lt;button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowScale(!showScale) }}>
+                            &lt;svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                            &lt;/svg>
+                        &lt;/button>
+                        &lt;button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setShowingFilter(!showingFilter); }}>
+                            &lt;svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            &lt;/svg>
+                        &lt;/button>
+                        &lt;div style={{ position: "absolute", left: "120px", top: "45px", zIndex: 999, display: showingFilter ? "block" : "none" }}>
+                            &lt;Filter
+                                fields={props.filterFields}
+                                operators={operators}
+                                executeFilter={props.executeFilter}
+                            />
+                        &lt;/div>
+                        &lt;button className="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2" onClick={() => { setFullScreen(!fullScreen) }}>
+                            &lt;svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                            &lt;/svg>
+                        &lt;/button>
+                    &lt;/div>
+                &lt;/div>
+                &lt;div style={{ width: "100%", height: "100%" }} onMouseDown={() => { setMouseDown(true); }} onMouseUp={() => { setMouseDown(false); }} onWheel={() => { resize() }}>
+                    &lt;Canvas style={{ width: "100%", height: "100%", filter: isDarkTheme ? "invert(1)" : "" }}>
+                        {
+                            (mouseDown || requiresUpdate) &amp;&amp; &lt;HandleMovement />
+                        }
+                        &lt;ambientLight intensity={0.5} />
+                        &lt;PerspectiveCamera ref={camera} position={[props.scale / 2.5, props.scale / 2.5, props.scale / 2.5]} fov={50} makeDefault />
+                        &lt;OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z]} enableDamping={false} />
+                        {showAxis &amp;&amp;
+                            &lt;AxisMesh showScale={showScale} scale={props.scale} />
+                        }
+                        {props.documents.length > 0 &amp;&amp;
+                            &lt;InstancedDocumentMesh
+                                pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance}
+                                size={props.size}
+                                documents={props.documents}
+                                setHoveredDocument={props.setHoveredDocument}
+                                setClickedDocument={props.setClickedDocument} />
+                        }
+                        {
+                            clusters.map((chunk, index) => {
+                                return (
+                                    &lt;InstancedChunkMesh key={index}
+                                        pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance}
+                                        documents={chunk.rows}
+                                        setHoveredDocument={props.setHoveredDocument}
+                                        setClickedDocument={props.setClickedDocument} />
+                                )
+                            })
+                        }
+
+                        {props.IPTC !== null &amp;&amp; &lt;WordMesh pointSize={cameraDistance > 5 ? 5 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance} IPTC={props.IPTC} />}
+
+                        &lt;CursorMesh enableMovement={mouseDown || requiresUpdate} vector3={cursorVector} pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance} />
+
+                        {props.clickedDocument !== null &amp;&amp;
+                            &lt;SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance} />
+                        }
+
+                        {props.showingCosine &amp;&amp;
+                            &lt;InstancedCosineMesh pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance} documents={props.cosineDocuments}
+                                setHoveredDocument={props.setHoveredDocument}
+                                setClickedDocument={props.setClickedDocument} />
+                        }
+                    &lt;/Canvas>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div >
+    );
+}
+
+export default DefaultViewerCanvas;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs viewer/three-components/default-viewer/InstancedDocumentMesh.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -97,185 +99,110 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Components</p>
-                    <h1>Rule</h1>
+                    <p>Source</p>
+                    <h1>viewer/three-components/default-viewer/InstancedDocumentMesh.tsx</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            &ltRule  /&gt
-        </h2>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Euler, InstancedMesh, Matrix4, Quaternion, Vector3 } from "three";
+import BasicDocumentType from "../../../../types/BasicDocumentType";
+import ChunkType from "../../../../types/ChunkType";
+
+interface InstancedDocumentMeshProps {
+    pointSize: number;
+    size: number;
+    documents : ChunkType[];
+    setHoveredDocument : React.Dispatch&lt;React.SetStateAction&lt;BasicDocumentType | null>>;
+    setClickedDocument : React.Dispatch&lt;React.SetStateAction&lt;BasicDocumentType | null>>;
+}
+
+/** 
+ * Displays a mesh containing a percentage of the total amount of documents.
+ * 
+ * @component
+ * @example
+ * return(
+    &lt;InstancedDocumentMesh
+        pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance}
+        size={props.size}
+        documents={props.documents}
+        setHoveredDocument={props.setHoveredDocument}
+        setClickedDocument={props.setClickedDocument} />
+    )
+ * 
+*/
+
+const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
+    const [hovered, setHovered] = useState&lt;number | undefined>(undefined);
+    const [clicked, setClicked] = useState&lt;number | undefined>(undefined);
+    const [data, setData] = useState&lt;BasicDocumentType[]>([]);
+    
+    const meshRef = useRef&lt;InstancedMesh>();
+
+    useEffect(() => {
+        setData(props.documents.flatMap(chunk => chunk.rows.slice(0, chunk.count * props.size)));
+    }, [props.size])
+
+    useLayoutEffect(() => {      
+        const rotation = new Euler();
+        const quaternion = new Quaternion();
+        const scale = new Vector3();
+
+        rotation.x = rotation.y = rotation.z = 0;
+        quaternion.setFromEuler(rotation);
+        scale.x = scale.y = scale.z = 0.3;
         
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class='vertical-section'>
-                <div class="members">
-                    <div class="member">
-                        <div class=name>
-                            <span class="tag">Constructor</span>
-                        </div>
-                        
-
-
-    
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
-        
-        <span class="code-name">
-            
-                &ltRule  /&gt
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
-    </div>
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
-            <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
-
-
-
-                    </div>
-                </div>
-            </div>
-        
-    
-    </div>
-    
-        
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+        for (let index = 0; index &lt; data.length; index++) {
+            const position = new Vector3();
+            const matrix = new Matrix4();
+
+            position.x = data[index].vector3.x;
+            position.y = data[index].vector3.y;
+            position.z = data[index].vector3.z;
+            matrix.compose(position, quaternion, scale);
+
+            meshRef.current!.setMatrixAt(index, matrix);
+        }
+        meshRef.current!.instanceMatrix.needsUpdate = true;        
+    }, [data]);
+
+    useEffect(() => {
+        if(clicked !== undefined) {
+            props.setClickedDocument(data[clicked]);
+        }
+    }, [clicked]);
+
+    useEffect(() => {
+        if(hovered !== undefined) {
+            props.setHoveredDocument(data[hovered]);
+        } else {
+            props.setHoveredDocument(null);
+        }
+    }, [hovered]);
+
+    return (
+        &lt;>
+            &lt;instancedMesh ref={meshRef} args={[undefined, undefined, data.length]} 
+                onPointerMove={(e) => {setHovered(e.instanceId)}}
+                onPointerOut={() => {setHovered(undefined)}}
+                onClick={(e) => {setClicked(e.instanceId)}}
+            >
+                &lt;sphereBufferGeometry attach="geometry" args={[0.03 * props.pointSize, 16, 16]}/>
+                &lt;meshToonMaterial attach="material" color={"blue"} opacity={0.5} transparent/>
+            &lt;/instancedMesh>
+        &lt;/> 
+    );
+}
+
+export default InstancedDocumentMesh;</code></pre>
+        </article>
+    </section>
 
 
 

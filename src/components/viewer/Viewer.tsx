@@ -13,6 +13,17 @@ import { Sidebar } from "./sidebar/Sidebar";
 import IPTCType from "../../types/IPTCType";
 import CosineDocumentType from "../../types/CosineDocumentType";
 
+/** 
+ * Wrapper component for 3D viewer. Contains Appbar, ViewerCanvas and Documentviewer.
+ * Handles loading states, provides context and initial api calls.
+ * 
+ * @component
+ * @example
+ * return(
+    <DocumentLink key={link} link={link} />
+ * 
+*/
+
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });

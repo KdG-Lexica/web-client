@@ -9,6 +9,21 @@ interface InstancedChunkMeshProps {
     setClickedDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
+
+/** 
+ * Displays a mesh containing all documents in a chunk. Renders dynamicly, depending on the cursor position.
+ * 
+ * @component
+ * @example
+ * return(
+    <InstancedChunkMesh key={index}
+        pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance}
+        documents={chunk.rows}
+        setHoveredDocument={props.setHoveredDocument}
+        setClickedDocument={props.setClickedDocument} /> * )
+ * 
+*/
+
 const InstancedChunkMesh = (props : InstancedChunkMeshProps) => {
     const [hovered, setHovered] = useState<number | undefined>(undefined);
     const [clicked, setClicked] = useState<number | undefined>(undefined);

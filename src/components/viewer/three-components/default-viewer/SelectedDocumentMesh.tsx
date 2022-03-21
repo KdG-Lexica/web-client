@@ -5,6 +5,17 @@ interface SelectedDocumentMeshProps {
     document: BasicDocumentType;
 }
 
+/** 
+ * Displays a mesh that overlays the currently selected document.
+ * 
+ * @component
+ * @example
+ * return(
+        <SelectedDocumentMesh document={props.clickedDocument} pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} />
+    )
+ * 
+*/
+
 const SelectedDocumentMesh = (props : SelectedDocumentMeshProps) => {
     return (
         <>

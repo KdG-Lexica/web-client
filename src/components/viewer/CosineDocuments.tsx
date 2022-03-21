@@ -11,6 +11,17 @@ interface CosineDocumentsProps {
     setCosineDocuments : React.Dispatch<React.SetStateAction<CosineDocumentType[]>>;
 }
 
+/** 
+ * Displays a list of cosine documents.
+ * 
+ * @component
+ * @example
+ * return(
+        <CosineDocuments cosineDocuments={props.cosineDocuments} setCosineDocuments={props.setCosineDocuments}
+            modelId={props.model.id} documentId={props.document?.id!!} range={0.4} key={props.model.id} />    )
+ * 
+*/
+
 export const CosineDocuments = (props: CosineDocumentsProps) => {
     const [maxCosDocs, setMaxCosDocs] = useState(3);
     const { data, isLoading, refetch} = useQuery("getCosineDocuments", () => documentApi.getCosineDistanceDocuments(props.modelId, props.range, props.documentId));

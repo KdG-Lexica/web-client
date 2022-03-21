@@ -11,6 +11,22 @@ interface InstancedDocumentMeshProps {
     setClickedDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
+/** 
+ * Displays a mesh containing a percentage of the total amount of documents.
+ * 
+ * @component
+ * @example
+ * return(
+    <InstancedDocumentMesh
+        pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance}
+        size={props.size}
+        documents={props.documents}
+        setHoveredDocument={props.setHoveredDocument}
+        setClickedDocument={props.setClickedDocument} />
+    )
+ * 
+*/
+
 const InstancedDocumentMesh = (props : InstancedDocumentMeshProps) => {
     const [hovered, setHovered] = useState<number | undefined>(undefined);
     const [clicked, setClicked] = useState<number | undefined>(undefined);

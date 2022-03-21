@@ -9,6 +9,17 @@ interface CursorMeshProps {
   vector3 : Vector3Type;
 }
 
+/** 
+ * Displays a 3D cursor for the OrbitControls Target.
+ * 
+ * @component
+ * @example
+ * return(
+    <OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z]} enableDamping={false} />
+ * )
+ * 
+*/
+
 const CursorMesh = (props : CursorMeshProps) => {  
   const [x, setX] = useState<number>(props.vector3.x);
   const [y, setY] = useState<number>(props.vector3.y);

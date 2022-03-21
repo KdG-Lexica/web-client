@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs InstancedDocumentMesh</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -98,7 +98,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Components</p>
-                    <h1>Rule</h1>
+                    <h1>InstancedDocumentMesh</h1>
                 </header>
                 
 
@@ -110,7 +110,7 @@
 <header>
     
         <h2>
-            &ltRule  /&gt
+            &ltInstancedDocumentMesh  /&gt
         </h2>
         
     
@@ -130,12 +130,12 @@
 
 
     
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
+    <h4 class="name" id="InstancedDocumentMesh">
+        <a class="href-link" href="#InstancedDocumentMesh">#</a>
         
         <span class="code-name">
             
-                &ltRule  /&gt
+                &ltInstancedDocumentMesh  /&gt
             
         </span>
     </h4>
@@ -144,9 +144,7 @@
     
     
     <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
+        <p>Displays a mesh containing a percentage of the total amount of documents.</p>
     </div>
     
 
@@ -197,9 +195,9 @@ You can chain up to 6 rules by an AND or OR operator.</p>
 
     
         <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
+            <a href="viewer_three-components_default-viewer_InstancedDocumentMesh.tsx.html" class="button">View Source</a>
             <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
+                <a href="viewer_three-components_default-viewer_InstancedDocumentMesh.tsx.html">viewer/three-components/default-viewer/InstancedDocumentMesh.tsx</a>, <a href="viewer_three-components_default-viewer_InstancedDocumentMesh.tsx.html#line19">line 19</a>
             </span>
         </p>
     
@@ -228,20 +226,14 @@ You can chain up to 6 rules by an AND or OR operator.</p>
     <h5>Example</h5>
     
 
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
+  <pre class="prettyprint"><code>return(
+    &lt;InstancedDocumentMesh
+        pointSize={cameraDistance > 3 ? 3 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance}
+        size={props.size}
+        documents={props.documents}
+        setHoveredDocument={props.setHoveredDocument}
+        setClickedDocument={props.setClickedDocument} />
+    )</code></pre>
 
 
 

@@ -4,6 +4,16 @@ interface DocumentLinkProps {
     link : string;
 }
 
+/** 
+ * Displays a button for each document link.
+ * 
+ * @component
+ * @example
+ * return(
+    <DocumentLink key={link} link={link} />
+ * 
+*/
+
 const DocumentLink = (props : DocumentLinkProps) => {
   return (
     <a type="button" target="_blank" href={props.link} className="float-right w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded my-2">

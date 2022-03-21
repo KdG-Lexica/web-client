@@ -10,6 +10,20 @@ interface InstancedCosineMeshProps {
     setClickedDocument : React.Dispatch<React.SetStateAction<BasicDocumentType | null>>;
 }
 
+
+/** 
+ * Displays a mesh containing the cosine documents of another document.
+ * 
+ * @component
+ * @example
+ * return(
+        <InstancedCosineMesh pointSize={cameraDistance > 3 ? 3 : cameraDistance < 0.5 ? 0.5 : cameraDistance} documents={props.cosineDocuments}
+            setHoveredDocument={props.setHoveredDocument}
+            setClickedDocument={props.setClickedDocument} />
+    )
+ * 
+*/
+
 const InstancedCosineMesh = (props : InstancedCosineMeshProps) => { 
     const [hovered, setHovered] = useState<number | undefined>(undefined);
     const [clicked, setClicked] = useState<number | undefined>(undefined);

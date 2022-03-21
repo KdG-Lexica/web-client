@@ -89,6 +89,32 @@ const operators = [
     }
 ];
 
+/** 
+ * Wrapper component for 3D viewer.
+ * Handles what is displayed and manages meshes, cameras and controls
+ * 
+ * @component
+ * @example
+ * return(
+        <DefaultViewerCanvas
+          center={model.center}
+          chunkDistance={chunkDistance}
+          size={size}
+          documents={dataset.chunks}
+          scale={30}
+          setClickedDocument={setClickedDocument}
+          clickedDocument={clickedDocument}
+          executeFilter={executeFilter}
+          filterFields={model.meta}
+          setFocus={setFocus} focus={focus}
+          setHoveredDocument={setHoveredDocument}
+          IPTC={IPTC}
+          showingCosine={showingCosine}
+          cosineDocuments={cosineDocuments}
+        /> * )
+ * 
+*/
+
 const DefaultViewerCanvas = (props: DefaultViewerCanvasProps) => {
     const [clusters, setClusters] = useState<ChunkType[]>([]);
 

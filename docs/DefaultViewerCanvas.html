@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs DefaultViewerCanvas</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -98,7 +98,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Components</p>
-                    <h1>Rule</h1>
+                    <h1>DefaultViewerCanvas</h1>
                 </header>
                 
 
@@ -110,7 +110,7 @@
 <header>
     
         <h2>
-            &ltRule  /&gt
+            &ltDefaultViewerCanvas  /&gt
         </h2>
         
     
@@ -130,12 +130,12 @@
 
 
     
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
+    <h4 class="name" id="DefaultViewerCanvas">
+        <a class="href-link" href="#DefaultViewerCanvas">#</a>
         
         <span class="code-name">
             
-                &ltRule  /&gt
+                &ltDefaultViewerCanvas  /&gt
             
         </span>
     </h4>
@@ -144,9 +144,8 @@
     
     
     <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
+        <p>Wrapper component for 3D viewer.
+Handles what is displayed and manages meshes, cameras and controls</p>
     </div>
     
 
@@ -197,9 +196,9 @@ You can chain up to 6 rules by an AND or OR operator.</p>
 
     
         <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
+            <a href="viewer_three-components_default-viewer_DefaultViewerCanvas.tsx.html" class="button">View Source</a>
             <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
+                <a href="viewer_three-components_default-viewer_DefaultViewerCanvas.tsx.html">viewer/three-components/default-viewer/DefaultViewerCanvas.tsx</a>, <a href="viewer_three-components_default-viewer_DefaultViewerCanvas.tsx.html#line91">line 91</a>
             </span>
         </p>
     
@@ -228,20 +227,23 @@ You can chain up to 6 rules by an AND or OR operator.</p>
     <h5>Example</h5>
     
 
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
+  <pre class="prettyprint"><code>return(
+        &lt;DefaultViewerCanvas
+          center={model.center}
+          chunkDistance={chunkDistance}
+          size={size}
+          documents={dataset.chunks}
+          scale={30}
+          setClickedDocument={setClickedDocument}
+          clickedDocument={clickedDocument}
+          executeFilter={executeFilter}
+          filterFields={model.meta}
+          setFocus={setFocus} focus={focus}
+          setHoveredDocument={setHoveredDocument}
+          IPTC={IPTC}
+          showingCosine={showingCosine}
+          cosineDocuments={cosineDocuments}
+        /> * )</code></pre>
 
 
 

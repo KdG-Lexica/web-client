@@ -20,6 +20,26 @@ interface DocumentViewerProps {
     setShowingCosine: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/** 
+ * Component for bundling all document related information.
+ * 
+ * @component
+ * @example
+ * return(
+        <DocumentViewer
+            model={model}
+            document={clickedDocument}
+            duration={dataset.duration}
+            count={dataset.count}
+            setClickedDocument={setClickedDocument}
+            setFocus={setFocus}
+            cosineDocuments={cosineDocuments}
+            setCosineDocuments={setCosineDocuments}
+            showingCosine={showingCosine}
+            setShowingCosine={setShowingCosine}
+        />
+ * 
+*/
 
 const DocumentViewer = (props: DocumentViewerProps) => {
     const [document, setDocument] = useState<any>(null);

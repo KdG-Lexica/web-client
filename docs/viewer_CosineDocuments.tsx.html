@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs viewer/CosineDocuments.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -97,185 +99,81 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Components</p>
-                    <h1>Rule</h1>
+                    <p>Source</p>
+                    <h1>viewer/CosineDocuments.tsx</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            &ltRule  /&gt
-        </h2>
-        
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import * as documentApi from "../../api/DocumentApi";
+import CosineDocumentType from "../../types/CosineDocumentType";
+
+interface CosineDocumentsProps {
+    modelId: string;
+    range: number;
+    documentId: string;
+    cosineDocuments: CosineDocumentType[];
+    setCosineDocuments : React.Dispatch&lt;React.SetStateAction&lt;CosineDocumentType[]>>;
+}
+
+/** 
+ * Displays a list of cosine documents.
+ * 
+ * @component
+ * @example
+ * return(
+        &lt;CosineDocuments cosineDocuments={props.cosineDocuments} setCosineDocuments={props.setCosineDocuments}
+            modelId={props.model.id} documentId={props.document?.id!!} range={0.4} key={props.model.id} />    )
+ * 
+*/
+
+export const CosineDocuments = (props: CosineDocumentsProps) => {
+    const [maxCosDocs, setMaxCosDocs] = useState(3);
+    const { data, isLoading, refetch} = useQuery("getCosineDocuments", () => documentApi.getCosineDistanceDocuments(props.modelId, props.range, props.documentId));
     
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class='vertical-section'>
-                <div class="members">
-                    <div class="member">
-                        <div class=name>
-                            <span class="tag">Constructor</span>
-                        </div>
-                        
-
-
-    
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
-        
-        <span class="code-name">
-            
-                &ltRule  /&gt
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
-    </div>
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
-            <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
-
-
-
-                    </div>
-                </div>
-            </div>
-        
-    
-    </div>
-    
-        
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    useEffect(() => {
+        refetch();
+    }, [props.documentId])
+
+    useEffect(() => {
+        if(data !== undefined &amp;&amp; data !== null) {
+            props.setCosineDocuments(data.rows);
+        }
+    }, [data]);
+
+    if (isLoading) {
+        return (
+            &lt;div>Loading&lt;/div>
+        )
+    }
+    return (
+        &lt;>
+            &lt;p className="font-sans text-slate-400 font-medium text-lg p-2">
+                Cosine similar documents
+            &lt;/p>
+            {props.cosineDocuments.slice(1, maxCosDocs).map((document, index) => {
+                return (
+                    &lt;div key={index} className="m-2 mx-1 md:mx-0 block p-6 max-w-sm max-h-fit  bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                        &lt;p className="d-inline dark:text-white font-semibold">{document.doc.name}&lt;/p>
+                        &lt;p className="d-inline dark:text-white">value: {document.cosine.toPrecision(2)}&lt;/p>
+                    &lt;/div>
+                )
+            })}
+            &lt;p className={`underline underline-offset-1 dark:text-white text-black cursor-pointer ${maxCosDocs >= 5 ? "hidden" : "block"}`} onClick={() => setMaxCosDocs(maxCosDocs + 3)}>View more&lt;/p>
+            &lt;p className={`underline underline-offset-1 dark:text-white text-black cursor-pointer ${maxCosDocs >= 5 ? "block" : "hidden"}`} onClick={() => setMaxCosDocs(maxCosDocs - 3)}>View less&lt;/p>
+
+        &lt;/>
+    )
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

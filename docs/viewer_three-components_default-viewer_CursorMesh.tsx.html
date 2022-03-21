@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs viewer/three-components/default-viewer/CursorMesh.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -97,185 +99,68 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Components</p>
-                    <h1>Rule</h1>
+                    <p>Source</p>
+                    <h1>viewer/three-components/default-viewer/CursorMesh.tsx</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            &ltRule  /&gt
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class='vertical-section'>
-                <div class="members">
-                    <div class="member">
-                        <div class=name>
-                            <span class="tag">Constructor</span>
-                        </div>
-                        
-
-
-    
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
-        
-        <span class="code-name">
-            
-                &ltRule  /&gt
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
-    </div>
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
-            <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
-
-
-
-                    </div>
-                </div>
-            </div>
-        
-    
-    </div>
-    
-        
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useRef } from "react";
+import Vector3Type from "../../../../types/Vector3Type";
+import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
+
+interface CursorMeshProps {
+  enableMovement: boolean;
+  pointSize: number;
+  vector3 : Vector3Type;
+}
+
+/** 
+ * Displays a 3D cursor for the OrbitControls Target.
+ * 
+ * @component
+ * @example
+ * return(
+    &lt;OrbitControls ref={controls} enablePan={true} target={[props.center.x, props.center.y, props.center.z]} enableDamping={false} />
+ * )
+ * 
+*/
+
+const CursorMesh = (props : CursorMeshProps) => {  
+  const [x, setX] = useState&lt;number>(props.vector3.x);
+  const [y, setY] = useState&lt;number>(props.vector3.y);
+  const [z, setZ] = useState&lt;number>(props.vector3.z);
+
+  const EnableMovement = () => {
+    useFrame(() => {
+      setX(props.vector3.x);
+      setY(props.vector3.y);
+      setZ(props.vector3.z);    
+    })
+
+    return (&lt;>&lt;/>)
+  }
+
+
+  return (
+    &lt;>
+      &lt;mesh position={[x, y, z]}>
+        &lt;sphereBufferGeometry attach="geometry" args={[0.05 * props.pointSize, 4, 0]}/>
+        &lt;meshLambertMaterial attach="material" color={"yellow"} wireframe/>
+      &lt;/mesh>
+      {props.enableMovement &amp;&amp; &lt;EnableMovement/>}
+    &lt;/>
+  )
+}
+
+export default CursorMesh;</code></pre>
+        </article>
+    </section>
 
 
 

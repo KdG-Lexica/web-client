@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs viewer/three-components/default-viewer/AxisMesh.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -97,185 +99,98 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Components</p>
-                    <h1>Rule</h1>
+                    <p>Source</p>
+                    <h1>viewer/three-components/default-viewer/AxisMesh.tsx</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            &ltRule  /&gt
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class='vertical-section'>
-                <div class="members">
-                    <div class="member">
-                        <div class=name>
-                            <span class="tag">Constructor</span>
-                        </div>
-                        
-
-
-    
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
-        
-        <span class="code-name">
-            
-                &ltRule  /&gt
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
-    </div>
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
-            <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
-
-
-
-                    </div>
-                </div>
-            </div>
-        
-    
-    </div>
-    
-        
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { Billboard, Text } from "@react-three/drei";
+
+interface AxisProps {
+    showScale : boolean;
+    scale : number
+}
+
+/** 
+ * Draws an axis in 3D space, optionally shows a scale.
+ * 
+ * @component
+ * @example
+ * return(
+    &lt;AxisMesh showScale={showScale} scale={props.scale} />
+ * )
+ * 
+*/
+const AxisMesh = (props : AxisProps) => {
+    const scale = [...Array(props.scale).keys()];
+    const offset = Math.floor(props.scale / 2);
+
+    return (
+        &lt;>
+            &lt;mesh>
+                &lt;boxBufferGeometry args={[props.scale, 0.01, 0.01]}/>
+                &lt;meshToonMaterial color={"blue"}/>
+                {props.showScale &amp;&amp; scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
+                &lt;Billboard key={"x" + scaleNumber} position={[scaleNumber - offset, 0.1, 0]}>
+                    &lt;Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    &lt;/Text>
+                &lt;/Billboard>
+                )}
+            &lt;/mesh>
+            &lt;mesh>
+                &lt;boxBufferGeometry args={[0.01, props.scale, 0.01]}/>
+                &lt;meshToonMaterial color={"red"}/>
+                {props.showScale &amp;&amp; scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
+                &lt;Billboard key={"y" + scaleNumber} position={[0.1, scaleNumber - offset, 0]}>
+                    &lt;Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    &lt;/Text>
+                &lt;/Billboard>
+                )}
+            &lt;/mesh>
+            &lt;mesh>
+                &lt;boxBufferGeometry args={[0.01, 0.01, props.scale]}/>
+                &lt;meshToonMaterial color={"green"}/>
+                {props.showScale &amp;&amp; scale.filter(scaleNumber => scaleNumber - offset !== 0).map((scaleNumber) => 
+                &lt;Billboard key={"z" + scaleNumber} position={[0, 0.1, scaleNumber - offset]}>
+                    &lt;Text 
+                    color="black"
+                    anchorX="center"
+                    anchorY="middle"
+                    scale={[1, 1, 1]} 
+                    outlineWidth={'5%'} 
+                    outlineColor="white">
+                        {scaleNumber - offset}
+                    &lt;/Text>
+                &lt;/Billboard>
+                )}
+            &lt;/mesh>
+        &lt;/>
+  )
+}
+
+export default AxisMesh</code></pre>
+        </article>
+    </section>
 
 
 

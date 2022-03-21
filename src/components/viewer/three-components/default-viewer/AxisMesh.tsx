@@ -6,6 +6,16 @@ interface AxisProps {
     scale : number
 }
 
+/** 
+ * Draws an axis in 3D space, optionally shows a scale.
+ * 
+ * @component
+ * @example
+ * return(
+    <AxisMesh showScale={showScale} scale={props.scale} />
+ * )
+ * 
+*/
 const AxisMesh = (props : AxisProps) => {
     const scale = [...Array(props.scale).keys()];
     const offset = Math.floor(props.scale / 2);

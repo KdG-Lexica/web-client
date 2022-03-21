@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document Viewer Docs Rule</title>
+  <title>Document Viewer Docs viewer/three-components/default-viewer/WordMesh.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -97,185 +99,62 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Components</p>
-                    <h1>Rule</h1>
+                    <p>Source</p>
+                    <h1>viewer/three-components/default-viewer/WordMesh.tsx</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            &ltRule  /&gt
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class='vertical-section'>
-                <div class="members">
-                    <div class="member">
-                        <div class=name>
-                            <span class="tag">Constructor</span>
-                        </div>
-                        
-
-
-    
-    <h4 class="name" id="Rule">
-        <a class="href-link" href="#Rule">#</a>
-        
-        <span class="code-name">
-            
-                &ltRule  /&gt
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Rule
-A rule defines a single filter. Ex: Where snippet contains 'year'
-You can chain up to 6 rules by an AND or OR operator.</p>
-    </div>
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="filter_Rule.tsx.html" class="button">View Source</a>
-            <span>
-                <a href="filter_Rule.tsx.html">filter/Rule.tsx</a>, <a href="filter_Rule.tsx.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-
-  <pre class="prettyprint"><code>return (  &lt;Rule
-        key={index}
-        rule={r}
-        id={rules[index].id}
-        combinator={combinator}
-        combinators={index == 0 ? ["Where"] : ["and", "or"]}
-        filterItem={props.filterItem}
-        fields={props.fields}
-        operators={props.operators}
-        handleDelete={handleDelete}
-        updateFilterRows={updateFilterRow}
-        setCombinator={setCombinator}
-    />
-   )</code></pre>
-
-
-
-                    </div>
-                </div>
-            </div>
-        
-    
-    </div>
-    
-        
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Billboard, Html, Text } from "@react-three/drei";
+import React from "react";
+import IPTCType from "../../../../types/IPTCType";
+
+interface WordMeshProps {
+    IPTC: IPTCType;
+    pointSize: number
+}
+
+/** 
+ * Displays a mesh with all the words in an IPTC.
+ * 
+ * @component
+ * @example
+ * return(
+        &lt;WordMesh pointSize={cameraDistance > 5 ? 5 : cameraDistance &lt; 0.5 ? 0.5 : cameraDistance} IPTC={props.IPTC} />
+    )
+ * 
+*/
+
+const WordMesh = (props: WordMeshProps) => {
+    const size = 0.03 * props.pointSize;
+
+    return (
+        &lt;>
+            {props.IPTC.meta.map((word, index) => {
+                return (
+                    &lt;Billboard key={index} position={[word.vector3.x, word.vector3.y + 0.1, word.vector3.z]}>
+                        &lt;Html style={{ pointerEvents: "none", zIndex: 49 }}>
+                            &lt;p style={{
+                                color: "black", WebkitTextStrokeWidth: "0.5px", WebkitTextStrokeColor: "#FFFFFF",
+                                userSelect: "none", whiteSpace: "nowrap", fontSize: "1.2em", textAlign: "center", fontWeight: "bold", zIndex: 49
+                            }}>
+                                {word.label}
+                            &lt;/p>
+                        &lt;/Html>
+                    &lt;/Billboard>
+                );
+            })}
+        &lt;/>
+    );
+}
+
+export default WordMesh;</code></pre>
+        </article>
+    </section>
 
 
 

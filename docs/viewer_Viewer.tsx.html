@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Viewer Docs viewer/Viewer.tsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Document Viewer Docs</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://gitlab.com/kdg-ti/the-lab/teams/lexica"
+                        >
+                            Gitlab
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://lexica.ovh"
+                        >
+                            Lexica
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Appbar.html">Appbar</a></li><li><a href="AxisMesh.html">AxisMesh</a></li><li><a href="CosineDocuments.html">CosineDocuments</a></li><li><a href="CursorMesh.html">CursorMesh</a></li><li><a href="DatasetCard.html">DatasetCard</a></li><li><a href="DatasetSelector.html">DatasetSelector</a></li><li><a href="DefaultViewerCanvas.html">DefaultViewerCanvas</a></li><li><a href="DocumentLink.html">DocumentLink</a></li><li><a href="DocumentViewer.html">DocumentViewer</a></li><li><a href="Filter.html">Filter</a></li><li><a href="FilterRow.html">FilterRow</a></li><li><a href="InstancedChunkMesh.html">InstancedChunkMesh</a></li><li><a href="InstancedCosineMesh.html">InstancedCosineMesh</a></li><li><a href="InstancedDocumentMesh.html">InstancedDocumentMesh</a></li><li><a href="MainLayout.html">MainLayout</a></li><li><a href="News.html">News</a></li><li><a href="NewsArticle.html">NewsArticle</a></li><li><a href="NewsCard.html">NewsCard</a></li><li><a href="Rule.html">Rule</a></li><li><a href="SelectedDocumentMesh.html">SelectedDocumentMesh</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="ThemeToggle.html">ThemeToggle</a></li><li><a href="Viewer.html">Viewer</a></li><li><a href="WordMesh.html">WordMesh</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>viewer/Viewer.tsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import * as documentApi from "../../api/DocumentApi"
+import BasicDocumentType from "../../types/BasicDocumentType";
+import DatasetType from "../../types/DatasetType";
+import ModelType from "../../types/ModelType";
+import QueryFilterDtoType from "../../types/QueryFilterType";
+import DocumentViewer from "./DocumentViewer";
+import DefaultViewerCanvas from "./three-components/default-viewer/DefaultViewerCanvas";
+import useQueryParams from "../../hooks/useQueryParams";
+import { useNavigate } from "react-router-dom";
+import { Sidebar } from "./sidebar/Sidebar";
+import IPTCType from "../../types/IPTCType";
+import CosineDocumentType from "../../types/CosineDocumentType";
+
+/** 
+ * Wrapper component for 3D viewer. Contains Appbar, ViewerCanvas and Documentviewer.
+ * Handles loading states, provides context and initial api calls.
+ * 
+ * @component
+ * @example
+ * return(
+    &lt;DocumentLink key={link} link={link} />
+ * 
+*/
+
+const Viewer = () => {
+  const [hoveredDocument, setHoveredDocument] = useState&lt;BasicDocumentType | null>(null);
+  const [dataset, setDataset] = useState&lt;DatasetType>({ count: 0, chunks: [], duration: 0 });
+  const [model, setModel] = useState&lt;ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: { x: 0, y: 0, z: 0 } });
+  const [clickedDocument, setClickedDocument] = useState&lt;BasicDocumentType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [focus, setFocus] = useState(false);
+  const [chunkDistance, setChunkDistance] = useState&lt;number>(1);
+  const [size, setSize] = useState&lt;number>(0.01);
+  const [IPTCs, setIPTCs] = useState&lt;IPTCType[]>([]);
+  const [IPTC, setIPTC] = useState&lt;IPTCType | null>(null);
+  const [cosineDocuments, setCosineDocuments] = useState&lt;CosineDocumentType[]>([]);
+  const [showingCosine, setShowingCosine] = useState(false);
+
+  const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
+
+  const params = useQueryParams();
+  const dataPercentage = params.get("size");
+  const setId = params.get("set");
+
+  const { mutate } = useMutation(documentApi.getDocuments, {
+    onSuccess: (data: DatasetType) => {
+      setDataset(data);
+      setLoading(false);
+    },
+    onError: (error: any) => {
+      console.log(error);
+    }
+  });
+
+
+  function executeFilter(filter: QueryFilterDtoType[]) {
+    setClickedDocument(null);
+    setLoading(true);
+    setProgress(0)
+    mutate({
+      model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: filter, config: {
+        onDownloadProgress: (progressEvent: any) => {
+          let percentCompleted = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+          setProgress(percentCompleted);
+        }
+      }
+    });
+  }
+
+  const getModel = async (id: string) => {
+    const mod = await documentApi.getModel(id);
+    setModel(mod as unknown as ModelType);
+    const words = await documentApi.getIPTCs();
+    setIPTCs(words as unknown as IPTCType[])
+  }
+
+  const { isLoading, isError, refetch } = useQuery("getModel", async () => { await getModel(setId!) });
+
+  useEffect(() => {
+    refetch();
+  }, [])
+
+  useEffect(() => {
+    if (!isLoading &amp;&amp; model.documentCount > 0) {
+      setProgress(0)
+
+      mutate({
+        model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
+          onDownloadProgress: (progressEvent: any) => {
+            let percentCompleted = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+            setProgress(percentCompleted);
+          }
+        }
+      });
+    }
+  }, [isLoading, model.documentCount]);
+
+  useEffect(() => {
+    console.log("Changed");
+
+    setShowingCosine(false);
+    setCosineDocuments([]);
+  }, [clickedDocument]);
+
+  if (isError) {
+    navigate("/server-error")
+  }
+
+  if (loading) {
+    return (
+      &lt;>
+        {progress == 0 || progress == 100 ?
+          &lt;p className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
+            Querying data
+            &lt;svg role="status" className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+              &lt;path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+              &lt;path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+            &lt;/svg>
+          &lt;/p>
+          :
+          &lt;div className="text-black font-medium dark:text-white flex flex-col gap-2 items-center justify-center h-full">
+            Downloading data {progress}%
+            &lt;div className="w-1/2 bg-gray-400 rounded-full flex transition dark:bg-gray-700">
+              &lt;div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}>&lt;/div>
+            &lt;/div>
+          &lt;/div>
+        }
+      &lt;/>
+    )
+  }
+
+  return (
+    &lt;>
+      &lt;div className="flex flex-row h-full w-full">
+        &lt;Sidebar
+          size={size}
+          setSize={setSize}
+          chunkDistance={chunkDistance}
+          setChunkDistance={setChunkDistance}
+          document={hoveredDocument}
+          IPTCs={IPTCs}
+          setIPTC={setIPTC}
+        />
+        &lt;DefaultViewerCanvas
+          center={model.center}
+          chunkDistance={chunkDistance}
+          size={size}
+          documents={dataset.chunks}
+          scale={30}
+          setClickedDocument={setClickedDocument}
+          clickedDocument={clickedDocument}
+          executeFilter={executeFilter}
+          filterFields={model.meta}
+          setFocus={setFocus} focus={focus}
+          setHoveredDocument={setHoveredDocument}
+          IPTC={IPTC}
+          showingCosine={showingCosine}
+          cosineDocuments={cosineDocuments}
+        />
+        &lt;div className="overflow-hidden max-h-full" style={{ width: "22.5%" }}>
+          &lt;DocumentViewer
+            model={model}
+            document={clickedDocument}
+            duration={dataset.duration}
+            count={dataset.count}
+            setClickedDocument={setClickedDocument}
+            setFocus={setFocus}
+            cosineDocuments={cosineDocuments}
+            setCosineDocuments={setCosineDocuments}
+            showingCosine={showingCosine}
+            setShowingCosine={setShowingCosine}
+          />
+        &lt;/div>
+      &lt;/div>
+    &lt;/>
+
+  );
+}
+
+export default Viewer;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>
