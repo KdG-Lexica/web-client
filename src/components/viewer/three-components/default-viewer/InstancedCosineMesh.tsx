@@ -61,7 +61,7 @@ const InstancedCosineMesh = (props : InstancedCosineMeshProps) => {
                 onClick={(e) => {setClicked(e.instanceId)}}
             >
                 <sphereBufferGeometry attach="geometry" args={[0.04 * props.pointSize, 16, 16]}/>
-                <meshToonMaterial attach="material" color={"purple"} opacity={0.5} transparent/>
+                <meshToonMaterial attach="material" color={"green"} opacity={0.5} transparent/>
             </instancedMesh>
         </> 
     );
