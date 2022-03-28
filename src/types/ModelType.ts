@@ -9,4 +9,5 @@ export default interface ModelType {
     updatedAt: Date;
     documentCount: number;
     center: Vector3Type;
+    description: string | null;
 }

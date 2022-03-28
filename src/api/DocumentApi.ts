@@ -11,7 +11,7 @@ export async function getModel(model: string) {
 }
 
 export async function getModels() {
-	const response = await api.get("/models");
+	const response = await api.get("/models");	
 	return response.data;
 }
 

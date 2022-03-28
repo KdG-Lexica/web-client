@@ -24,5 +24,5 @@ npm run dev
 ```
 
 ## License
-This project is licenced under the MIT licence.
+This project is licensed under the MIT licence.
 Copyright (c) 2022 Lexica
