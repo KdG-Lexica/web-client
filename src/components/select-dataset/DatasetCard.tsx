@@ -37,7 +37,7 @@ export const DatasetCard = (props: DatasetCardPropsType) => {
 
     const { mutate } = useMutation(documentApi.unlockSet, {
         onSuccess: (data) => {
-            setUnLocked(false);
+            setUnLocked(true);
         },
         onError: (error: any) => {
             prompt("Wrong password")
