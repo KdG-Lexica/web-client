@@ -10,4 +10,6 @@ export default interface ModelType {
     documentCount: number;
     center: Vector3Type;
     description: string | null;
+    requiresPassword: boolean,
+    unlocked: boolean
 }

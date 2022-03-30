@@ -14,14 +14,28 @@ import { DatasetCard } from "./DatasetCard";
 export const DatasetSelector = () => {
     const [models, setModels] = useState<ModelType[]>([]);
 
+    /* health check returns auth cookie required to get datasets*/
+    const { isLoading } = useQuery("getHealth", () => getHealth());
+
+    const getHealth = async () => {
+        console.log("getting health");
+        const data = await documentApi.getHealth();
+        console.log(data);
+    }
+
     const {
-        isLoading,
         refetch
-    } = useQuery("getModels", () => getModels);
+    } = useQuery("getModels", () => getModels, {
+        refetchOnWindowFocus: false,
+        enabled: false
+    });
 
     useEffect(() => {
-        refetch();
-    }, [])
+        if (!isLoading) {
+            console.log("getting models");
+            refetch();
+        }
+    }, [isLoading])
 
     const getModels = async () => {
         let data = await documentApi.getModels();
@@ -34,7 +48,7 @@ export const DatasetSelector = () => {
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
                 {models.map((m) => {
                     return (
-                        <DatasetCard key={m.id} id={m.id} name={m.collectionName} description={m.description === null? "No description available..." : m.description.substring(0, 150).concat("...")} />
+                        <DatasetCard key={m.id} locked={m.unlocked} id={m.id} name={m.collectionName} description={m.description === null ? "No description available..." : m.description.substring(0, 150).concat("...")} />
                     )
                 })}
             </div>
