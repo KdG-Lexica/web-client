@@ -27,7 +27,7 @@ import CosineDocumentType from "../../types/CosineDocumentType";
 const Viewer = () => {
   const [hoveredDocument, setHoveredDocument] = useState<BasicDocumentType | null>(null);
   const [dataset, setDataset] = useState<DatasetType>({ count: 0, chunks: [], duration: 0 });
-  const [model, setModel] = useState<ModelType>({ id: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: { x: 0, y: 0, z: 0 }, description: ""});
+  const [model, setModel] = useState<ModelType>({ id: "", title: "", collectionName: "", createdAt: new Date(), updatedAt: new Date(), meta: [], documentCount: 0, center: { x: 0, y: 0, z: 0 }, description: "", requiresPassword: false, unlocked: true });
   const [clickedDocument, setClickedDocument] = useState<BasicDocumentType | null>(null);
   const [loading, setLoading] = useState(true);
   const [focus, setFocus] = useState(false);

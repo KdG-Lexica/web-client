@@ -2,7 +2,7 @@ import axios from "axios";
 import QueryFilterDtoType from "../types/QueryFilterType";
 
 const api = axios.create({
-	baseURL: location.hostname === "localhost" ? "http://api.lexica.ovh/api" : "/api",
+	baseURL: location.hostname === "localhost" ? "https://lexica.ovh/api" : "/api",
 })
 
 export async function getModel(model: string) {
@@ -11,7 +11,7 @@ export async function getModel(model: string) {
 }
 
 export async function getModels() {
-	const response = await api.get("/models");	
+	const response = await api.get("/models");
 	return response.data;
 }
 
@@ -46,16 +46,31 @@ export async function createModel(body: string) {
 }
 
 export async function getCosineDistanceDocuments(model: string, range: number, documentId: string) {
-	const response = await api.get(`/models/${model}/documents/cosine?rangeFactor=${range}&document=${documentId}`)
+	const response = await api.get(`/models/${model}/documents/cosine?rangeFactor=${range}&document=${documentId}`);
 	return response.data;
 }
 
 export async function getIPTCs() {
-	const response = await api.get(`/iptc`)
+	const response = await api.get(`/iptc`);
 	return response.data;
 }
 
 export async function getIPTC(IPTCId: number) {
-	const response = await api.get(`/iptc/${IPTCId}`)
+	const response = await api.get(`/iptc/${IPTCId}`);
+	return response.data;
+}
+
+export async function getHealth() {
+	const response = await api.get("/health");
+	return response.data;
+}
+
+export interface UnlockSetProps {
+	model: string;
+	password: string;
+}
+
+export async function unlockSet(props : UnlockSetProps) {
+	const response = await api.post(`/models/${props.model}/unlock`, {password: props.password});
 	return response.data;
 }
