@@ -34,7 +34,7 @@ export const DatasetSelector = () => {
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
                 {models.map((m) => {
                     return (
-                        <DatasetCard key={m.id} id={m.id} name={m.collectionName} description={"2M+ datapoints collected from the New York Times. Browse through documents in a 3D space and explore different clusters.".substring(0, 150).concat("...")} />
+                        <DatasetCard key={m.id} id={m.id} name={m.collectionName} description={m.description === null? "No description available..." : m.description.substring(0, 150).concat("...")} />
                     )
                 })}
             </div>

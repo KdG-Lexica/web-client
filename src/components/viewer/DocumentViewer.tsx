@@ -157,7 +157,9 @@ const DocumentViewer = (props: DocumentViewerProps) => {
                     <div className="rounded bg-slate-100 dark:bg-slate-800 min-w-full p-2">
                         <p className="font-sans dark:text-white black:text-black font-medium text-xl p-2">How to navigate</p>
                         <p className="font-sans text-slate-600 dark:text-slate-400 p-2">
-                            Tutorial
+                            1. Use the scrollwheel to zoom in and out.<br/>
+                            2. Click and drag to orbit<br/>
+                            3. Right click and drag to pan.
                         </p>
                     </div>
                 </>
