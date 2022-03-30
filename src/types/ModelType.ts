@@ -11,5 +11,6 @@ export default interface ModelType {
     center: Vector3Type;
     description: string | null;
     requiresPassword: boolean,
-    unlocked: boolean
+    unlocked: boolean,
+    title: string
 }
