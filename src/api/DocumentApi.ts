@@ -2,10 +2,10 @@ import axios from "axios";
 import QueryFilterDtoType from "../types/QueryFilterType";
 
 const api = axios.create({
-	baseURL: "https://api.lexica.ovh/api"
+	baseURL: location.hostname === "localhost" ? "http://api.lexica.ovh/api" : "/api",
 })
 
-export async function getModel(model: string) {	
+export async function getModel(model: string) {
 	const response = await api.get(`/models/${model}`);
 	return response.data;
 }
@@ -36,7 +36,7 @@ export interface GetDocumentProps {
 }
 
 export async function getDocument(props: GetDocumentProps) {
-	const response = await api.get(`/models/${props.model}/documents?document=${props.document}`);	
+	const response = await api.get(`/models/${props.model}/documents?document=${props.document}`);
 	return response.data;
 }
 
@@ -55,7 +55,7 @@ export async function getIPTCs() {
 	return response.data;
 }
 
-export async function getIPTC(IPTCId : number) {
+export async function getIPTC(IPTCId: number) {
 	const response = await api.get(`/iptc/${IPTCId}`)
 	return response.data;
 }
