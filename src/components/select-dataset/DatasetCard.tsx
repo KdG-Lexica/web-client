@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import * as documentApi from "../../api/DocumentApi"
 
 export interface DatasetCardPropsType {
     id: string
@@ -18,8 +20,9 @@ export interface DatasetCardPropsType {
 export const DatasetCard = (props: DatasetCardPropsType) => {
     const navigate = useNavigate();
     const [dataPercentage, setDataPercentage] = useState<number>(0.5);
-
-
+    const [locked, setLocked] = useState(props.locked);
+    const [password, setPassword] = useState<string>("");
+    
     const toInitCap = (input: string): string => {
         return input[0].toUpperCase() + input.substring(1, input.length);
     };
@@ -30,6 +33,19 @@ export const DatasetCard = (props: DatasetCardPropsType) => {
 
     const navigateToViewer = () => {
         navigate(`/viewer?size=${dataPercentage}&set=${props.id}`);
+    }
+
+    const { mutate } = useMutation(documentApi.unlockSet, {
+        onSuccess: (data) => {
+            setLocked(false);
+        },
+        onError: (error: any) => {
+            prompt("Wrong password")
+        }
+    });
+
+    function unlock() {
+        mutate({model: props.id, password: password})
     }
 
     return (
@@ -47,22 +63,33 @@ export const DatasetCard = (props: DatasetCardPropsType) => {
                         </div>
                     </div>
 
-                    <div className="hidden md:block flex flex-col space-y-2 p-2 w-80 mb-2">
-                        <input value={dataPercentage}
-                            onChange={(e) => updateDataPercentage(e)}
-                            type="range" className="w-full" min="0.25" max="1" step="0.25" />
-                        <ul className="flex justify-between w-full px-[10px] pb-6">
-                            <li className="flex justify-center relative dark:text-gray-400" value={0.25}><span className="absolute">25%</span></li>
-                            <li className="flex justify-center relative dark:text-gray-400" value={0.50}><span className="absolute">50%</span></li>
-                            <li className="flex justify-center relative dark:text-gray-400" value={0.75}><span className="absolute">75% </span></li>
-                            <li className="flex justify-center relative dark:text-gray-400" value={1}><span className="absolute">100%</span></li>
-                        </ul>
-                    </div>
+                    { locked  ?
+                        <>
+                            <label>Password:</label>
+                            <input type="password" onChange={(e) => {setPassword(e.target.value)}}/>
+                            <button onClick={() => {unlock()}}>Submit</button>
+                        </>
+                        :
 
-                    <button onClick={() => navigateToViewer()} className="inline-flex items-center py-2  px-3 text-sm font-medium text-center text-white rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-blue-300 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
-                        Browse data
-                        <svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                    </button>
+                        <>
+                            <div className="hidden md:block flex flex-col space-y-2 p-2 w-80 mb-2">
+                                <input value={dataPercentage}
+                                    onChange={(e) => updateDataPercentage(e)}
+                                    type="range" className="w-full" min="0.25" max="1" step="0.25" />
+                                <ul className="flex justify-between w-full px-[10px] pb-6">
+                                    <li className="flex justify-center relative dark:text-gray-400" value={0.25}><span className="absolute">25%</span></li>
+                                    <li className="flex justify-center relative dark:text-gray-400" value={0.50}><span className="absolute">50%</span></li>
+                                    <li className="flex justify-center relative dark:text-gray-400" value={0.75}><span className="absolute">75% </span></li>
+                                    <li className="flex justify-center relative dark:text-gray-400" value={1}><span className="absolute">100%</span></li>
+                                </ul>
+                            </div>
+                            <button onClick={() => navigateToViewer()} className="inline-flex items-center py-2  px-3 text-sm font-medium text-center text-white rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-blue-300 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                                Browse data
+                                <svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                            </button>
+                        </>
+                        
+                    }
                 </>
             }
         </div>

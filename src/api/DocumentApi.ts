@@ -64,3 +64,13 @@ export async function getHealth() {
 	const response = await api.get("/health");
 	return response.data;
 }
+
+export interface UnlockSetProps {
+	model: string;
+	password: string;
+}
+
+export async function unlockSet(props : UnlockSetProps) {
+	const response = await api.post(`/models/${props.model}/unlock`, {password: props.password});
+	return response.data;
+}

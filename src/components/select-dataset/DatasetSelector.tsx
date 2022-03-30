@@ -18,9 +18,7 @@ export const DatasetSelector = () => {
     const { isLoading } = useQuery("getHealth", () => getHealth());
 
     const getHealth = async () => {
-        console.log("getting health");
         const data = await documentApi.getHealth();
-        console.log(data);
     }
 
     const {
