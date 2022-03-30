@@ -30,7 +30,6 @@ export const DatasetSelector = () => {
 
     useEffect(() => {
         if (!isLoading) {
-            console.log("getting models");
             refetch();
         }
     }, [isLoading])

@@ -25,7 +25,7 @@ export interface GetDocumentsProps {
 
 export async function getDocuments(props: GetDocumentsProps) {
 	const start = performance.now();
-	const response = await api.post(`/models/${props.model}/documents?limit=${props.limit}&offset=${props.offset}&chunkData=yes`, { filter: props.filter }, props.config);
+	const response = await api.post(`/models/${props.model}/documents?limit=${Math.floor(props.limit)}&offset=${props.offset}&chunkData=yes`, { filter: props.filter }, props.config);
 	response.data.duration = Math.floor(performance.now() - start);
 	return response.data;
 }
