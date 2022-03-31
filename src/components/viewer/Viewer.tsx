@@ -91,7 +91,7 @@ const Viewer = () => {
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
           onDownloadProgress: (progressEvent: any) => {
             let percentCompleted = Math.floor(progressEvent.loaded / 43888386 * 100)
-            setProgress(percentCompleted);
+            setProgress(percentCompleted > 100 ? 100 : percentCompleted);
           }
         }
       });
