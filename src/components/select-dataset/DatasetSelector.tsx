@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi";
 import ModelType from "../../types/ModelType";
 import { DatasetCard } from "./DatasetCard";
@@ -13,12 +14,27 @@ import { DatasetCard } from "./DatasetCard";
 */
 export const DatasetSelector = () => {
     const [models, setModels] = useState<ModelType[]>([]);
+    const navigate = useNavigate();
+
+    /* Mocked model for testing UI*/
+
+    // const [models, setModels] = useState<ModelType[]>([{
+    //     center: {
+    //         x: 6.573844437735377,
+    //         y: 3.3766249573716065,
+    //         z: 2.64193414412726
+    //     }, collectionName: "Test collection", createdAt: new Date(), description: "test collection to test UI", documentCount: 0, id: "9999", meta: [], requiresPassword: true, title: "Test collection", unlocked: false, updatedAt: new Date()
+    // } as ModelType]);
 
     /* health check returns auth cookie required to get datasets*/
     const { isLoading } = useQuery("getHealth", () => getHealth());
 
     const getHealth = async () => {
-        const data = await documentApi.getHealth();
+        try {
+            await documentApi.getHealth();
+        } catch {
+            navigate("/server-error")
+        }
     }
 
     const {
@@ -28,16 +44,16 @@ export const DatasetSelector = () => {
         enabled: false
     });
 
+    const getModels = async () => {
+        let data = await documentApi.getModels();
+        setModels(data);
+    };
     useEffect(() => {
         if (!isLoading) {
             refetch();
         }
     }, [isLoading])
 
-    const getModels = async () => {
-        let data = await documentApi.getModels();
-        setModels(data);
-    };
 
     return (
         <div className="flex flex-col items-center h-full justify-center">
