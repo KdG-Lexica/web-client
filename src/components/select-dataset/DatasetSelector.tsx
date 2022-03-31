@@ -13,46 +13,46 @@ import { DatasetCard } from "./DatasetCard";
  * <Route path="/" element={<DatasetSelector />} />
 */
 export const DatasetSelector = () => {
-    const [models, setModels] = useState<ModelType[]>([]);
+    // const [models, setModels] = useState<ModelType[]>([]);
     const navigate = useNavigate();
 
     /* Mocked model for testing UI*/
 
-    // const [models, setModels] = useState<ModelType[]>([{
-    //     center: {
-    //         x: 6.573844437735377,
-    //         y: 3.3766249573716065,
-    //         z: 2.64193414412726
-    //     }, collectionName: "Test collection", createdAt: new Date(), description: "test collection to test UI", documentCount: 0, id: "9999", meta: [], requiresPassword: true, title: "Test collection", unlocked: false, updatedAt: new Date()
-    // } as ModelType]);
+    const [models, setModels] = useState<ModelType[]>([{
+        center: {
+            x: 6.573844437735377,
+            y: 3.3766249573716065,
+            z: 2.64193414412726
+        }, collectionName: "Test collection", createdAt: new Date(), description: "test collection to test UI", documentCount: 0, id: "9999", meta: [], requiresPassword: true, title: "Test collection", unlocked: false, updatedAt: new Date()
+    } as ModelType]);
 
     /* health check returns auth cookie required to get datasets*/
-    const { isLoading } = useQuery("getHealth", () => getHealth());
+    // const { isLoading } = useQuery("getHealth", () => getHealth());
 
-    const getHealth = async () => {
-        try {
-            await documentApi.getHealth();
-        } catch {
-            navigate("/server-error")
-        }
-    }
+    // const getHealth = async () => {
+    //     try {
+    //         await documentApi.getHealth();
+    //     } catch {
+    //         navigate("/server-error")
+    //     }
+    // }
 
-    const {
-        refetch
-    } = useQuery("getModels", () => getModels, {
-        refetchOnWindowFocus: false,
-        enabled: false
-    });
+    // const {
+    //     refetch
+    // } = useQuery("getModels", () => getModels, {
+    //     refetchOnWindowFocus: false,
+    //     enabled: false
+    // });
 
-    const getModels = async () => {
-        let data = await documentApi.getModels();
-        setModels(data);
-    };
-    useEffect(() => {
-        if (!isLoading) {
-            refetch();
-        }
-    }, [isLoading])
+    // const getModels = async () => {
+    //     let data = await documentApi.getModels();
+    //     setModels(data);
+    // };
+    // useEffect(() => {
+    //     if (!isLoading) {
+    //         refetch();
+    //     }
+    // }, [isLoading])
 
 
     return (

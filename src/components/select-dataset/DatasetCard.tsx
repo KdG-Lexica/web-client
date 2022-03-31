@@ -62,14 +62,14 @@ export const DatasetCard = (props: DatasetCardPropsType) => {
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{props.description}</p>
             {!unLocked ?
                 <>
-                    <label className="py-2.5" htmlFor="password">This dataset is locked. Enter the correct password and press enter.</label>
+                    <label className="py-2.5 mb-3 font-normal text-gray-700 dark:text-gray-200" htmlFor="password">This dataset is locked. Enter the correct password and press enter.</label>
                     <div className="relative mt-4 transition-all">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </div>
-                        <input type="password" id="password" onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => { setPassword(e.target.value) }} className={`${showError ? "bg-red-50 border focus:ring-red-500 focus:border-red-500 border-red-500 text-red-900 placeholder-red-700 dark:bg-red-100 dark:border-red-400" : "bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500"} text-sm rounded-lg  block w-80 pl-10 p-2.5 `} placeholder="Enter password" autoComplete="off" />
+                        <input type="password" id="password" onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => { setPassword(e.target.value) }} className={`${showError ? "bg-red-50 dark:bg-gray-700 border focus:ring-red-500 focus:border-red-500 border-red-500 dark:text-white placeholder-red-700 dark:bg-gray-700 dark:border-red-400" : "bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 focus:border-blue-500"} text-sm rounded-lg  block w-80 pl-10 p-2.5 `} placeholder="Enter password" autoComplete="off" />
                     </div>
                     {showError && <p className="mt-2 text-sm text-red-600 dark:text-red-500"><span className="font-medium">Oops!</span> This password is incorrect!</p>}
                 </>
