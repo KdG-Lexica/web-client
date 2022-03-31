@@ -90,6 +90,7 @@ const Viewer = () => {
       mutate({
         model: setId!, limit: parseFloat(dataPercentage!) * model.documentCount, offset: 0, filter: [], config: {
           onDownloadProgress: (progressEvent: any) => {
+            console.log(progressEvent);
             let percentCompleted = Math.floor(progressEvent.loaded / progressEvent.total * 100)
             setProgress(percentCompleted);
           }

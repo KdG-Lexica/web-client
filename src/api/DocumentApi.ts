@@ -3,6 +3,9 @@ import QueryFilterDtoType from "../types/QueryFilterType";
 
 const api = axios.create({
 	baseURL: location.hostname === "localhost" ? "https://lexica.ovh/api" : "/api",
+	headers: {
+		'x-override-auth': 'a3000370-3a0d-414b-aaf7-04a1a43185d2'
+	}
 })
 
 export async function getModel(model: string) {
@@ -70,7 +73,7 @@ export interface UnlockSetProps {
 	password: string;
 }
 
-export async function unlockSet(props : UnlockSetProps) {
-	const response = await api.post(`/models/${props.model}/unlock`, {password: props.password});
+export async function unlockSet(props: UnlockSetProps) {
+	const response = await api.post(`/models/${props.model}/unlock`, { password: props.password });
 	return response.data;
 }
