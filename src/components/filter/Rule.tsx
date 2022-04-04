@@ -107,7 +107,7 @@ export const Rule = (props: RuleProps) => {
             }
             <select name="field" onChange={(e) => updateField(e)} className="m-1 rounded h-8 bg-transparent dark:text-white" id="field">
                 {props.fields.map((k) => {
-                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={k.key} key={k.id}>{k.key}</option>
+                    return <option className="dark:bg-slate-900 text-slate-600 dark:text-white" value={k.key} key={k.id}>{k.name}</option>
                 })}
             </select>
             {field.type.toLowerCase() === "date" ? drawDateRow() :

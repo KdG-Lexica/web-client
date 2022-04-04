@@ -111,6 +111,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import * as documentApi from "../../api/DocumentApi";
 import ModelType from "../../types/ModelType";
 import { DatasetCard } from "./DatasetCard";
@@ -124,20 +125,46 @@ import { DatasetCard } from "./DatasetCard";
 */
 export const DatasetSelector = () => {
     const [models, setModels] = useState&lt;ModelType[]>([]);
+    const navigate = useNavigate();
+
+    /* Mocked model for testing UI*/
+
+    // const [models, setModels] = useState&lt;ModelType[]>([{
+    //     center: {
+    //         x: 6.573844437735377,
+    //         y: 3.3766249573716065,
+    //         z: 2.64193414412726
+    //     }, collectionName: "Test collection", createdAt: new Date(), description: "test collection to test UI", documentCount: 0, id: "9999", meta: [], requiresPassword: true, title: "Test collection", unlocked: false, updatedAt: new Date()
+    // } as ModelType]);
+
+    /* health check returns auth cookie required to get datasets*/
+    const { isLoading } = useQuery("getHealth", () => getHealth());
+
+    const getHealth = async () => {
+        try {
+            await documentApi.getHealth();
+        } catch {
+            navigate("/server-error")
+        }
+    }
 
     const {
-        isLoading,
         refetch
-    } = useQuery("getModels", () => getModels);
-
-    useEffect(() => {
-        refetch();
-    }, [])
+    } = useQuery("getModels", () => getModels, {
+        refetchOnWindowFocus: false,
+        enabled: false
+    });
 
     const getModels = async () => {
         let data = await documentApi.getModels();
         setModels(data);
     };
+    useEffect(() => {
+        if (!isLoading) {
+            refetch();
+        }
+    }, [isLoading])
+
 
     return (
         &lt;div className="flex flex-col items-center h-full justify-center">
@@ -145,7 +172,7 @@ export const DatasetSelector = () => {
             &lt;div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
                 {models.map((m) => {
                     return (
-                        &lt;DatasetCard key={m.id} id={m.id} name={m.collectionName} description={"2M+ datapoints collected from the New York Times. Browse through documents in a 3D space and explore different clusters.".substring(0, 150).concat("...")} />
+                        &lt;DatasetCard key={m.id} unLocked={m.unlocked} id={m.id} name={m.title} description={m.description === null ? "No description available..." : m.description.substring(0, 150).concat("...")} />
                     )
                 })}
             &lt;/div>
